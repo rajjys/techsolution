@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  TECH SOLUTION RDC — thème clair uniquement.
+  Jetons sémantiques consommés par tailwind.config.ts (composants style shadcn/ui).
+*/
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* #FFFFFF */
+    --foreground: 222 47% 11%; /* slate-900 #0F172A */
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 213 60% 11%; /* navy-950 #0B192C */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%; /* slate-100 */
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 19% 35%; /* slate-600 #475569 */
+
+    --accent: 43 100% 50%; /* solar-500 #FFB800 */
+    --accent-foreground: 213 60% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%; /* slate-200 */
+    --input: 214 32% 91%;
+    --ring: 43 100% 50%; /* anneau de focus solaire */
+
+    --radius: 0.75rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-white font-sans text-slate-600 antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-tight text-slate-900;
+  }
+
+  ::selection {
+    @apply bg-solar-500/90 text-navy-950;
+  }
+
+  /* Cibles d'ancres sous le header sticky */
+  [id] {
+    scroll-margin-top: 6.5rem;
+  }
+}
+
+@layer utilities {
+  /* Grille « blueprint » discrète — sections claires */
+  .bg-grid-slate {
+    background-image: linear-gradient(
+        to right,
+        rgba(30, 62, 98, 0.055) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(30, 62, 98, 0.055) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Grille « blueprint » — sections navy */
+  .bg-grid-navy {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Fondu latéral pour les marquees / carrousels */
+  .mask-fade-x {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  /* Halos pulsés de la carte RDC (SVG) */
+  .map-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Pause du marquee au survol */
+  .marquee-track:hover .animate-marquee {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-dot {
+    animation: none !important;
+  }
+}
