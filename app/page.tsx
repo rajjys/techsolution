@@ -18,10 +18,10 @@ export default function HomePage() {
       <Hero />
       <Authority />
 
-      {/* Séparateur dégradé pleine largeur : transparent → blanc → bleu → ambre → bleu → blanc → transparent */}
+      {/* Séparateur dégradé pleine largeur : transparent → ambre → bleu (centre dominant) → ambre → transparent */}
       <div
         aria-hidden="true"
-        className="h-[3px] w-screen bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.9)_6%,rgba(49,48,208,0.9)_26%,rgba(194,65,12,0.85)_50%,rgba(49,48,208,0.9)_74%,rgba(255,255,255,0.9)_94%,transparent_100%)]"
+        className="h-[3px] w-screen bg-[linear-gradient(to_right,transparent_0%,rgba(194,65,12,0.7)_16%,rgba(49,48,208,0.9)_34%,rgba(49,48,208,0.95)_50%,rgba(49,48,208,0.9)_66%,rgba(194,65,12,0.7)_84%,transparent_100%)]"
       />
 
       <Solutions />

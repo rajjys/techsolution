@@ -35,7 +35,7 @@ export function Authority() {
   return (
     <section
       aria-label="Ils nous font confiance"
-      className="relative -mt-24 bg-white pb-16 pt-28 [border-top-left-radius:50%_5rem] [border-top-right-radius:50%_5rem] lg:-mt-40 lg:pb-24 lg:pt-44 lg:[border-top-left-radius:50%_9rem] lg:[border-top-right-radius:50%_9rem]"
+      className="relative -mt-24 bg-white pb-12 pt-24 [border-top-left-radius:50%_5rem] [border-top-right-radius:50%_5rem] lg:-mt-40 lg:pb-16 lg:pt-40 lg:[border-top-left-radius:50%_9rem] lg:[border-top-right-radius:50%_9rem]"
     >
       <div className="container grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <Reveal>

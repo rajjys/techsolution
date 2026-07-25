@@ -102,10 +102,7 @@ export function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <Button variant="brand" asChild>
-              <Link href="/contact">
-                Demander un devis
-                <ArrowRight />
-              </Link>
+              <Link href="/contact">Demander un devis</Link>
             </Button>
           </div>
 
@@ -144,17 +141,17 @@ export function Header() {
                     onClick={() => setMobileOpen(false)}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold text-white transition-colors",
+                      "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
                       isActive(link.href)
-                        ? "bg-brand-800"
-                        : "bg-brand-600 hover:bg-brand-700",
+                        ? "bg-brand-600 text-white"
+                        : "text-slate-700 hover:bg-navy-50",
                     )}
                   >
                     {link.label}
                     <ArrowRight
                       className={cn(
                         "size-4",
-                        isActive(link.href) ? "text-white" : "text-white/70",
+                        isActive(link.href) ? "text-white" : "text-slate-300",
                       )}
                     />
                   </Link>
@@ -162,10 +159,12 @@ export function Header() {
               </nav>
 
               <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button variant="brand" className="w-full" asChild>
+                <Button
+                  className="w-full bg-[#C2410C] text-white shadow-sm hover:bg-[#9A3412]"
+                  asChild
+                >
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
                     Demander un devis
-                    <ArrowRight className="text-[#C2410C]" />
                   </Link>
                 </Button>
                 <Button
