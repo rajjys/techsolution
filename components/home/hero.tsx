@@ -39,7 +39,7 @@ export function Hero() {
           <Reveal mode="mount" delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-xl font-normal leading-normal text-[#52606D] lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
               L&apos;installation solaire haute fiabilité pour vos domiciles,
-              entreprises et sites industriels partout en RDC. Clés en main.
+              entreprises et sites industriels partout en RDC.
             </p>
           </Reveal>
 
@@ -47,7 +47,7 @@ export function Hero() {
             <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
               <Link
                 href="/contact"
-                className="inline-flex w-auto items-center justify-center rounded-xl bg-[#D97706] px-8 py-4 text-[18px] font-semibold text-white transition-colors duration-200 hover:bg-[#B45309] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D97706] focus-visible:ring-offset-2"
+                className="inline-flex w-auto items-center justify-center rounded-xl bg-[#C2410C] px-8 py-4 text-[18px] font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
               >
                 Obtenez un devis gratuit
               </Link>

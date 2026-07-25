@@ -7,19 +7,21 @@ type ClientLogo = {
   alt: string;
   width: number;
   height: number;
+  /** Hauteur max ajustée par logo pour un poids visuel équivalent */
+  sizeClass: string;
 };
 
 /** Logos partenaires normalisés en monochrome (public/logos). */
 const logos: ClientLogo[] = [
-  { src: "/logos/save-the-children.png", alt: "Save the Children", width: 520, height: 134 },
-  { src: "/logos/monusco.png", alt: "MONUSCO — Nations Unies", width: 520, height: 110 },
-  { src: "/logos/care.png", alt: "CARE International", width: 457, height: 160 },
-  { src: "/logos/afriland.png", alt: "Afriland First Bank", width: 331, height: 160 },
-  { src: "/logos/cadeco.png", alt: "CADECO — Banque publique", width: 520, height: 158 },
-  { src: "/logos/pdl145t.png", alt: "PDL-145T — Gouvernement de la RDC", width: 520, height: 137 },
-  { src: "/logos/jworg.png", alt: "JW.ORG", width: 160, height: 160 },
-  { src: "/logos/grecom.png", alt: "GRECOM — Green Community Mind", width: 372, height: 160 },
-  { src: "/logos/alima.png", alt: "ALIMA", width: 129, height: 160 },
+  { src: "/logos/save-the-children.png", alt: "Save the Children", width: 520, height: 134, sizeClass: "max-h-10" },
+  { src: "/logos/monusco.png", alt: "MONUSCO — Nations Unies", width: 520, height: 110, sizeClass: "max-h-10" },
+  { src: "/logos/care.png", alt: "CARE International", width: 457, height: 160, sizeClass: "max-h-12" },
+  { src: "/logos/afriland.png", alt: "Afriland First Bank", width: 520, height: 66, sizeClass: "max-h-10" },
+  { src: "/logos/cadeco.png", alt: "CADECO — Banque publique", width: 520, height: 158, sizeClass: "max-h-12" },
+  { src: "/logos/pdl145t.png", alt: "PDL-145T — Gouvernement de la RDC", width: 520, height: 137, sizeClass: "max-h-11" },
+  { src: "/logos/jworg.png", alt: "JW.ORG", width: 160, height: 160, sizeClass: "max-h-14" },
+  { src: "/logos/grecom.png", alt: "GRECOM — Green Community Mind", width: 372, height: 160, sizeClass: "max-h-12" },
+  { src: "/logos/alima.png", alt: "ALIMA", width: 129, height: 160, sizeClass: "max-h-16" },
 ];
 
 /**
@@ -50,13 +52,13 @@ export function Authority() {
         >
           {logos.map((logo) => (
             <StaggerItem key={logo.src} y={14}>
-              <div className="flex h-12 w-32 items-center justify-center">
+              <div className="flex h-16 w-44 items-center justify-center">
                 <Image
                   src={logo.src}
                   alt={logo.alt}
                   width={logo.width}
                   height={logo.height}
-                  className="max-h-8 w-auto object-contain opacity-70 grayscale transition-all hover:opacity-100"
+                  className={`w-auto max-w-full object-contain opacity-80 grayscale transition-opacity hover:opacity-100 ${logo.sizeClass}`}
                 />
               </div>
             </StaggerItem>
