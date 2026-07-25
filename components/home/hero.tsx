@@ -24,7 +24,7 @@ export function Hero() {
           className="object-cover object-[70%_45%]"
         />
         {/* Voile : crème opaque à gauche → transparent à droite */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF7ED] from-45% via-[#FFF7ED]/90 via-65% to-[#FFF7ED]/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF7ED] from-10% via-[#FFF7ED]/85 to-transparent" />
       </div>
 
       <div className="container relative">
@@ -38,9 +38,8 @@ export function Hero() {
 
           <Reveal mode="mount" delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-xl font-normal leading-normal text-[#52606D] lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
-              Bénéficiez de tarifs compétitifs sur des systèmes de batteries
-              et d&apos;énergie solaire haut de gamme, installés par des
-              experts.
+              L&apos;installation solaire haute fiabilité pour vos domiciles,
+              entreprises et sites industriels partout en RDC. Clés en main.
             </p>
           </Reveal>
 
