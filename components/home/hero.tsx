@@ -53,7 +53,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/references"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl py-4 text-lg font-medium text-navy-950 transition-colors hover:text-navy-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg px-4 py-4 text-lg font-medium text-slate-600 transition-colors hover:bg-navy-50 hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2"
               >
                 Découvrir nos réalisations
                 <ArrowRight className="size-5 transition-transform duration-200 group-hover:translate-x-1" />
@@ -62,6 +62,12 @@ export function Hero() {
           </Reveal>
         </div>
       </div>
+
+      {/* Ligne de clôture : bleu marque → ambre CTA → blanc */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-[#3130D0]/80 via-[#C2410C]/70 to-white/40"
+      />
     </section>
   );
 }

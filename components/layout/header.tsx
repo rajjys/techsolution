@@ -38,7 +38,7 @@ export function Header() {
     <header className="sticky top-0 z-50">
       {/* Barre utilitaire */}
       <div className="hidden bg-navy-950 text-navy-100 lg:block">
-        <div className="container flex h-9 items-center justify-between text-xs">
+        <div className="container flex h-9 items-center justify-center text-xs xl:!max-w-[1304px]">
           <div className="flex items-center gap-6">
             <a
               href={`tel:${site.phone}`}
@@ -67,7 +67,7 @@ export function Header() {
             : "border-transparent",
         )}
       >
-        <div className="container flex h-[72px] items-center justify-between gap-4">
+        <div className="container flex h-[72px] items-center justify-between gap-4 xl:!max-w-[1304px]">
           <Link
             href="/"
             aria-label="Tech Solution RDC — Accueil"
