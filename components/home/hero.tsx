@@ -28,7 +28,7 @@ export function Hero() {
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl pb-16 pt-10 text-center md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-24 lg:pt-14 lg:text-left xl:-ml-8">
+        <div className="mx-auto max-w-3xl pb-28 pt-10 text-center md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-48 lg:pt-14 lg:text-left xl:-ml-8">
           <Reveal mode="mount">
             <h1 className="text-5xl font-medium leading-[1.1] tracking-[-0.02em] text-navy-950 md:text-6xl lg:max-w-[800px] lg:text-[72px]">
               Prenez le contrôle de votre énergie&nbsp;
@@ -62,12 +62,6 @@ export function Hero() {
           </Reveal>
         </div>
       </div>
-
-      {/* Ligne de clôture : bleu marque → ambre CTA → blanc */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-[#3130D0]/80 via-[#C2410C]/70 to-white/40"
-      />
     </section>
   );
 }

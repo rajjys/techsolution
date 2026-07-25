@@ -32,7 +32,7 @@ export function Authority() {
   return (
     <section
       aria-label="Ils nous font confiance"
-      className="relative -mt-12 bg-white pb-16 pt-24 [border-top-left-radius:50%_4rem] [border-top-right-radius:50%_4rem] lg:-mt-16 lg:pb-24 lg:pt-32 lg:[border-top-left-radius:50%_7rem] lg:[border-top-right-radius:50%_7rem]"
+      className="relative -mt-20 bg-white pb-16 pt-28 [border-top-left-radius:50%_4rem] [border-top-right-radius:50%_4rem] lg:-mt-32 lg:pb-24 lg:pt-40 lg:[border-top-left-radius:50%_7rem] lg:[border-top-right-radius:50%_7rem]"
     >
       <div className="container grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <Reveal>
