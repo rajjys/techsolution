@@ -144,19 +144,17 @@ export function Header() {
                     onClick={() => setMobileOpen(false)}
                     aria-current={isActive(link.href) ? "page" : undefined}
                     className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
+                      "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold text-white transition-colors",
                       isActive(link.href)
-                        ? "bg-navy-950 text-white"
-                        : "text-slate-700 hover:bg-navy-50",
+                        ? "bg-brand-800"
+                        : "bg-brand-600 hover:bg-brand-700",
                     )}
                   >
                     {link.label}
                     <ArrowRight
                       className={cn(
                         "size-4",
-                        isActive(link.href)
-                          ? "text-solar-500"
-                          : "text-slate-300",
+                        isActive(link.href) ? "text-white" : "text-white/70",
                       )}
                     />
                   </Link>
@@ -167,29 +165,38 @@ export function Header() {
                 <Button variant="brand" className="w-full" asChild>
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
                     Demander un devis
-                    <ArrowRight />
+                    <ArrowRight className="text-[#C2410C]" />
                   </Link>
                 </Button>
-                <Button variant="whatsapp" className="w-full" asChild>
+                <Button
+                  variant="outline"
+                  className="w-full border-[#25D366] bg-white text-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366]"
+                  asChild
+                >
                   <a
                     href={buildWhatsAppLink()}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <WhatsAppIcon className="size-4" />
-                    WhatsApp Business
+                    Contacter sur WhatsApp
                   </a>
                 </Button>
-                <div className="space-y-1.5 pt-2 text-center text-xs text-slate-500">
-                  <p>
-                    <a
-                      href={`tel:${site.phone}`}
-                      className="font-semibold text-navy-900"
-                    >
-                      {site.phoneDisplay}
-                    </a>
-                  </p>
-                  <p>{site.email}</p>
+                <div className="grid gap-2 pt-2">
+                  <a
+                    href={`tel:${site.phone}`}
+                    className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-brand-300 hover:bg-navy-50"
+                  >
+                    <Phone className="size-4 text-brand-600" />
+                    {site.phoneDisplay}
+                  </a>
+                  <a
+                    href={`mailto:${site.email}`}
+                    className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-navy-50"
+                  >
+                    <Mail className="size-4 text-brand-600" />
+                    {site.email}
+                  </a>
                 </div>
               </div>
             </SheetContent>

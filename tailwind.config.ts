@@ -47,6 +47,10 @@ const config: Config = {
         },
         /* Marque — bleu officiel du logo (#3130D0) */
         brand: {
+          100: "#E5E5FB",
+          200: "#C9C8F6",
+          300: "#A6A5EF",
+          400: "#6E6DE0",
           500: "#3130D0",
           600: "#2A28B8",
           700: "#232199",
