@@ -55,11 +55,6 @@ export function Header() {
               {site.email}
             </a>
           </div>
-          <p className="font-medium tracking-wide text-navy-200">
-            Interventions dans les{" "}
-            <span className="font-semibold text-solar-500">26 provinces</span>{" "}
-            de la RDC — depuis {site.foundedYear}
-          </p>
         </div>
       </div>
 
@@ -91,7 +86,7 @@ export function Header() {
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
                 className={cn(
-                  "relative rounded-lg px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
+                  "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
                   isActive(link.href)
                     ? "text-navy-950"
                     : "text-slate-600 hover:bg-navy-50 hover:text-navy-950",
@@ -99,14 +94,14 @@ export function Header() {
               >
                 {link.label}
                 {isActive(link.href) ? (
-                  <span className="absolute inset-x-3.5 -bottom-px h-[3px] rounded-full bg-solar-500" />
+                  <span className="absolute inset-x-4 -bottom-px h-[3px] rounded-full bg-brand-600" />
                 ) : null}
               </Link>
             ))}
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Button variant="solar" asChild>
+            <Button variant="brand" asChild>
               <Link href="/contact">
                 Demander un devis
                 <ArrowRight />
@@ -169,7 +164,7 @@ export function Header() {
               </nav>
 
               <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button variant="solar" className="w-full" asChild>
+                <Button variant="brand" className="w-full" asChild>
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
                     Demander un devis
                     <ArrowRight />

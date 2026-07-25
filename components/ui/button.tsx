@@ -28,6 +28,8 @@ const buttonVariants = cva(
       variant: {
         default:
           "bg-navy-950 text-white shadow-sm hover:bg-navy-800 hover:shadow-md active:translate-y-px",
+        brand:
+          "bg-brand-600 text-white shadow-sm hover:bg-brand-700 hover:shadow-md active:translate-y-px",
         solar:
           "bg-solar-500 text-navy-950 shadow-[0_10px_30px_-10px_rgba(255,184,0,0.7)] hover:bg-solar-400 hover:shadow-[0_14px_36px_-10px_rgba(255,184,0,0.8)] active:translate-y-px",
         outline:

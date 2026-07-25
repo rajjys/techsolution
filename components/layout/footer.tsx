@@ -27,7 +27,7 @@ export function Footer() {
               aria-label="Tech Solution RDC — Accueil"
               className="inline-block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
             >
-              <Logo onDark />
+              <Logo onDark variant="full" />
             </Link>
             <p className="mt-5 text-sm leading-relaxed text-navy-200">
               Solutions énergétiques, solaires et infrastructures techniques

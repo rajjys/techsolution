@@ -45,6 +45,13 @@ const config: Config = {
           900: "#152D48",
           950: "#0B192C",
         },
+        /* Marque — bleu officiel du logo (#3130D0) */
+        brand: {
+          500: "#3130D0",
+          600: "#2A28B8",
+          700: "#232199",
+          800: "#1C1A7A",
+        },
         /* Marque — jaune solaire / ambre électrique */
         solar: {
           50: "#FFFBEB",
@@ -94,12 +101,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
-        display: [
-          "var(--font-space-grotesk)",
-          "var(--font-inter)",
-          ...defaultTheme.fontFamily.sans,
-        ],
+        sans: ["var(--font-outfit)", ...defaultTheme.fontFamily.sans],
+        display: ["var(--font-outfit)", ...defaultTheme.fontFamily.sans],
       },
       boxShadow: {
         card: "0 2px 12px -2px rgba(11, 25, 44, 0.08)",

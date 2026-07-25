@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Outfit } from "next/font/google";
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -8,15 +8,9 @@ import { site } from "@/lib/site";
 
 import "./globals.css";
 
-const inter = Inter({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -48,7 +42,7 @@ export const metadata: Metadata = {
     description: site.description,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Tech Solution RDC",
     description: site.description,
   },
@@ -69,6 +63,8 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: site.legalName,
   url: site.url,
+  logo: `${site.url}/assets/logo-full-blue.png`,
+  image: `${site.url}/assets/logo-full-blue.png`,
   telephone: site.phone,
   email: site.email,
   foundingDate: String(site.foundedYear),
@@ -99,9 +95,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body
-        className={`${inter.variable} ${spaceGrotesk.variable} min-h-screen`}
-      >
+      <body className={`${outfit.variable} min-h-screen`}>
         {/* Sans JavaScript, les blocs animés restent visibles */}
         <noscript>
           <style>{`[data-reveal]{opacity:1 !important;transform:none !important}`}</style>
