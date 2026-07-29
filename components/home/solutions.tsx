@@ -106,13 +106,13 @@ export function Solutions() {
           {offers.map((offer) => (
             <StaggerItem key={offer.title} className="h-full">
               <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft">
-                <div className="relative h-52 w-full overflow-hidden lg:h-60">
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
                   <Image
                     src={offer.image}
                     alt={offer.imageAlt}
                     fill
                     sizes="(max-width: 768px) 100vw, 44vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
                   <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3.5 py-1.5 font-display text-sm font-bold text-navy-950 shadow-sm backdrop-blur">
                     {offer.capacity}
@@ -124,7 +124,7 @@ export function Solutions() {
                   ) : null}
                 </div>
 
-                <div className="flex flex-1 flex-col p-7 lg:p-8">
+                <div className="flex flex-1 flex-col p-6 sm:p-8">
                   <h3 className="text-xl font-bold text-slate-900 lg:text-2xl">
                     {offer.title}
                   </h3>
@@ -132,7 +132,10 @@ export function Solutions() {
                     {offer.audience}
                   </p>
 
-                  <Button className="mt-7 w-full sm:mt-8" asChild>
+                  <Button
+                    className="mt-7 w-full rounded-lg py-3 transition-all hover:bg-navy-950/90 sm:mt-8"
+                    asChild
+                  >
                     <Link href={offer.cta.href}>
                       {offer.cta.label}
                       <ArrowRight />
@@ -154,10 +157,12 @@ export function Solutions() {
               {advantages.map((item) => (
                 <StaggerItem key={item.title} className="lg:px-6">
                   <div className="flex flex-col items-center text-center">
-                    <item.icon
-                      className="size-10 text-brand-600 lg:size-12"
-                      strokeWidth={1.5}
-                    />
+                    <span className="flex size-16 items-center justify-center rounded-2xl bg-brand-100/60">
+                      <item.icon
+                        className="size-8 text-brand-600 lg:size-9"
+                        strokeWidth={1.5}
+                      />
+                    </span>
                     <h4 className="mt-5 text-base font-bold text-slate-900 lg:text-lg">
                       {item.title}
                     </h4>
