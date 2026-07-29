@@ -42,7 +42,7 @@ const offers: Offer[] = [
     capacity: "10 – 40 kW+",
     title: "Commercial & Hôtellerie",
     audience: "Hôtels, bureaux & cliniques.",
-    proof: "Réf. 40 kW — Kinshasa",
+    proof: "40 kW — Kinshasa",
     cta: { label: "Étude projet commercial", href: "/contact" },
   },
 ];
@@ -55,8 +55,8 @@ const advantages: { icon: LucideIcon; title: string; text: string }[] = [
   },
   {
     icon: ShieldCheck,
-    title: "Garantie 1 an",
-    text: "Installation garantie, pièces et main-d'œuvre.",
+    title: "Garantie Renouvelable",
+    text: "Garantie d'une annee renouvelable pour la batterie.",
   },
   {
     icon: MapPin,
