@@ -47,3 +47,6 @@ docs/*.pdf
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Galerie photos/vidéos HD originales (142 Mo) — hors dépôt ; versions web optimisées uniquement
+/public/gallery/

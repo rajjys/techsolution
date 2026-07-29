@@ -72,8 +72,8 @@ const advantages: { icon: LucideIcon; title: string; text: string }[] = [
 
 export function Solutions() {
   return (
-    <section className="bg-slate-50 py-20 lg:py-28">
-      <div className="container">
+    <section className="relative bg-slate-50 bg-grid-slate py-20 lg:py-28">
+      <div className="container relative">
         {/* En-tête — aligné à gauche, en continuité du hero */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <Reveal className="max-w-2xl">
@@ -142,29 +142,31 @@ export function Solutions() {
           ))}
         </Stagger>
 
-        {/* La différence Tech Solution — 4 piliers, grands icônes */}
-        <Reveal className="mt-16 border-t border-slate-200 pt-14 lg:mt-24 lg:pt-20">
-          <h3 className="text-center text-2xl font-bold text-slate-900 md:text-3xl">
-            La différence Tech Solution.
-          </h3>
-          <Stagger className="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-4">
-            {advantages.map((item) => (
-              <StaggerItem key={item.title}>
-                <div className="flex flex-col items-center text-center">
-                  <item.icon
-                    className="size-10 text-brand-600 lg:size-12"
-                    strokeWidth={1.5}
-                  />
-                  <h4 className="mt-5 text-base font-bold text-slate-900 lg:text-lg">
-                    {item.title}
-                  </h4>
-                  <p className="mt-2 max-w-[16rem] text-sm leading-relaxed text-slate-600">
-                    {item.text}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
+        {/* La différence Tech Solution — même largeur que les offres, sur bande blanche premium */}
+        <Reveal className="mt-6 lg:mt-8">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/80 shadow-card backdrop-blur-sm">
+            <h3 className="px-6 pt-10 text-center text-2xl font-bold text-slate-900 md:text-3xl">
+              La différence Tech Solution.
+            </h3>
+            <Stagger className="grid grid-cols-2 gap-x-6 gap-y-12 p-8 pt-10 lg:grid-cols-4 lg:divide-x lg:divide-slate-200 lg:p-12">
+              {advantages.map((item) => (
+                <StaggerItem key={item.title} className="lg:px-6">
+                  <div className="flex flex-col items-center text-center">
+                    <item.icon
+                      className="size-10 text-brand-600 lg:size-12"
+                      strokeWidth={1.5}
+                    />
+                    <h4 className="mt-5 text-base font-bold text-slate-900 lg:text-lg">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2 max-w-[16rem] text-sm leading-relaxed text-slate-600">
+                      {item.text}
+                    </p>
+                  </div>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
         </Reveal>
       </div>
     </section>
