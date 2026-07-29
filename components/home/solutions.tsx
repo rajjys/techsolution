@@ -25,8 +25,9 @@ type Offer = {
 const offers: Offer[] = [
   {
     image:
-      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Villa résidentielle moderne alimentée en énergie solaire",
+      "/gallery-web/residentiel.jpg",
+    imageAlt:
+      "Installation solaire résidentielle Tech Solution sur toiture, RDC",
     capacity: "2 – 6 kW+",
     title: "Résidentiel",
     audience: "Villas & résidences principales.",
@@ -37,8 +38,9 @@ const offers: Offer[] = [
   },
   {
     image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
-    imageAlt: "Complexe hôtelier et commercial alimenté en énergie solaire",
+      "/gallery-web/commercial.jpg",
+    imageAlt:
+      "Centrale solaire commerciale Tech Solution sur grande toiture, RDC",
     capacity: "10 – 40 kW+",
     title: "Commercial & Hôtellerie",
     audience: "Hôtels, bureaux & cliniques.",
@@ -72,8 +74,8 @@ const advantages: { icon: LucideIcon; title: string; text: string }[] = [
 
 export function Solutions() {
   return (
-    <section className="relative bg-slate-50 bg-grid-slate py-20 lg:py-28">
-      <div className="container relative">
+    <section className="bg-gradient-to-b from-white to-slate-50 py-20 lg:py-28">
+      <div className="container">
         {/* En-tête — aligné à gauche, en continuité du hero */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <Reveal className="max-w-2xl">
@@ -142,11 +144,11 @@ export function Solutions() {
           ))}
         </Stagger>
 
-        {/* La différence Tech Solution — même largeur que les offres, sur bande blanche premium */}
+        {/* Ce que nous offrons — même largeur que les offres, sur bande blanche premium */}
         <Reveal className="mt-6 lg:mt-8">
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/80 shadow-card backdrop-blur-sm">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
             <h3 className="px-6 pt-10 text-center text-2xl font-bold text-slate-900 md:text-3xl">
-              La différence Tech Solution.
+              Ce que nous offrons.
             </h3>
             <Stagger className="grid grid-cols-2 gap-x-6 gap-y-12 p-8 pt-10 lg:grid-cols-4 lg:divide-x lg:divide-slate-200 lg:p-12">
               {advantages.map((item) => (

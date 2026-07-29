@@ -6,13 +6,13 @@ import { CtaPanel } from "@/components/cta-panel";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
-import { Catalogue } from "@/components/products/catalogue";
+import { KitsCatalogue } from "@/components/products/kits-catalogue";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Produits & Catalogue",
+  title: "Kits solaires & Catalogue",
   description:
-    "Catalogue d'équipements industriels Tech Solution RDC : panneaux solaires monocristallins, onduleurs hybrides, batteries lithium LiFePO₄, protection, distribution et éclairage public solaire.",
+    "Kits solaires hybrides clés en main Tech Solution RDC : de 650 Va à 30 kVA triphasé. Onduleurs hybrides, batteries lithium et panneaux dimensionnés — pour maisons, commerces, hôtels et sites industriels.",
   alternates: { canonical: "/produits" },
 };
 
@@ -38,16 +38,16 @@ export default function ProduitsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Produits & Catalogue"
+        eyebrow="Kits solaires"
         title={
           <>
-            Des équipements industriels{" "}
+            Des kits solaires hybrides{" "}
             <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
-              fiables et garantis
+              clés en main
             </span>
           </>
         }
-        lead="Panneaux, onduleurs hybrides, batteries lithium, protection et distribution : la sélection Tech Solution, dimensionnée pour vos charges réelles."
+        lead="De 650 Va à 30 kVA triphasé : onduleurs hybrides, batteries lithium et panneaux, dimensionnés pour vos charges réelles — de la maison au site industriel."
       >
         <Reveal mode="mount" delay={0.15}>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -76,7 +76,7 @@ export default function ProduitsPage() {
       <Section className="bg-white">
         <div className="container">
           <Reveal>
-            <Catalogue />
+            <KitsCatalogue />
           </Reveal>
 
           <Reveal delay={0.1}>
@@ -87,12 +87,13 @@ export default function ProduitsPage() {
                 </span>
                 <div>
                   <h2 className="font-display text-base font-bold text-slate-900">
-                    Catalogue indicatif — configurations sur mesure
+                    Compositions types — ajustables à votre site
                   </h2>
                   <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-600">
-                    Les capacités et références exactes sont confirmées après
-                    l&apos;audit gratuit de votre site : charges, autonomie
-                    souhaitée et contraintes d&apos;implantation.
+                    Ces kits sont nos configurations les plus déployées. La
+                    composition exacte est confirmée après l&apos;audit gratuit
+                    de votre site : charges, autonomie souhaitée et contraintes
+                    d&apos;implantation.
                   </p>
                 </div>
               </div>
@@ -108,8 +109,8 @@ export default function ProduitsPage() {
       </Section>
 
       <CtaPanel
-        title="Besoin d'une configuration complète ?"
-        lead="Kits solaires professionnels, parcs batteries, armoires de distribution : nous assemblons la solution exacte pour votre site et assurons son installation."
+        title="Besoin d'une configuration sur mesure ?"
+        lead="Au-delà des kits standards, nous concevons des centrales hybrides et parcs batteries dimensionnés exactement pour votre site — et assurons l'installation partout en RDC."
       />
     </>
   );

@@ -39,10 +39,10 @@ export function Engagement() {
             />
             <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-navy-950/10">
               <Image
-                src="https://images.unsplash.com/photo-1592833159155-c62df1b65634?auto=format&fit=crop&w=1400&q=85"
-                alt="Panneaux solaires installés en pleine nature — énergie propre au service des communautés"
-                width={680}
-                height={540}
+                src="/gallery-web/engagement.jpg"
+                alt="Équipe Tech Solution installant une centrale solaire en RDC"
+                width={1400}
+                height={933}
                 sizes="(max-width: 1024px) 100vw, 44vw"
                 className="h-[320px] w-full object-cover sm:h-[420px]"
               />

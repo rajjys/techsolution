@@ -48,10 +48,8 @@ export const services: Service[] = [
       "Salles du royaume LTJ — Goma & Bunia",
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
-    image:
-      "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80",
-    imageAlt:
-      "Champ de panneaux solaires photovoltaïques sous un ciel dégagé",
+    image: "/gallery-web/service-solaire.jpg",
+    imageAlt: "Centrale solaire Tech Solution installée sur toiture en RDC",
   },
   {
     slug: "backup-stockage",
@@ -73,9 +71,8 @@ export const services: Service[] = [
       "Installations backup LTJ — Bunia & Butembo",
       "Alimentation du serveur GRECOM — Goma",
     ],
-    image:
-      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Technicien intervenant sur une installation électrique",
+    image: "/gallery-web/service-backup.jpg",
+    imageAlt: "Onduleur hybride et batterie lithium Tech Solution",
   },
   {
     slug: "infrastructure-electrique",
@@ -97,9 +94,8 @@ export const services: Service[] = [
       "Rénovation électrique complète — banque CADECO Mahagi",
       "Installations tertiaires — Afriland First Bank Bunia",
     ],
-    image:
-      "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Électricien professionnel intervenant sur un tableau électrique",
+    image: "/gallery-web/service-electricite.jpg",
+    imageAlt: "Techniciens Tech Solution câblant une armoire électrique",
   },
   {
     slug: "telecom-medias",
@@ -121,9 +117,8 @@ export const services: Service[] = [
       "Radio La Colombe Mahagi & Radio Amani Aveba",
       "Serveur télécom GRECOM-RDC — Goma",
     ],
-    image:
-      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Pylônes de transmission au coucher du soleil",
+    image: "/gallery-web/service-telecom.jpg",
+    imageAlt: "Onduleur Tech Solution alimentant une salle technique",
   },
   {
     slug: "securite-electronique",
@@ -141,9 +136,8 @@ export const services: Service[] = [
       "Intégration avec alimentation secourue 24h/24",
     ],
     references: ["Système d'alarme — Save the Children, Bunia"],
-    image:
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Ingénieure contrôlant un équipement technique",
+    image: "/gallery-web/service-securite.jpg",
+    imageAlt: "Tableau électrique et protection installés par Tech Solution",
   },
   {
     slug: "maintenance-froid",
@@ -164,9 +158,8 @@ export const services: Service[] = [
       "Maintenance climatisation & installations — Afriland First Bank Bunia",
       "Suivi des parcs solaires installés (LTJ, ONG, radios)",
     ],
-    image:
-      "https://images.unsplash.com/photo-1559302504-64aae6ca6b6d?auto=format&fit=crop&w=1600&q=80",
-    imageAlt: "Technicien assemblant un module solaire",
+    image: "/gallery-web/service-maintenance.jpg",
+    imageAlt: "Technicien Tech Solution en intervention de maintenance",
   },
 ];
 
