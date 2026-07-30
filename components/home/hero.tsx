@@ -24,7 +24,7 @@ export function Hero() {
           className="object-cover object-[70%_45%]"
         />
         {/* Voile : crème opaque à gauche → transparent à droite */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FFE8D6] from-5% via-[#FFF7ED]/80 via-55% to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF7ED] from-10% via-[#FFF7ED]/85 to-transparent" />
       </div>
 
       <div className="container relative">
@@ -47,7 +47,7 @@ export function Hero() {
             <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
               <Link
                 href="/contact"
-                className="inline-flex w-auto items-center justify-center rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2 sm:px-8 sm:py-4 sm:text-[18px]"
+                className="inline-flex w-auto items-center justify-center rounded-xl bg-brand-600 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2 sm:px-8 sm:py-4 sm:text-[18px]"
               >
                 Obtenez un devis gratuit
               </Link>

@@ -29,7 +29,7 @@ export function RotatingPhrases() {
 
   return (
     <span
-      className="mt-2 block min-h-[2.2em] text-[#C2410C] sm:min-h-[1.15em] lg:mt-3"
+      className="mt-2 block min-h-[2.2em] text-brand-600 sm:min-h-[1.15em] lg:mt-3"
       aria-live="polite"
     >
       <AnimatePresence mode="wait" initial={false}>
