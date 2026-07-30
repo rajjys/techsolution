@@ -101,7 +101,11 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Button variant="brand" asChild>
+            <Button
+              variant="default"
+              className="text-base font-bold shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
+              asChild
+            >
               <Link href="/contact">Demander un devis</Link>
             </Button>
           </div>

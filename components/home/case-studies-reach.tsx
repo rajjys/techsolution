@@ -228,54 +228,55 @@ export function CaseStudiesReach() {
             </AnimatePresence>
             </div>
 
-            {/* Contrôles du carrousel — sous la carte, largeur de la carte */}
-            <div className="mt-6 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-1.5">
-                {caseStudies.map((cs, i) => (
-                  <button
-                    key={cs.slug}
-                    onClick={() => go(i)}
-                    aria-label={`Projet à ${cs.city}`}
-                    aria-current={i === index ? "true" : undefined}
-                    className={cn(
-                      "h-2 rounded-full transition-all",
-                      i === index
-                        ? "w-6 bg-solar-500"
-                        : "w-2 bg-white/25 hover:bg-white/50",
-                    )}
-                  />
-                ))}
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => go(index - 1)}
-                  aria-label="Projet précédent"
-                  className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-                >
-                  <ArrowLeft className="size-5" />
-                </button>
-                <button
-                  onClick={() => go(index + 1)}
-                  aria-label="Projet suivant"
-                  className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-                >
-                  <ArrowRight className="size-5" />
-                </button>
-              </div>
-            </div>
           </div>
 
-          {/* Carte — visible aussi sur mobile (avant le carrousel), à droite sur laptop */}
-          <div className="order-1 flex h-[320px] items-center justify-center sm:h-[420px] lg:order-2 lg:h-[560px]">
+          {/* Carte — masquée sur mobile, à droite sur laptop */}
+          <div className="hidden lg:order-2 lg:flex lg:h-[560px] lg:items-center lg:justify-center">
             <ReachMap activeCity={active.city} />
           </div>
         </div>
 
-        {/* CTA de section — fin de section */}
-        <div className="mt-10 flex justify-center lg:mt-14">
+        {/* Contrôles : progression + navigation (gauche) · lien (droite) —
+            une seule ligne sur ordinateur ; le lien passe dessous et se centre sur mobile */}
+        <div className="mt-8 flex flex-col items-stretch gap-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center justify-between gap-6 sm:justify-start">
+            <div className="flex items-center gap-1.5">
+              {caseStudies.map((cs, i) => (
+                <button
+                  key={cs.slug}
+                  onClick={() => go(i)}
+                  aria-label={`Projet à ${cs.city}`}
+                  aria-current={i === index ? "true" : undefined}
+                  className={cn(
+                    "h-2 rounded-full transition-all",
+                    i === index
+                      ? "w-6 bg-solar-500"
+                      : "w-2 bg-white/25 hover:bg-white/50",
+                  )}
+                />
+              ))}
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => go(index - 1)}
+                aria-label="Projet précédent"
+                className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+              >
+                <ArrowLeft className="size-5" />
+              </button>
+              <button
+                onClick={() => go(index + 1)}
+                aria-label="Projet suivant"
+                className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+              >
+                <ArrowRight className="size-5" />
+              </button>
+            </div>
+          </div>
+
           <Link
             href="/references"
-            className="group inline-flex items-center gap-2 text-base font-semibold text-brand-300 transition-colors hover:text-white"
+            className="group mx-auto inline-flex items-center gap-2 text-base font-semibold text-brand-300 transition-colors hover:text-white sm:mx-0"
           >
             Voir tous les projets
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
