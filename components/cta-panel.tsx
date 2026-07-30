@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, PhoneCall } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-import { WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
-import { site } from "@/lib/site";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-/** Panneau d'appel à l'action navy — réutilisé sur toutes les pages. */
+/** Panneau d'appel à l'action navy — CTA unique et focalisé. */
 export function CtaPanel({
   badge = "Étude gratuite — réponse sous 24 h",
   title = "Un projet d'énergie solaire ou d'infrastructure technique ?",
@@ -43,32 +40,14 @@ export function CtaPanel({
                 {lead}
               </p>
 
-              <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <div className="mt-9 flex justify-center">
                 <Button variant="solar" size="lg" asChild>
                   <Link href="/contact">
                     Demander une étude gratuite
                     <ArrowRight />
                   </Link>
                 </Button>
-                <Button variant="whatsapp" size="lg" asChild>
-                  <a
-                    href={buildWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <WhatsAppIcon className="size-5" />
-                    WhatsApp Business
-                  </a>
-                </Button>
               </div>
-
-              <a
-                href={`tel:${site.phone}`}
-                className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-navy-100 transition-colors hover:text-solar-500"
-              >
-                <PhoneCall className="size-4 text-solar-500" />
-                Ou appelez-nous directement : {site.phoneDisplay}
-              </a>
             </div>
           </div>
         </Reveal>

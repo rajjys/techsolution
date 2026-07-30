@@ -89,15 +89,12 @@ export function KitsShowcase() {
     <section className="bg-white py-20 lg:py-28">
       <div className="container">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex items-center rounded-full border border-brand-200 bg-brand-100/60 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-brand-700">
-            Configurations clés en main
-          </span>
-          <h2 className="mt-5 text-3xl font-bold leading-[1.15] text-slate-900 md:text-4xl lg:text-[40px] lg:leading-[1.1]">
-            Des architectures solaires éprouvées.
+          <h2 className="text-3xl font-bold leading-[1.15] text-slate-900 md:text-4xl lg:text-[40px] lg:leading-[1.1]">
+            Prêt à passer à l&apos;énergie qui dure ?
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-600 md:text-lg">
-            Chaque configuration est dimensionnée pour un usage réel — de la
-            maison à l&apos;industrie. Voici ce qu&apos;elles alimentent.
+            Choisissez la configuration la plus proche de vos besoins — nous
+            l&apos;ajustons à votre site lors d&apos;une étude gratuite.
           </p>
         </Reveal>
 
@@ -188,14 +185,14 @@ export function KitsShowcase() {
             Vous ne trouvez pas la puissance exacte ?
           </p>
           <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button asChild>
-              <Link href="/produits">
-                Voir tout notre catalogue de kits
+            <Button size="lg" asChild>
+              <Link href="/contact">
+                Parlons de votre projet
                 <ArrowRight />
               </Link>
             </Button>
-            <Button variant="outline" asChild>
-              <Link href="/contact">Étude sur-mesure</Link>
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/produits">Voir tout le catalogue</Link>
             </Button>
           </div>
         </Reveal>
