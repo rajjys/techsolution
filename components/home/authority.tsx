@@ -39,7 +39,7 @@ export function Authority() {
     >
       <div className="container grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <Reveal>
-          <h2 className="mx-auto max-w-md text-center text-2xl font-bold leading-snug text-[#687580] lg:mx-0 lg:text-left lg:text-[36px] lg:leading-[44px]">
+          <h2 className="mx-auto max-w-md text-center text-xl font-bold leading-snug text-[#687580] sm:text-2xl lg:mx-0 lg:text-left lg:text-[36px] lg:leading-[44px]">
             <span className="underline decoration-solar-500 decoration-2 underline-offset-[4px]">
               17+ projets
             </span>{" "}

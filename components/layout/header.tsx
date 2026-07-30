@@ -22,20 +22,39 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = React.useState(false);
+  const [hidden, setHidden] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const lastY = React.useRef(0);
 
   React.useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      // Masquer en descendant (après un seuil), réafficher en remontant
+      if (y > lastY.current && y > 140) setHidden(true);
+      else if (y < lastY.current) setHidden(false);
+      lastY.current = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Toujours visible quand le menu mobile est ouvert
+  React.useEffect(() => {
+    if (mobileOpen) setHidden(false);
+  }, [mobileOpen]);
+
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50">
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-transform duration-300 ease-out",
+        hidden && !mobileOpen ? "-translate-y-full" : "translate-y-0",
+      )}
+    >
       {/* Barre utilitaire */}
       <div className="hidden bg-navy-950 text-navy-100 lg:block">
         <div className="container flex h-9 items-center justify-center text-xs xl:!max-w-[1304px]">

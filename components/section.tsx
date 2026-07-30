@@ -9,7 +9,7 @@ export function Section({
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <section className={cn("py-20 md:py-28", className)} {...props}>
+    <section className={cn("py-14 sm:py-20 md:py-28", className)} {...props}>
       {children}
     </section>
   );
@@ -76,7 +76,7 @@ export function SectionHeading({
       ) : null}
       <h2
         className={cn(
-          "mt-4 text-3xl font-bold leading-[1.12] md:text-4xl",
+          "mt-4 text-[26px] font-bold leading-[1.15] sm:text-3xl sm:leading-[1.12] md:text-4xl",
           onDark ? "text-white" : "text-slate-900",
         )}
       >
@@ -85,7 +85,7 @@ export function SectionHeading({
       {lead ? (
         <p
           className={cn(
-            "mt-4 text-base leading-relaxed md:text-lg",
+            "mt-4 text-[15px] leading-relaxed sm:text-base md:text-lg",
             onDark ? "text-navy-100/80" : "text-slate-600",
           )}
         >

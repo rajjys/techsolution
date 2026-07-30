@@ -86,13 +86,13 @@ function SpecCell({
 
 export function KitsShowcase() {
   return (
-    <section className="bg-white py-20 lg:py-28">
+    <section className="bg-white py-14 sm:py-20 lg:py-28">
       <div className="container">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold leading-[1.15] text-slate-900 md:text-4xl lg:text-[40px] lg:leading-[1.1]">
+          <h2 className="text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[40px] lg:leading-[1.1]">
             Prêt à passer à l&apos;énergie qui dure ?
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 md:text-lg">
+          <p className="mt-4 text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
             Choisissez la configuration la plus proche de vos besoins — nous
             l&apos;ajustons à votre site lors d&apos;une étude gratuite.
           </p>
@@ -131,7 +131,7 @@ export function KitsShowcase() {
                     <span className="text-xs font-semibold uppercase tracking-wide text-solar-400">
                       {kit.segment}
                     </span>
-                    <p className="mt-1 font-display text-4xl font-bold leading-none text-white">
+                    <p className="mt-1 font-display text-3xl font-bold leading-none text-white sm:text-4xl">
                       {kit.power}
                     </p>
                   </div>
@@ -139,7 +139,7 @@ export function KitsShowcase() {
 
                 {/* Contenu */}
                 <div className="flex flex-1 flex-col p-6 lg:p-7">
-                  <h3 className="text-xl font-bold leading-snug text-slate-900 lg:text-2xl">
+                  <h3 className="text-lg font-bold leading-snug text-slate-900 sm:text-xl lg:text-2xl">
                     {kit.outcome}
                   </h3>
                   <p className="mt-2 text-sm text-slate-500">{kit.name}</p>

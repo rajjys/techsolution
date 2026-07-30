@@ -33,10 +33,10 @@ export function CtaPanel({
               <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-solar-500 backdrop-blur">
                 {badge}
               </span>
-              <h2 className="mt-6 text-3xl font-bold leading-[1.15] text-white md:text-4xl">
+              <h2 className="mt-6 text-[26px] font-bold leading-[1.18] text-white sm:text-3xl sm:leading-[1.15] md:text-4xl">
                 {title}
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-navy-100/85 md:text-lg">
+              <p className="mt-4 text-[15px] leading-relaxed text-navy-100/85 sm:text-base md:text-lg">
                 {lead}
               </p>
 

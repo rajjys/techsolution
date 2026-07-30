@@ -74,16 +74,16 @@ const advantages: { icon: LucideIcon; title: string; text: string }[] = [
 
 export function Solutions() {
   return (
-    <section className="bg-gradient-to-b from-white to-slate-50 py-20 lg:py-28">
+    <section className="bg-gradient-to-b from-white to-slate-50 py-14 sm:py-20 lg:py-28">
       <div className="container">
         {/* En-tête — aligné à gauche, en continuité du hero */}
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <Reveal className="max-w-2xl">
-            <h2 className="text-3xl font-bold leading-[1.15] text-slate-900 md:text-4xl lg:text-[44px] lg:leading-[1.1]">
+            <h2 className="text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[44px] lg:leading-[1.1]">
               Des installations solaires conçues pour durer.{" "}
               <span className="text-brand-600">Sans compromis.</span>
             </h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 md:text-lg">
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
               Que ce soit pour votre résidence principale ou votre établissement
               commercial, nous déployons des batteries 100% Lithium et un
               accompagnement technique local pour résidences et entreprises.
@@ -125,7 +125,7 @@ export function Solutions() {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6 sm:p-8">
-                  <h3 className="text-xl font-bold text-slate-900 lg:text-2xl">
+                  <h3 className="text-lg font-bold text-slate-900 sm:text-xl lg:text-2xl">
                     {offer.title}
                   </h3>
                   <p className="mt-1.5 text-[15px] text-slate-500">
@@ -150,7 +150,7 @@ export function Solutions() {
         {/* Ce que nous offrons — même largeur que les offres, sur bande blanche premium */}
         <Reveal className="mt-6 lg:mt-8">
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
-            <h3 className="px-6 pt-10 text-center text-2xl font-bold text-slate-900 md:text-3xl">
+            <h3 className="px-6 pt-10 text-center text-xl font-bold text-slate-900 sm:text-2xl md:text-3xl">
               Ce que nous offrons.
             </h3>
             <Stagger className="grid grid-cols-2 gap-x-6 gap-y-12 p-8 pt-10 lg:grid-cols-4 lg:divide-x lg:divide-slate-200 lg:p-12">

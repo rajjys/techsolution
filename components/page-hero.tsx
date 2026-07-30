@@ -25,14 +25,14 @@ export function PageHero({
         aria-hidden="true"
       />
 
-      <div className="container relative py-16 md:py-24">
+      <div className="container relative py-12 sm:py-16 md:py-24">
         <Reveal mode="mount" className="max-w-3xl">
           <Eyebrow onDark>{eyebrow}</Eyebrow>
-          <h1 className="mt-4 text-4xl font-bold leading-[1.1] text-white md:text-5xl">
+          <h1 className="mt-4 text-[30px] font-bold leading-[1.15] text-white sm:text-4xl sm:leading-[1.1] md:text-5xl">
             {title}
           </h1>
           {lead ? (
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-navy-100/85">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-navy-100/85 sm:text-lg">
               {lead}
             </p>
           ) : null}

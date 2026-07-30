@@ -138,7 +138,7 @@ export function CaseStudiesReach() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-navy-950 py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-navy-950 py-14 sm:py-20 lg:py-28">
       <div
         className="absolute -right-40 -top-40 size-[480px] rounded-full bg-solar-500/10 blur-3xl"
         aria-hidden="true"
@@ -146,10 +146,10 @@ export function CaseStudiesReach() {
       <div className="container relative">
         {/* En-tête centré */}
         <Reveal className="text-center">
-          <h2 className="mx-auto text-3xl font-bold leading-[1.12] text-white md:text-4xl lg:text-[46px] lg:leading-[1.08]">
+          <h2 className="mx-auto text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[46px] lg:leading-[1.08]">
             Nos réalisations, d&apos;un bout à l&apos;autre de la RDC.
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-100/85 md:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-navy-100/85 sm:text-base md:text-lg">
             Des installations livrées à travers{" "}
             <span className="font-semibold text-white">9 provinces</span> —
             parcourez nos projets.
@@ -203,7 +203,7 @@ export function CaseStudiesReach() {
 
                   {/* Contenu bas */}
                   <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                    <h3 className="line-clamp-2 text-2xl font-bold leading-snug text-white lg:text-[28px]">
+                    <h3 className="line-clamp-2 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-[28px]">
                       {active.title}
                     </h3>
                     <p className="mt-1.5 text-sm font-semibold text-solar-300">
@@ -238,8 +238,8 @@ export function CaseStudiesReach() {
 
         {/* Contrôles : progression + navigation (gauche) · lien (droite) —
             une seule ligne sur ordinateur ; le lien passe dessous et se centre sur mobile */}
-        <div className="mt-8 flex flex-col items-stretch gap-6 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center justify-between gap-6 sm:justify-start">
+        <div className="mt-8 grid items-center gap-5 sm:mt-10 lg:grid-cols-2 lg:gap-12">
+          <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-1.5">
               {caseStudies.map((cs, i) => (
                 <button
@@ -276,7 +276,7 @@ export function CaseStudiesReach() {
 
           <Link
             href="/references"
-            className="group mx-auto inline-flex items-center gap-2 text-base font-semibold text-brand-300 transition-colors hover:text-white sm:mx-0"
+            className="group inline-flex items-center gap-2 justify-self-end text-base font-semibold text-brand-300 transition-colors hover:text-white"
           >
             Voir tous les projets
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
