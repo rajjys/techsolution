@@ -6,6 +6,7 @@ import { FeaturedClients } from "@/components/home/clients";
 import { Coverage } from "@/components/home/coverage";
 import { Engagement } from "@/components/home/engagement";
 import { Hero } from "@/components/home/hero";
+import { KitsShowcase } from "@/components/home/kits-showcase";
 import { Solutions } from "@/components/home/solutions";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function HomePage() {
       />
 
       <Solutions />
+      <KitsShowcase />
       <Engagement />
       <Coverage />
       <FeaturedClients />
