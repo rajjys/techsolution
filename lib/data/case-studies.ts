@@ -18,6 +18,8 @@ export type CaseStudy = {
   city: string;
   province: string;
   category: CaseCategory;
+  /** Repère technique (indicatif — à confirmer avec données réelles) */
+  spec: string;
   image: string;
   imageAlt: string;
   summary: string;
@@ -39,6 +41,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Mahagi",
     province: "Ituri",
     category: "Solaire",
+    spec: "≈ 8 kVA · Lithium 10 kWh",
     image: "/gallery-web/commercial.jpg",
     imageAlt: "Centrale solaire sur bâtiment administratif à Mahagi",
     summary:
@@ -63,6 +66,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Mahagi",
     province: "Ituri",
     category: "Électricité",
+    spec: "Rénovation + ≈ 5 kVA solaire",
     image: "/gallery-web/service-electricite.jpg",
     imageAlt: "Rénovation électrique de l'agence CADECO de Mahagi",
     summary:
@@ -87,6 +91,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Goma",
     province: "Nord-Kivu",
     category: "Télécoms",
+    spec: "Backup serveur · ≈ 3 kVA",
     image: "/gallery-web/service-telecom.jpg",
     imageAlt: "Alimentation solaire d'une salle serveur à Goma",
     summary:
@@ -111,6 +116,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Butembo",
     province: "Nord-Kivu",
     category: "Backup",
+    spec: "Backup ≈ 5 kVA · Lithium",
     image: "/gallery-web/service-backup.jpg",
     imageAlt: "Système backup lithium installé à Butembo",
     summary:
@@ -135,6 +141,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Numbi",
     province: "Sud-Kivu",
     category: "Solaire",
+    spec: "Kit ≈ 3 kVA · Off-grid",
     image: "/gallery-web/residentiel.jpg",
     imageAlt: "Kit solaire installé sur le bureau LSC à Numbi",
     summary:
@@ -159,6 +166,7 @@ export const caseStudies: CaseStudy[] = [
     city: "Bunia",
     province: "Ituri",
     category: "Maintenance",
+    spec: "Contrat de maintenance annuel",
     image: "/gallery-web/service-maintenance.jpg",
     imageAlt: "Maintenance des installations de l'agence Afriland à Bunia",
     summary:

@@ -25,12 +25,10 @@ export type NavLink = {
 };
 
 export const navLinks: NavLink[] = [
-  { label: "Accueil", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Produits", href: "/produits" },
   { label: "Références", href: "/references" },
   { label: "À propos", href: "/about" },
-  { label: "Contact", href: "/contact" },
 ];
 
 /** Chiffres clés — tous documentés dans la farde de l'entreprise. */

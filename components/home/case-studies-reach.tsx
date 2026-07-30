@@ -4,10 +4,9 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Gauge, MapPin } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
-import { Button } from "@/components/ui/button";
 import { DRC_BOUNDS, DRC_OUTLINE } from "@/lib/data/drc";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
 import { cn } from "@/lib/utils";
@@ -52,12 +51,11 @@ const DOTS: { x: number; y: number }[] = (() => {
   return out;
 })();
 
-/** Couche de points — rendue une seule fois. */
 const MapDots = React.memo(function MapDots() {
   return (
     <>
       {DOTS.map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={DOT_R} fill="#C7D7EA" />
+        <circle key={i} cx={d.x} cy={d.y} r={DOT_R} fill="#FFFFFF" opacity={0.14} />
       ))}
     </>
   );
@@ -67,29 +65,24 @@ function ReachMap({ activeCity }: { activeCity: string }) {
   return (
     <svg
       viewBox={`0 0 ${W} ${H}`}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label={`Carte de la RDC — projet mis en avant : ${activeCity}`}
-      className="h-auto w-full"
+      className="h-full w-full"
     >
       <MapDots />
 
-      {/* Villes de présence */}
       {presenceCities.map((city) => {
         const [x, y] = project(city.lon, city.lat);
-        const isActive = city.name === activeCity;
-        if (isActive) return null;
+        if (city.name === activeCity) return null;
         return (
           <g key={city.name}>
-            <circle cx={x} cy={y} r={3.4} fill="#6C95C1" />
+            <circle cx={x} cy={y} r={3.6} fill="#93A9C9" />
             <text
               x={x + city.dx}
               y={y + city.dy}
               textAnchor={city.anchor}
-              className="fill-slate-400 font-sans text-[11px] font-medium"
-              paintOrder="stroke"
-              stroke="#F8FAFC"
-              strokeWidth={3}
-              strokeLinejoin="round"
+              className="fill-[#8FA6C6] font-sans text-[11px] font-medium"
             >
               {city.name}
             </text>
@@ -97,44 +90,22 @@ function ReachMap({ activeCity }: { activeCity: string }) {
         );
       })}
 
-      {/* Ville active mise en avant */}
       {presenceCities
         .filter((c) => c.name === activeCity)
         .map((city) => {
           const [x, y] = project(city.lon, city.lat);
           return (
             <g key={city.name}>
-              <circle cx={x} cy={y} r={12} fill="#FFB800" opacity={0.3}>
-                <animate
-                  attributeName="r"
-                  values="7;14;7"
-                  dur="2.4s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  values="0.45;0;0.45"
-                  dur="2.4s"
-                  repeatCount="indefinite"
-                />
+              <circle cx={x} cy={y} r={12} fill="#FFB800" opacity={0.35}>
+                <animate attributeName="r" values="7;15;7" dur="2.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
               </circle>
-              <circle
-                cx={x}
-                cy={y}
-                r={6}
-                fill="#FFB800"
-                stroke="#FFFFFF"
-                strokeWidth={2.5}
-              />
+              <circle cx={x} cy={y} r={6.5} fill="#FFB800" stroke="#0B192C" strokeWidth={2.5} />
               <text
                 x={x + city.dx}
                 y={y + city.dy}
                 textAnchor={city.anchor}
-                className="fill-navy-950 font-sans text-[14px] font-bold"
-                paintOrder="stroke"
-                stroke="#FFFFFF"
-                strokeWidth={4}
-                strokeLinejoin="round"
+                className="fill-white font-sans text-[14px] font-bold"
               >
                 {city.name}
               </text>
@@ -146,12 +117,12 @@ function ReachMap({ activeCity }: { activeCity: string }) {
 }
 
 /* ─── Section ─── */
-const categoryStyles: Record<string, string> = {
-  Solaire: "bg-solar-50 text-solar-800 border-solar-500/30",
-  Backup: "bg-navy-50 text-navy-800 border-navy-200",
-  Électricité: "bg-amber-50 text-amber-800 border-amber-200",
-  Télécoms: "bg-sky-50 text-sky-800 border-sky-200",
-  Maintenance: "bg-slate-100 text-slate-700 border-slate-200",
+const categoryChip: Record<string, string> = {
+  Solaire: "bg-solar-500 text-navy-950",
+  Backup: "bg-navy-700 text-white",
+  Électricité: "bg-amber-500 text-navy-950",
+  Télécoms: "bg-sky-600 text-white",
+  Maintenance: "bg-slate-600 text-white",
 };
 
 export function CaseStudiesReach() {
@@ -161,131 +132,148 @@ export function CaseStudiesReach() {
   const active = caseStudies[index];
 
   const go = (next: number) => {
-    setDir(next > index || (index === caseStudies.length - 1 && next === 0) ? 1 : -1);
-    setIndex((next + caseStudies.length) % caseStudies.length);
+    const n = (next + caseStudies.length) % caseStudies.length;
+    setDir(n === index ? 1 : n > index ? 1 : -1);
+    setIndex(n);
   };
 
   return (
-    <section className="bg-slate-50 py-20 lg:py-28">
-      <div className="container">
-        <Reveal className="max-w-2xl">
-          <h2 className="text-3xl font-bold leading-[1.15] text-slate-900 md:text-4xl lg:text-[40px] lg:leading-[1.1]">
+    <section className="relative overflow-hidden bg-navy-950 py-20 lg:py-28">
+      <div
+        className="absolute -right-40 -top-40 size-[480px] rounded-full bg-solar-500/10 blur-3xl"
+        aria-hidden="true"
+      />
+      <div className="container relative">
+        {/* En-tête centré */}
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold leading-[1.12] text-white md:text-4xl lg:text-[46px] lg:leading-[1.08]">
             Nos réalisations, d&apos;un bout à l&apos;autre de la RDC.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-600 md:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-navy-100/85 md:text-lg">
             Des installations livrées à travers{" "}
-            <span className="font-semibold text-slate-800">9 provinces</span>.
-            Parcourez nos projets — la carte suit chaque intervention.
+            <span className="font-semibold text-white">9 provinces</span> —
+            parcourez nos projets.
           </p>
         </Reveal>
 
-        <div className="mt-12 grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
-          {/* Carte — masquée sur mobile */}
-          <Reveal className="hidden lg:block">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card">
-              <ReachMap activeCity={active.city} />
-            </div>
-          </Reveal>
-
-          {/* Carrousel d'études de cas */}
-          <div>
-            <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card">
-              <AnimatePresence mode="wait" custom={dir} initial={false}>
-                <motion.article
-                  key={active.slug}
-                  custom={dir}
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -40 }}
-                  transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+        <div className="mt-14 grid gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-12">
+          {/* Étude de cas — carte pleine image (gauche) */}
+          <div className="relative h-[440px] sm:h-[500px] lg:order-1 lg:h-[560px]">
+            <AnimatePresence mode="wait" custom={dir} initial={false}>
+              <motion.div
+                key={active.slug}
+                className="absolute inset-0"
+                initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -40 }}
+                transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+              >
+                <Link
+                  href={`/references/${active.slug}`}
+                  className="group relative block h-full overflow-hidden rounded-3xl ring-1 ring-white/10"
                 >
-                  <Link href={`/references/${active.slug}`} className="group block">
-                    <div className="relative aspect-[16/9] w-full overflow-hidden">
-                      <Image
-                        src={active.image}
-                        alt={active.imageAlt}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 52vw"
-                        className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <span
-                        className={cn(
-                          "absolute left-4 top-4 inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold",
-                          categoryStyles[active.category],
-                        )}
-                      >
-                        {active.category}
-                      </span>
-                    </div>
+                  <Image
+                    src={active.image}
+                    alt={active.imageAlt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 46vw"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/55 to-navy-950/10"
+                    aria-hidden="true"
+                  />
 
-                    <div className="p-6 lg:p-8">
-                      <p className="flex items-center gap-1.5 text-sm font-semibold text-brand-600">
+                  {/* Badges haut */}
+                  <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide",
+                        categoryChip[active.category],
+                      )}
+                    >
+                      {active.category}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-navy-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                      <Gauge className="size-3.5 text-solar-400" />
+                      {active.spec}
+                    </span>
+                  </div>
+
+                  {/* Contenu bas */}
+                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                    <h3 className="line-clamp-2 text-2xl font-bold leading-snug text-white lg:text-[28px]">
+                      {active.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm font-medium text-navy-200">
+                      {active.client}
+                    </p>
+                    <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-navy-100/80">
+                      {active.summary}
+                    </p>
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-solar-400">
                         <MapPin className="size-4" />
                         {active.city} — {active.province}
-                      </p>
-                      <h3 className="mt-2 text-xl font-bold leading-snug text-slate-900 transition-colors group-hover:text-navy-700 lg:text-2xl">
-                        {active.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-medium text-slate-500">
-                        {active.client}
-                      </p>
-                      <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                        {active.summary}
-                      </p>
-                      <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-navy-900">
-                        Voir l&apos;étude de cas
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+                        Voir le projet
                         <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                       </span>
                     </div>
-                  </Link>
-                </motion.article>
-              </AnimatePresence>
-            </div>
-
-            {/* Contrôles */}
-            <div className="mt-6 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-1.5" aria-label="Projets">
-                {caseStudies.map((cs, i) => (
-                  <button
-                    key={cs.slug}
-                    onClick={() => go(i)}
-                    aria-label={`Projet à ${cs.city}`}
-                    aria-current={i === index ? "true" : undefined}
-                    className={cn(
-                      "h-2 rounded-full transition-all",
-                      i === index
-                        ? "w-6 bg-navy-950"
-                        : "w-2 bg-slate-300 hover:bg-slate-400",
-                    )}
-                  />
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => go(index - 1)}
-                  aria-label="Projet précédent"
-                  className="flex size-11 items-center justify-center rounded-full border border-slate-300 bg-white text-navy-900 transition-colors hover:border-navy-950 hover:bg-navy-950 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-                >
-                  <ArrowLeft className="size-5" />
-                </button>
-                <button
-                  onClick={() => go(index + 1)}
-                  aria-label="Projet suivant"
-                  className="flex size-11 items-center justify-center rounded-full border border-slate-300 bg-white text-navy-900 transition-colors hover:border-navy-950 hover:bg-navy-950 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-                >
-                  <ArrowRight className="size-5" />
-                </button>
-              </div>
-            </div>
-
-            <Button variant="outline" className="mt-8" asChild>
-              <Link href="/references">
-                Voir tous les projets
-                <ArrowRight />
-              </Link>
-            </Button>
+                  </div>
+                </Link>
+              </motion.div>
+            </AnimatePresence>
           </div>
+
+          {/* Carte — masquée sur mobile, à droite */}
+          <div className="hidden lg:order-2 lg:flex lg:h-[560px] lg:items-center lg:justify-center">
+            <ReachMap activeCity={active.city} />
+          </div>
+        </div>
+
+        {/* Contrôles — une seule ligne : progression · navigation · lien */}
+        <div className="mt-10 flex flex-col items-center gap-6 sm:mt-12 sm:grid sm:grid-cols-3 sm:items-center">
+          <div className="order-2 flex items-center gap-1.5 sm:order-1 sm:justify-self-start">
+            {caseStudies.map((cs, i) => (
+              <button
+                key={cs.slug}
+                onClick={() => go(i)}
+                aria-label={`Projet à ${cs.city}`}
+                aria-current={i === index ? "true" : undefined}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  i === index ? "w-6 bg-solar-500" : "w-2 bg-white/25 hover:bg-white/50",
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="order-1 flex items-center gap-3 sm:order-2 sm:justify-self-center">
+            <button
+              onClick={() => go(index - 1)}
+              aria-label="Projet précédent"
+              className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+            >
+              <ArrowLeft className="size-5" />
+            </button>
+            <button
+              onClick={() => go(index + 1)}
+              aria-label="Projet suivant"
+              className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+            >
+              <ArrowRight className="size-5" />
+            </button>
+          </div>
+
+          <Link
+            href="/references"
+            className="group order-3 inline-flex items-center gap-2 text-base font-semibold text-brand-300 transition-colors hover:text-white sm:justify-self-end"
+          >
+            Voir tous les projets
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

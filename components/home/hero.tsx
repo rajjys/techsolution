@@ -24,7 +24,7 @@ export function Hero() {
           className="object-cover object-[70%_45%]"
         />
         {/* Voile : crème opaque à gauche → transparent à droite */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF7ED] from-10% via-[#FFF7ED]/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFE8D6] from-5% via-[#FFF7ED]/80 via-55% to-transparent" />
       </div>
 
       <div className="container relative">
