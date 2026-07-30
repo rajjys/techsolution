@@ -1,180 +1,225 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
   BatteryCharging,
-  CalendarCheck,
-  MapPin,
+  Building2,
+  PlugZap,
   ShieldCheck,
+  Sun,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 
+import { Eyebrow } from "@/components/section";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-type Offer = {
-  image: string;
-  imageAlt: string;
-  capacity: string;
+type Solution = {
   title: string;
-  audience: string;
-  proof?: string;
-  cta: { label: string; href: string };
+  description: string;
+  icon: LucideIcon;
+  /** Ancre de la page /services (les pages dédiées n'existent pas encore). */
+  href: string;
+  /** Renseigné uniquement pour les deux solutions phares (solaire). */
+  capacity?: string;
+  featured?: boolean;
 };
 
-const offers: Offer[] = [
+/**
+ * Six domaines proposés en page d'accueil. Les deux premiers (solaire
+ * résidentiel et solaire entreprises) sont mis en avant : ils portent
+ * l'essentiel de la demande. Les quatre autres élargissent l'empreinte
+ * technique de l'entreprise au-delà du photovoltaïque.
+ */
+const solutions: Solution[] = [
   {
-    image:
-      "/gallery-web/residentiel.jpg",
-    imageAlt:
-      "Installation solaire résidentielle Tech Solution sur toiture, RDC",
+    title: "Solaire résidentiel",
+    description:
+      "Villas, résidences et logements de fonction : autonomie complète, batteries 100 % lithium, installation clé en main.",
+    icon: Sun,
+    href: "/services#energie-solaire",
     capacity: "2 – 6 kW+",
-    title: "Résidentiel",
-    audience: "Villas & résidences principales.",
-    cta: {
-      label: "Voir les solutions maison",
-      href: "/produits?categorie=solaire-residentiel",
-    },
+    featured: true,
   },
   {
-    image:
-      "/gallery-web/commercial.jpg",
-    imageAlt:
-      "Centrale solaire commerciale Tech Solution sur grande toiture, RDC",
+    title: "Solaire entreprises & institutions",
+    description:
+      "Hôtels, bureaux, banques, cliniques et bâtiments publics : centrales dimensionnées sur audit de charge.",
+    icon: Building2,
+    href: "/services#energie-solaire",
     capacity: "10 – 40 kW+",
-    title: "Commercial & Hôtellerie",
-    audience: "Hôtels, bureaux & cliniques.",
-    proof: "40 kW — Kinshasa",
-    cta: { label: "Étude projet commercial", href: "/contact" },
+    featured: true,
   },
-];
-
-const advantages: { icon: LucideIcon; title: string; text: string }[] = [
   {
+    title: "Backup & stockage d'énergie",
+    description:
+      "Onduleurs hybrides et parcs batteries lithium pour une continuité électrique 24 h/24, même hors réseau.",
     icon: BatteryCharging,
-    title: "100% Lithium",
-    text: "Jamais de plomb. Stockage longue durée.",
+    href: "/services#backup-stockage",
   },
   {
+    title: "Infrastructure électrique",
+    description:
+      "Tableaux et distribution basse tension, protection foudre, rénovation et mise en conformité des bâtiments.",
+    icon: PlugZap,
+    href: "/services#infrastructure-electrique",
+  },
+  {
+    title: "Sécurité électronique",
+    description:
+      "Alarmes anti-intrusion, contrôle d'accès et vidéosurveillance, adossés à une alimentation secourue.",
     icon: ShieldCheck,
-    title: "Garantie Renouvelable",
-    text: "Garantie d'une annee renouvelable pour la batterie.",
+    href: "/services#securite-electronique",
   },
   {
-    icon: MapPin,
-    title: "Équipes en RDC",
-    text: "Techniciens locaux, intervention rapide.",
-  },
-  {
-    icon: CalendarCheck,
-    title: "Suivi & maintenance",
-    text: "Visites de contrôle, année après année.",
+    title: "Maintenance & climatisation",
+    description:
+      "Contrats préventifs, dépannage rapide et entretien des systèmes électriques, solaires et de climatisation.",
+    icon: Wrench,
+    href: "/services#maintenance-froid",
   },
 ];
 
+function SolutionCard({ solution }: { solution: Solution }) {
+  const { featured } = solution;
+
+  return (
+    <Link
+      href={solution.href}
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border p-5 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-6 lg:p-7",
+        "hover:-translate-y-1 hover:shadow-soft",
+        featured
+          ? "border-brand-200 bg-gradient-to-b from-white via-white to-brand-100/50 shadow-[0_18px_40px_-28px_rgba(49,48,208,0.55)]"
+          : "border-slate-200/90 bg-white/90 shadow-card backdrop-blur-sm hover:border-brand-200",
+      )}
+    >
+      {featured ? (
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-500 via-brand-400 to-solar-500"
+        />
+      ) : null}
+
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className={cn(
+            "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors sm:size-12",
+            featured
+              ? "bg-brand-600 text-white shadow-[0_10px_24px_-12px_rgba(49,48,208,0.9)]"
+              : "bg-brand-100/70 text-brand-600 group-hover:bg-brand-100",
+          )}
+        >
+          <solution.icon className="size-5 sm:size-6" strokeWidth={1.7} />
+        </span>
+
+        {solution.capacity ? (
+          <span className="mt-0.5 shrink-0 rounded-full bg-solar-50 px-2.5 py-1 font-display text-xs font-bold text-solar-800 ring-1 ring-inset ring-solar-200">
+            {solution.capacity}
+          </span>
+        ) : null}
+      </div>
+
+      <h3
+        className={cn(
+          "mt-5 font-bold leading-snug text-slate-900",
+          featured ? "text-[17px] sm:text-lg" : "text-base sm:text-[17px]",
+        )}
+      >
+        {solution.title}
+      </h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-600">
+        {solution.description}
+      </p>
+
+      <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-brand-600">
+        Découvrir
+        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+      </span>
+    </Link>
+  );
+}
+
+/**
+ * Grille des solutions — colonne de gauche fixée (sticky) pendant le
+ * défilement de la grille de droite, dans les deux sens.
+ * NB : pas d'`overflow-hidden` sur les ancêtres, cela casserait le sticky.
+ */
 export function Solutions() {
   return (
-    <section className="bg-gradient-to-b from-white to-slate-50 py-14 sm:py-20 lg:py-28">
+    <section
+      aria-labelledby="solutions-title"
+      className="relative isolate bg-[#F4F7FE] py-14 sm:py-20 lg:py-28"
+    >
+      {/* Radiance bleue pleine largeur */}
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div className="absolute inset-0 bg-[radial-gradient(75rem_38rem_at_50%_-8%,rgba(49,48,208,0.13),transparent_62%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(55rem_35rem_at_100%_100%,rgba(255,184,0,0.08),transparent_60%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
+      </div>
+
       <div className="container">
-        {/* En-tête — aligné à gauche, en continuité du hero */}
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <Reveal className="max-w-2xl">
-            <h2 className="text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[44px] lg:leading-[1.1]">
-              Des installations solaires conçues pour durer.{" "}
-              <span className="text-brand-600">Sans compromis.</span>
-            </h2>
-            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-              Que ce soit pour votre résidence principale ou votre établissement
-              commercial, nous déployons des batteries 100% Lithium et un
-              accompagnement technique local pour résidences et entreprises.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1} className="shrink-0">
-            <Link
-              href="/services"
-              className="group inline-flex items-center gap-2 text-base font-semibold text-brand-600 transition-colors hover:text-brand-800"
-            >
-              Voir tous nos services
-              <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-          </Reveal>
-        </div>
-
-        {/* Deux offres — visuel en un coup d'œil */}
-        <Stagger className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
-          {offers.map((offer) => (
-            <StaggerItem key={offer.title} className="h-full">
-              <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-soft">
-                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
-                  <Image
-                    src={offer.image}
-                    alt={offer.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 44vw"
-                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3.5 py-1.5 font-display text-sm font-bold text-navy-950 shadow-sm backdrop-blur">
-                    {offer.capacity}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-14 xl:gap-20">
+          {/* Colonne de gauche — sticky sur desktop.
+              L'élément de grille reste étiré (hauteur de la rangée) : c'est lui
+              qui donne au bloc sticky sa course de défilement. */}
+          <div className="lg:relative">
+            <div className="lg:sticky lg:top-28">
+              <Reveal>
+                <Eyebrow>Nos solutions</Eyebrow>
+                <h2
+                  id="solutions-title"
+                  className="mt-4 text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[42px] lg:leading-[1.1]"
+                >
+                  Bien plus que le solaire.{" "}
+                  <span className="text-brand-600">
+                    Toute votre infrastructure technique.
                   </span>
-                  {offer.proof ? (
-                    <span className="absolute right-4 top-4 rounded-full bg-navy-950/85 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
-                      {offer.proof}
-                    </span>
-                  ) : null}
-                </div>
+                </h2>
+                <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
+                  Des ménages aux banques, ONG et stations de radio, nous
+                  concevons, installons et entretenons les systèmes qui gardent
+                  vos sites sous tension — de l&apos;audit gratuit à la
+                  maintenance, partout en RDC.
+                </p>
+              </Reveal>
 
-                <div className="flex flex-1 flex-col p-6 sm:p-8">
-                  <h3 className="text-lg font-bold text-slate-900 sm:text-xl lg:text-2xl">
-                    {offer.title}
-                  </h3>
-                  <p className="mt-1.5 text-[15px] text-slate-500">
-                    {offer.audience}
-                  </p>
-
-                  <Button
-                    className="mt-7 w-full rounded-lg py-3 transition-all hover:bg-navy-950/90 sm:mt-8"
-                    asChild
+              <Reveal delay={0.1}>
+                <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-5 lg:mt-10">
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
                   >
-                    <Link href={offer.cta.href}>
-                      {offer.cta.label}
-                      <ArrowRight />
-                    </Link>
-                  </Button>
+                    Obtenez un devis gratuit
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-base font-semibold text-slate-700 transition-colors hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                  >
+                    Tous nos services
+                    <ArrowRight className="size-5 transition-transform duration-200 group-hover:translate-x-1" />
+                  </Link>
                 </div>
-              </article>
-            </StaggerItem>
-          ))}
-        </Stagger>
+              </Reveal>
 
-        {/* Ce que nous offrons — même largeur que les offres, sur bande blanche premium */}
-        <Reveal className="mt-6 lg:mt-8">
-          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
-            <h3 className="px-6 pt-10 text-center text-xl font-bold text-slate-900 sm:text-2xl md:text-3xl">
-              Ce que nous offrons.
-            </h3>
-            <Stagger className="grid grid-cols-2 gap-x-6 gap-y-12 p-8 pt-10 lg:grid-cols-4 lg:divide-x lg:divide-slate-200 lg:p-12">
-              {advantages.map((item) => (
-                <StaggerItem key={item.title} className="lg:px-6">
-                  <div className="flex flex-col items-center text-center">
-                    <span className="flex size-16 items-center justify-center rounded-2xl bg-brand-100/60">
-                      <item.icon
-                        className="size-8 text-brand-600 lg:size-9"
-                        strokeWidth={1.5}
-                      />
-                    </span>
-                    <h4 className="mt-5 text-base font-bold text-slate-900 lg:text-lg">
-                      {item.title}
-                    </h4>
-                    <p className="mt-2 max-w-[16rem] text-sm leading-relaxed text-slate-600">
-                      {item.text}
-                    </p>
-                  </div>
-                </StaggerItem>
-              ))}
-            </Stagger>
+              <Reveal delay={0.16}>
+                <p className="mt-7 text-sm font-medium text-slate-500 lg:mt-9">
+                  6 domaines d&apos;expertise · Audit de site offert · Équipes
+                  basées en RDC
+                </p>
+              </Reveal>
+            </div>
           </div>
-        </Reveal>
+
+          {/* Colonne de droite — grille des services */}
+          <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
+            {solutions.map((solution) => (
+              <StaggerItem key={solution.title} y={18} className="h-full">
+                <SolutionCard solution={solution} />
+              </StaggerItem>
+            ))}
+          </Stagger>
+        </div>
       </div>
     </section>
   );

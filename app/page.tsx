@@ -4,6 +4,7 @@ import { Authority } from "@/components/home/authority";
 import { CaseStudiesReach } from "@/components/home/case-studies-reach";
 import { Hero } from "@/components/home/hero";
 import { KitsShowcase } from "@/components/home/kits-showcase";
+import { Offerings } from "@/components/home/offerings";
 import { Solutions } from "@/components/home/solutions";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Hero />
       <Authority />
       <Solutions />
+      <Offerings />
       <CaseStudiesReach />
       <KitsShowcase />
     </>
