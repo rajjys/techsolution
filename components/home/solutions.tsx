@@ -141,16 +141,15 @@ export function Solutions() {
   return (
     <section
       aria-labelledby="solutions-title"
-      className="relative isolate bg-[#F4F7FE] py-14 sm:py-20 lg:py-28"
+      className="relative isolate bg-[#F4F7FE] pb-14 pt-[9.5rem] sm:pb-20 sm:pt-[11rem] lg:pb-28 lg:pt-[16rem]"
     >
       {/* Radiance bleue pleine largeur */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(75rem_38rem_at_50%_-8%,rgba(49,48,208,0.13),transparent_62%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(75rem_38rem_at_50%_8%,rgba(49,48,208,0.13),transparent_62%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(55rem_35rem_at_100%_100%,rgba(255,184,0,0.08),transparent_60%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-200 to-transparent" />
       </div>
 
       <div className="container">
@@ -173,16 +172,19 @@ export function Solutions() {
                   id="solutions-title"
                   className="mt-6 text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[42px] lg:leading-[1.1]"
                 >
-                  Le courant ne devrait pas être votre problème.{" "}
-                  <span className="text-brand-600">Faites-en le nôtre.</span>
+                  L&apos;accès à l&apos;électricité reste un défi majeur en
+                  RDC.{" "}
+                  <span className="text-brand-600">
+                    Tech Solution le relève.
+                  </span>
                 </h2>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
                   Coupures à répétition, carburant qui s&apos;envole,
                   équipements qui grillent : votre activité s&apos;arrête
-                  pendant que les factures continuent. Nous prenons en charge
-                  l&apos;énergie et les infrastructures techniques de vos
-                  sites — de l&apos;audit gratuit à la maintenance, partout en
-                  RDC.
+                  pendant que les factures continuent. Nous relevons ce défi
+                  chantier après chantier — de l&apos;audit gratuit à la
+                  maintenance, pour les ménages comme pour les institutions,
+                  partout dans le pays.
                 </p>
               </Reveal>
 
@@ -196,9 +198,10 @@ export function Solutions() {
                   </Link>
                   <Link
                     href="/services"
-                    className="inline-flex items-center justify-center rounded-xl border-2 border-[#C2410C] px-7 py-3.5 text-base font-semibold text-[#C2410C] transition-colors duration-200 hover:bg-[#C2410C] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#C2410C] px-[26px] py-3 text-base font-semibold text-[#C2410C] transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
                   >
                     Tous nos services
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
                 </div>
               </Reveal>
