@@ -1,5 +1,5 @@
 import {
-  BadgeCheck,
+  BatteryCharging,
   CalendarCheck,
   MapPin,
   ShieldCheck,
@@ -18,7 +18,7 @@ type Commitment = { icon: LucideIcon; title: string; text: string };
  */
 const commitments: Commitment[] = [
   {
-    icon: BadgeCheck,
+    icon: BatteryCharging,
     title: "Matériel industriel",
     text: "Batteries 100 % lithium, onduleurs hybrides et composants éprouvés. Jamais de plomb.",
   },
