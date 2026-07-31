@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Authority } from "@/components/home/authority";
 import { CaseStudiesReach } from "@/components/home/case-studies-reach";
 import { Hero } from "@/components/home/hero";
+import { KitsSelector } from "@/components/home/kits-selector";
 import { KitsShowcase } from "@/components/home/kits-showcase";
 import { Offerings } from "@/components/home/offerings";
 import { SolarStatement } from "@/components/home/solar-statement";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <Offerings />
       <CaseStudiesReach />
       <SolarStatement />
+      <KitsSelector />
       <KitsShowcase />
     </>
   );
