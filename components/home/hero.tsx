@@ -44,7 +44,7 @@ export function Hero() {
           </Reveal>
 
           <Reveal mode="mount" delay={0.2}>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4 lg:mt-14 lg:justify-start">
+            <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
               <Link
                 href="/contact"
                 className="inline-flex w-auto items-center justify-center rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2 sm:px-8 sm:py-4 sm:text-[18px]"
@@ -53,7 +53,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/references"
-                className="group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#C2410C] px-[26px] py-3 text-base font-semibold text-[#C2410C] transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2 sm:px-[30px] sm:py-[14px] sm:text-[18px]"
+                className="group inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3.5 text-base font-medium text-slate-600 transition-colors hover:bg-navy-50 hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-4 sm:text-lg"
               >
                 Découvrir nos réalisations
                 <ArrowRight className="size-5 transition-transform duration-200 group-hover:translate-x-1" />
