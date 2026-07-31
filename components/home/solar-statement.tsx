@@ -38,7 +38,8 @@ export function SolarStatement() {
               id="solar-statement"
               className={`text-balance bg-clip-text text-transparent ${DAYLIGHT} text-[30px] font-normal leading-[1.12] tracking-tight sm:text-[42px] md:text-[54px] lg:text-[64px] xl:text-[76px]`}
             >
-              Avec un rayonnement solaire moyen de 5 kWh/m² par jour sur l'ensemble du pays,
+              Avec un rayonnement solaire moyen de 5 kWh/m² par jour sur
+              l&apos;ensemble du pays,
               La RDC ne souffre pas d&apos;un déficit d&apos;énergie mais d&apos;un déficit technologique de captation.
             </p>
 
