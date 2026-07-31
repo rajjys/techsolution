@@ -15,14 +15,7 @@ import { Reveal } from "@/components/motion";
  *     ici à la Banque mondiale — vérifier le millésime exact du rapport.
  */
 
-/**
- * Course du jour, réutilisée par le texte et le filet de signature.
- *
- * NB contraste : la première teinte (#CE9A3A) donne ~2,4:1 sur le fond crème,
- * sous le seuil WCAG AA de 3:1 pour les grands textes — c'est le prix du
- * rendu « lumière du jour » voulu. Passer ce stop à #B8842C rétablit 3:1
- * si l'accessibilité prime.
- */
+/** Course du jour, réutilisée par le texte et le filet de signature. */
 const DAYLIGHT =
   "bg-[linear-gradient(184deg,#CE9A3A_0%,#C67C36_30%,#BB5F48_55%,#A15265_78%,#7E5382_100%)]";
 
@@ -45,27 +38,28 @@ export function SolarStatement() {
               id="solar-statement"
               className={`text-balance bg-clip-text text-transparent ${DAYLIGHT} text-[30px] font-normal leading-[1.12] tracking-tight sm:text-[42px] md:text-[54px] lg:text-[64px] xl:text-[76px]`}
             >
-              La RDC ne souffre pas d&apos;un déficit d&apos;énergie. Elle
-              souffre d&apos;un déficit de captation.
+              Avec un rayonnement solaire moyen de 5 kWh/m² par jour sur l'ensemble du pays,
+              La RDC ne souffre pas d&apos;un déficit d&apos;énergie mais d&apos;un déficit technologique de captation.
             </p>
 
             <p className="mt-10 max-w-3xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg lg:mt-14">
-              Chaque jour, 4,5 à 5,5 kWh par mètre carré tombent sur les 26
+              Chaque jour, 4,5 — 5,5kWh par mètre carré tombent sur les 26
               provinces du pays. Pourtant, selon la Banque mondiale, moins
-              d&apos;un Congolais sur cinq dispose d&apos;un accès fiable au
-              réseau — et les autres paient le carburant au prix fort pour
-              faire tourner des groupes électrogènes. Le solaire n&apos;est pas
+              20% des Congolais disposent d&apos;un accès fiable au
+              réseau electrique — les autres paient le carburant au prix fort.
+              <br/>
+              Le solaire n&apos;est pas
               un dépannage : c&apos;est une infrastructure énergétique que vous
               possédez et pilotez, 24 h/24.
             </p>
 
-            <figcaption className="mt-10 lg:mt-12">
+            <figcaption className="mt-6 lg:mt-8 flex justify-start items-center gap-2">
               <span
-                className={`block h-[3px] w-24 rounded-full ${DAYLIGHT}`}
+                className={`h-[3px] w-16 rounded-full ${DAYLIGHT}`}
                 aria-hidden="true"
               />
-              <span className="mt-5 block text-sm font-medium uppercase tracking-wider text-slate-500 lg:text-base">
-                — Tech Solution RDC • Ingénierie &amp; Autonomie Énergétique
+              <span className="text-sm font-medium uppercase tracking-wider text-slate-500 lg:text-base">
+                Tech Solution RDC • Ingénierie &amp; Autonomie Énergétique
               </span>
             </figcaption>
           </figure>
