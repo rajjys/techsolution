@@ -23,7 +23,7 @@ export default function HomePage() {
       <CaseStudiesReach />
       <SolarStatement />
       <KitsSelector />
-      <KitsShowcase />
+      {/* <KitsShowcase /> */}
     </>
   );
 }
