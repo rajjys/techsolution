@@ -192,13 +192,13 @@ export function Solutions() {
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:mt-10">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
+                    className="inline-flex items-center justify-center rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-ember-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Obtenez un devis gratuit
                   </Link>
                   <Link
                     href="/services"
-                    className="group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#C2410C] px-[26px] py-3 text-base font-semibold text-[#C2410C] transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Tous nos services
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

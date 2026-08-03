@@ -182,10 +182,7 @@ export function Header() {
               </nav>
 
               <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button
-                  className="w-full bg-[#C2410C] text-white shadow-sm hover:bg-[#9A3412]"
-                  asChild
-                >
+                <Button variant="ember" className="w-full" asChild>
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
                     Demander un devis
                   </Link>

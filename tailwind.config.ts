@@ -69,6 +69,25 @@ const config: Config = {
           800: "#8C5F00",
           900: "#664400",
         },
+        /*
+         * Marque — orange brûlé des appels à l'action (#C2410C) et crème du
+         * hero (#FFF7ED). Même famille : la rampe reprend exactement l'échelle
+         * `orange` de Tailwind, dont ces deux teintes sont les crans 700 et 50.
+         * Usage : ember-700 pour un CTA, ember-800 au survol, ember-50 en fond.
+         */
+        ember: {
+          50: "#FFF7ED",
+          100: "#FFEDD5",
+          200: "#FED7AA",
+          300: "#FDBA74",
+          400: "#FB923C",
+          500: "#F97316",
+          600: "#EA580C",
+          700: "#C2410C",
+          800: "#9A3412",
+          900: "#7C2D12",
+          950: "#431407",
+        },
         /* Jetons sémantiques (composants UI style shadcn) */
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
