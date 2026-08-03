@@ -124,9 +124,7 @@ export default async function CaseStudyPage({
                 </p>
                 <Button className="mt-4 w-full" asChild>
                   <Link
-                    href={`/contact?produit=${encodeURIComponent(
-                      `Projet similaire à : ${study.title} (${study.city})`,
-                    )}`}
+                    href={`/contact?produit=${study.slug}`}
                   >
                     Demander une étude
                     <ArrowRight />

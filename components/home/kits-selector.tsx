@@ -26,6 +26,7 @@ type Appliance = { icon: LucideIcon; label: string };
 
 type ShowcaseKit = {
   name: string;
+  slug: string;
   power: string;
   segment: string;
   outcome: string;
@@ -45,6 +46,7 @@ type ShowcaseKit = {
 const kits: ShowcaseKit[] = [
   {
     name: "Kit Solaire Hybride 1,5 kVA",
+    slug: "kit-solaire-hybride-15-kva",
     power: "1,5 kVA",
     segment: "Monophasé · Compact",
     outcome: "L'essentiel du foyer, sans coupure.",
@@ -60,6 +62,7 @@ const kits: ShowcaseKit[] = [
   },
   {
     name: "Kit Solaire Hybride 5 kVA",
+    slug: "kit-solaire-hybride-5-kva",
     power: "5 kVA",
     segment: "Monophasé · Résidentiel",
     outcome: "Toute la villa en autonomie 24/7.",
@@ -77,6 +80,7 @@ const kits: ShowcaseKit[] = [
   },
   {
     name: "Kit Solaire Hybride 10 kVA",
+    slug: "kit-solaire-hybride-10-kva",
     power: "10 kVA",
     segment: "Monophasé · Grand confort",
     outcome: "Le confort total : clim, frigo & bureau.",
@@ -92,6 +96,7 @@ const kits: ShowcaseKit[] = [
   },
   {
     name: "Kit Solaire Semi-Industriel 30 kVA",
+    slug: "kit-solaire-semi-industriel-30-kva",
     power: "30 kVA",
     segment: "Triphasé · Commercial",
     outcome: "La puissance d'un établissement entier.",
@@ -116,7 +121,7 @@ const specIcons = [
 function KitCard({ kit }: { kit: ShowcaseKit }) {
   return (
     <Link
-      href={`/contact?produit=${encodeURIComponent(kit.name)}`}
+      href={`/contact?produit=${kit.slug}`}
       className={cn(
         "group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
         kit.highlight
