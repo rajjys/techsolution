@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/services", "/produits", "/references", "/contact"];
+  const routes = ["", "/services", "/produits", "/references", "/contact", "/about"];
 
   return routes.map((route) => ({
     url: `${site.url}${route}`,
