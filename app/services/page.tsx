@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Services & Expertise",
   description:
-    "Énergie solaire, systèmes backup, infrastructures électriques industrielles, télécoms, sécurité électronique et maintenance — les expertises Tech Solution RDC au service des institutions et entreprises.",
+    "Énergie solaire, systèmes backup, infrastructures électriques industrielles, télécoms, sécurité électronique et maintenance",
   alternates: { canonical: "/services" },
 };
 

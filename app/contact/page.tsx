@@ -14,7 +14,7 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Contact & Devis gratuit",
   description:
-    "Contactez Tech Solution RDC : étude gratuite, devis sous 24 h, WhatsApp Business. Téléphone +243 821 250 250 — interventions dans les 26 provinces de la RDC.",
+    "Contactez Tech Solution RDC : étude gratuite, devis sous 24 h, Téléphone +243 821 250 250",
   alternates: { canonical: "/contact" },
 };
 

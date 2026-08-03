@@ -24,7 +24,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Clients, Références & Présence en RDC",
   description:
-    "Le track record Tech Solution RDC : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank, CADECO, programme PDL-145T — 17 réalisations documentées en Ituri, Nord-Kivu et Sud-Kivu.",
+    "Le track record Tech Solution RDC : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...",
   alternates: { canonical: "/references" },
 };
 

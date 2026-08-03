@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Kits solaires & Catalogue",
   description:
-    "Kits solaires hybrides clés en main Tech Solution RDC : de 650 Va à 30 kVA triphasé. Onduleurs hybrides, batteries lithium et panneaux dimensionnés — pour maisons, commerces, hôtels et sites industriels.",
+    "Kits solaires hybrides: de 650 Va à 30 kVA triphasé. Onduleurs hybrides, batteries lithium et panneaux dimensionnés",
   alternates: { canonical: "/produits" },
 };
 
