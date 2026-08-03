@@ -45,7 +45,7 @@ export const caseStudies: CaseStudy[] = [
     image: "/gallery-web/commercial.jpg",
     imageAlt: "Centrale solaire sur bâtiment administratif à Mahagi",
     summary:
-      "Alimentation solaire autonome du bureau administratif du territoire, dans le cadre du Programme de Développement Local des 145 territoires.",
+      "Alimentation solaire autonome du bureau administratif du territoire, dans le cadre du Programme PDL-145T",
     lon: 30.98,
     lat: 2.3,
     challenge:

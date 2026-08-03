@@ -9,7 +9,7 @@ export const site = {
   url: "https://techsolution.cd",
   tagline: "La révolution énergétique",
   description:
-    "Tech Solution RDC — solutions énergétiques, solaires et infrastructures techniques en République Démocratique du Congo. Installations solaires industrielles, systèmes backup, infrastructures électriques, télécoms et maintenance. Intervention dans les 26 provinces.",
+    "Tech Solution RDC — Solutions énergétiques, solaires et infrastructures techniques en République Démocratique du Congo.",
   phone: "+243821250250",
   phoneDisplay: "+243 821 250 250",
   whatsappNumber: "243821250250",
