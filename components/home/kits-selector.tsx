@@ -18,7 +18,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { KitsRail } from "@/components/home/kits-rail";
+import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ type ShowcaseKit = {
   segment: string;
   outcome: string;
   specs: { inverter: string; battery: string; panels: string };
-  /** Max 5 — remplace la phrase « Idéal pour » : on scanne, on ne lit pas. */
+  /** Max 4 — remplace la phrase « Idéal pour » : on scanne, on ne lit pas. */
   appliances: Appliance[];
   image: string;
   imageAlt: string;
@@ -70,7 +71,7 @@ const kits: ShowcaseKit[] = [
     appliances: [
       { icon: Snowflake, label: "Congélateur" },
       { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: "TV 100\"" },
+      { icon: Tv, label: 'TV 100"' },
       { icon: Lightbulb, label: "Éclairage" },
     ],
     image: "/gallery-web/kit-5.jpg",
@@ -88,7 +89,7 @@ const kits: ShowcaseKit[] = [
     appliances: [
       { icon: AirVent, label: "2 clims" },
       { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: "TV 100\"" },
+      { icon: Tv, label: 'TV 100"' },
       { icon: Laptop, label: "Bureau" },
     ],
     image: "/gallery-web/kit-10.jpg",
@@ -112,113 +113,123 @@ const kits: ShowcaseKit[] = [
   },
 ];
 
-const specIcons = [
-  { key: "inverter" as const, icon: Zap },
-  { key: "battery" as const, icon: BatteryCharging },
-  { key: "panels" as const, icon: SunMedium },
-];
+/** Cellule de la fiche technique — valeur au-dessus, libellé en dessous. */
+function SpecCell({
+  icon: Icon,
+  value,
+  label,
+}: {
+  icon: LucideIcon;
+  value: string;
+  label: string;
+}) {
+  return (
+    <div className="flex flex-col items-center px-2 py-3.5 text-center">
+      <Icon className="size-[18px] text-brand-600" strokeWidth={2} />
+      <span className="mt-2 font-display text-[15px] font-bold leading-none text-navy-950">
+        {value}
+      </span>
+      <span className="mt-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 function KitCard({ kit }: { kit: ShowcaseKit }) {
   return (
-    <Link
-      href={`/contact?produit=${kit.slug}`}
+    <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+        "group flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-[0_18px_45px_-28px_rgba(11,25,44,0.45)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-28px_rgba(11,25,44,0.5)]",
         kit.highlight
-          ? "border-solar-300"
-          : "border-slate-200 hover:border-brand-300",
+          ? "border-solar-400 ring-1 ring-solar-400/30"
+          : "border-slate-200",
       )}
     >
-      {/* Visuel + puissance */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      {/* Visuel — il illustre, il ne porte plus l'information */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden">
         <Image
           src={kit.image}
           alt={kit.imageAlt}
           fill
-          sizes="(max-width: 640px) 82vw, (max-width: 1024px) 45vw, 24vw"
-          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/25 to-transparent"
-          aria-hidden="true"
+          sizes="(max-width: 640px) 82vw, 360px"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
         />
         {kit.highlight ? (
-          <span className="absolute right-3 top-3 rounded-full bg-solar-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-navy-950 shadow-sm">
+          <span className="absolute right-4 top-4 rounded-full bg-solar-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-navy-950 shadow-sm">
             Le plus demandé
           </span>
         ) : null}
-        <div className="absolute inset-x-0 bottom-0 p-4">
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-solar-400">
-            {kit.segment}
-          </span>
-          <p className="mt-0.5 font-display text-[28px] font-bold leading-none text-white">
-            {kit.power}
-          </p>
-        </div>
       </div>
 
-      {/* Contenu */}
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-bold leading-snug text-slate-900">
+      <div className="flex flex-1 flex-col p-6">
+        {/* Ancre de la carte : la puissance joue le rôle du prix */}
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          {kit.segment}
+        </span>
+        <p className="mt-2 font-display text-[32px] font-bold leading-none text-navy-950">
+          {kit.power}
+        </p>
+        <h3 className="mt-3 text-[15px] font-medium leading-relaxed text-slate-600">
           {kit.outcome}
         </h3>
 
-        {/* Fiche technique — gabarit fixe sur deux lignes, pour que toutes
-            les cartes s'alignent quelle que soit la longueur des valeurs */}
-        <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-[12.5px] font-medium text-slate-500">
-          {specIcons.map(({ key, icon: Icon }, index) => (
-            <span
-              key={key}
-              className={cn(
-                "inline-flex min-w-0 items-center gap-1.5",
-                index === 2 && "col-span-2",
-              )}
-            >
-              <Icon
-                className="size-3.5 shrink-0 text-brand-600"
-                strokeWidth={2.2}
-                aria-hidden="true"
-              />
-              {kit.specs[key]}
-            </span>
-          ))}
+        {/* Fiche technique — trois colonnes, comme sur l'ancienne carte */}
+        <div className="mt-6 grid grid-cols-3 divide-x divide-slate-200 rounded-xl border border-slate-200 bg-slate-50/70">
+          <SpecCell icon={Zap} value={kit.specs.inverter} label="Onduleur" />
+          <SpecCell
+            icon={BatteryCharging}
+            value={kit.specs.battery}
+            label="Lithium"
+          />
+          <SpecCell
+            icon={SunMedium}
+            value={kit.specs.panels}
+            label="Panneaux"
+          />
         </div>
 
-        <hr className="mt-4 border-t border-dashed border-slate-200" />
-
         {/* Ce que ça fait tourner — pictogrammes plutôt qu'une phrase */}
-        <ul className="mt-4 grid grid-cols-4 gap-1">
+        <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+          Fait tourner
+        </p>
+        <ul className="mt-3 grid grid-cols-4 gap-2">
           {kit.appliances.map((item) => (
             <li
               key={item.label}
-              className="flex min-w-0 flex-col items-center gap-1.5 text-center"
+              className="flex min-w-0 flex-col items-center gap-2 text-center"
             >
               <item.icon
-                className="size-[18px] text-brand-600"
+                className="size-5 text-brand-600"
                 strokeWidth={1.8}
                 aria-hidden="true"
               />
-              <span className="text-[10px] leading-tight text-slate-500">
+              <span className="text-[11px] leading-tight text-slate-500">
                 {item.label}
               </span>
             </li>
           ))}
         </ul>
 
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-bold text-slate-900 transition-colors group-hover:text-brand-600">
-          Demander ce kit
-          <span className="sr-only"> — {kit.name}</span>
-          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-        </span>
+        <div className="mt-auto pt-7">
+          <Link
+            href={`/contact?produit=${kit.slug}`}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy-950 px-5 py-3.5 text-[15px] font-semibold text-white transition-colors duration-200 hover:bg-navy-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+          >
+            Demander ce kit
+            <span className="sr-only"> — {kit.name}</span>
+            <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+        </div>
       </div>
-    </Link>
+    </article>
   );
 }
 
 /**
  * Filet final — sélection des kits puis appel à l'action.
- * Mobile : rail à défilement horizontal (scroll-snap CSS, sans JS) pour
- * éviter d'empiler quatre cartes ; grille dès sm.
+ * Rail horizontal à toutes les tailles : trois cartes visibles, la
+ * quatrième dépasse pour signaler la suite.
  */
 export function KitsSelector() {
   return (
@@ -258,20 +269,25 @@ export function KitsSelector() {
           </p>
         </Reveal>
 
-        <Stagger className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:mt-14 lg:grid-cols-4">
-          {kits.map((kit) => (
-            <StaggerItem
-              key={kit.name}
-              y={18}
-              className="h-full w-[80vw] max-w-[19rem] shrink-0 snap-start sm:w-auto sm:max-w-none"
-            >
-              <KitCard kit={kit} />
-            </StaggerItem>
-          ))}
-        </Stagger>
+        <div className="mt-10 lg:mt-14">
+          <KitsRail>
+            {kits.map((kit, index) => (
+              <Reveal
+                key={kit.slug}
+                delay={index * 0.07}
+                y={18}
+                className="w-[80vw] max-w-[20rem] shrink-0 snap-start sm:w-[20rem] lg:w-[22.5rem] lg:max-w-none"
+              >
+                <div className="h-full">
+                  <KitCard kit={kit} />
+                </div>
+              </Reveal>
+            ))}
+          </KitsRail>
+        </div>
 
         {/* Filet de sécurité — pour ceux qu'aucun palier ne couvre */}
-        <Reveal delay={0.1} className="mt-8 lg:mt-12">
+        <Reveal delay={0.1} className="mt-8 lg:mt-10">
           <div className="flex flex-col items-start gap-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-card sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
             <div>
               <p className="text-lg font-bold text-slate-900 sm:text-xl">
