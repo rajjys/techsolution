@@ -113,7 +113,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
       className={cn(
         "group flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300 hover:-translate-y-1",
         kit.highlight
-          ? "border-solar-400 shadow-[0_22px_50px_-24px_rgba(11,25,44,0.45)] hover:shadow-[0_32px_66px_-24px_rgba(11,25,44,0.5)]"
+          ? "shadow-[0_22px_50px_-24px_rgba(11,25,44,0.45)] hover:shadow-[0_32px_66px_-24px_rgba(11,25,44,0.5)]"
           : "border-slate-200 shadow-[0_14px_40px_-30px_rgba(11,25,44,0.5)] hover:shadow-[0_26px_58px_-28px_rgba(11,25,44,0.45)]",
       )}
     >
@@ -122,7 +122,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
         className={cn(
           "px-4 py-2.5 text-center text-[10.5px] font-bold uppercase tracking-[0.14em]",
           kit.highlight
-            ? "bg-solar-500 text-navy-950"
+            ? "bg-brand-600 text-white"
             : "bg-slate-100 text-slate-500",
         )}
       >
@@ -149,7 +149,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
             >
               <dt className="inline-flex items-center gap-2 text-[13px] text-slate-500">
                 <Icon
-                  className="size-4 shrink-0 text-brand-600"
+                  className="size-4 shrink-0 text-solar-600"
                   strokeWidth={2}
                   aria-hidden="true"
                 />
@@ -173,7 +173,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
               className="inline-flex items-center gap-1.5 rounded-full bg-brand-100/50 px-2.5 py-1 text-[11px] font-medium text-slate-600"
             >
               <item.icon
-                className="size-3.5 shrink-0 text-brand-600"
+                className="size-3.5 shrink-0 text-solar-800"
                 strokeWidth={2}
                 aria-hidden="true"
               />
@@ -186,10 +186,10 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
           <Link
             href={`/contact?produit=${kit.slug}`}
             className={cn(
-              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition-colors duration-200  hover:ring-4 hover:ring-brand-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               kit.highlight
-                ? "bg-navy-950 text-white hover:bg-navy-800"
-                : "border-2 border-navy-950 text-navy-950 hover:bg-navy-950 hover:text-white",
+                ? "bg-brand-600 text-white"
+                : "border-2 border-brand-400 text-brand-600",
             )}
           >
             Demander ce kit
@@ -274,7 +274,8 @@ export function KitsSelector() {
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4 lg:shrink-0">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-[#C2410C] px-7 py-3.5 text-base font-semibold text-white 
+                transition-colors duration-200 hover:bg-[#9A3412] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C2410C] focus-visible:ring-offset-2"
               >
                 Devis gratuit
               </Link>

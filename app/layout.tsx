@@ -109,7 +109,7 @@ export default function RootLayout({
         </a>
         <Header />
         <main id="contenu">{children}</main>
-        <GoogleAnalytics gaId="G-BM0WRKQTVY'" />
+        <GoogleAnalytics gaId="G-BM0WRKQTVY" />
         <Footer />
         <WhatsAppFab />
         <script
