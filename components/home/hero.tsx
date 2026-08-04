@@ -28,7 +28,7 @@ export function Hero() {
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl pb-24 pt-8 text-center sm:pb-28 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-48 lg:pt-14 lg:text-left xl:-ml-8">
+        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-48 lg:pt-14 lg:text-left xl:-ml-8">
           <Reveal mode="mount">
             <h1 className="text-[30px] font-medium leading-[1.15] tracking-[-0.02em] text-navy-950 sm:text-[42px] sm:leading-[1.12] md:text-6xl lg:max-w-[800px] lg:text-[72px] lg:leading-[1.1]">
               Fini les délestages. Une énergie stable pour vos activités, 24h/24.&nbsp;
@@ -44,10 +44,10 @@ export function Hero() {
           </Reveal>
 
           <Reveal mode="mount" delay={0.2}>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10 sm:flex-row sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
+            <div className="mx-auto mt-8 flex max-w-sm flex-col items-stretch gap-4 sm:mx-0 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
               <Link
                 href="/contact"
-                className="inline-flex w-auto items-center justify-center rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-all duration-200 
+                className="inline-flex w-full items-center justify-center rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-all duration-200 sm:w-auto
                 hover:scale-105 hover:ring-4 hover:ring-offset-1 hover:ring-ember-300
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2 sm:px-8 sm:py-4 sm:text-[18px]"
               >
@@ -55,8 +55,9 @@ export function Hero() {
               </Link>
               <Link
                 href="/references"
-                className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-4 py-3.5 text-base font-medium text-ember-700 transition-all duration-200
-                hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 
+                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-navy-700/30 px-4 py-3.5 sm:w-auto
+                text-base font-medium text-navy-700 bg-navy-200/15 transition-all duration-200
+                hover:ring-4 hover:ring-offset-1 hover:ring-navy-200 
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-4 sm:text-lg"
               >
                 Découvrir nos réalisations
