@@ -120,13 +120,14 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Button
-              variant="default"
-              className="text-base font-bold shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg"
-              asChild
+            <Link
+              href="/contact"
+              className="rounded-xl bg-brand-700 px-4 py-3 text-base font-semibold shadow-sm text-white transition-all duration-200 
+              hover:-translate-y-0.5 hover:shadow-lg hover:ring-4 hover:ring-offset-1 hover:ring-brand-200 
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
             >
-              <Link href="/contact">Demander un devis</Link>
-            </Button>
+              Demander un devis
+            </Link>
           </div>
 
           {/* Menu mobile */}
@@ -138,7 +139,7 @@ export function Header() {
                 className="lg:hidden"
                 aria-label="Ouvrir le menu de navigation"
               >
-                <Menu className="!size-6" />
+                <Menu className="!size-6 text-brand-800" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="flex flex-col p-0">
@@ -182,9 +183,9 @@ export function Header() {
               </nav>
 
               <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button variant="ember" className="w-full" asChild>
+                <Button variant="brand" className="w-full" asChild>
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
-                    Demander un devis
+                    Demander un devis gratuit
                   </Link>
                 </Button>
                 <Button
@@ -201,17 +202,19 @@ export function Header() {
                     Contacter sur WhatsApp
                   </a>
                 </Button>
-                <div className="grid gap-2 pt-2">
+                <div className="flex flex-wrap gap-3 pt-2">
                   <a
                     href={`tel:${site.phone}`}
-                    className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-brand-300 hover:bg-navy-50"
+                    className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
+                    border border-slate-200 px-4 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-brand-300 hover:bg-navy-50 whitespace-nowrap"
                   >
                     <Phone className="size-4 text-brand-600" />
                     {site.phoneDisplay}
                   </a>
                   <a
                     href={`mailto:${site.email}`}
-                    className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-navy-50"
+                    className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
+                    border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-navy-50 whitespace-nowrap"
                   >
                     <Mail className="size-4 text-brand-600" />
                     {site.email}

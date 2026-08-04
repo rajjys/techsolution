@@ -55,9 +55,9 @@ export function Hero() {
               </Link>
               <Link
                 href="/references"
-                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-navy-700/30 px-4 py-3.5 sm:w-auto
-                text-base font-medium text-navy-700 bg-navy-200/15 transition-all duration-200
-                hover:ring-4 hover:ring-offset-1 hover:ring-navy-200 
+                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-700/30 px-4 py-3.5 sm:w-auto
+                text-base font-medium text-brand-700 bg-brand-200/15 transition-all duration-200
+                hover:ring-4 hover:ring-offset-1 hover:ring-brand-200 
                 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-4 sm:text-lg"
               >
                 Découvrir nos réalisations
