@@ -111,7 +111,10 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
   return (
     <article
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300 hover:-translate-y-1",
+        // `relative` est indispensable : sans bloc conteneur positionné, le
+        // <span class="sr-only"> du bouton se positionne par rapport à la
+        // section et échappe au rognage du rail, ce qui élargissait la page.
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300 hover:-translate-y-1",
         kit.highlight
           ? "shadow-[0_22px_50px_-24px_rgba(11,25,44,0.45)] hover:shadow-[0_32px_66px_-24px_rgba(11,25,44,0.5)]"
           : "border-slate-200 shadow-[0_14px_40px_-30px_rgba(11,25,44,0.5)] hover:shadow-[0_26px_58px_-28px_rgba(11,25,44,0.45)]",
@@ -246,7 +249,7 @@ export function KitsSelector() {
         </Reveal>
 
         {/* Rail sous lg, grille de quatre à partir de lg */}
-        <div className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
+        <div className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:-mx-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
           {kits.map((kit, index) => (
             <Reveal
               key={kit.slug}

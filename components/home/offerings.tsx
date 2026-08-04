@@ -55,10 +55,6 @@ export function Offerings() {
           >
             Le même standard, quel que soit le chantier.
           </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-            Solaire, backup, électricité, sécurité ou climatisation : nos
-            engagements, eux, ne changent pas.
-          </p>
         </Reveal>
 
         <Stagger className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 lg:mt-16 lg:grid-cols-4 lg:gap-y-0 lg:divide-x lg:divide-slate-200">

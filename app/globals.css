@@ -47,6 +47,12 @@
   body {
     @apply bg-white font-sans text-slate-600 antialiased;
     text-rendering: optimizeLegibility;
+    /*
+      Garde-fou contre tout débordement horizontal résiduel (rails, halos).
+      `clip` et non `hidden` : `hidden` ferait du body un conteneur de
+      défilement et casserait le `position: sticky` de la section solutions.
+    */
+    overflow-x: clip;
   }
 
   h1,

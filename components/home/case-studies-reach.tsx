@@ -220,10 +220,12 @@ export function CaseStudiesReach() {
             </AnimatePresence>
             </div>
 
-            {/* Contrôles — rattachés à la carte, en un seul bloc :
-                progression et navigation côte à côte, pas aux deux bouts */}
-            <div className="mt-5 flex items-center gap-5">
-              <div className="flex items-center gap-1.5">
+            {/* Contrôles — rattachés à la carte : progression et navigation
+                à gauche, accès au catalogue à droite, sur une seule ligne */}
+            <div className="mt-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4 sm:gap-5">
+                {/* Progression — masquée sous 420 px, faute de place */}
+                <div className="hidden items-center gap-1.5 min-[420px]:flex">
                 {caseStudies.map((cs, i) => (
                   <button
                     key={cs.slug}
@@ -255,6 +257,15 @@ export function CaseStudiesReach() {
                   <ArrowRight className="size-5" />
                 </CarouselButton>
               </div>
+              </div>
+
+              <Link
+                href="/references"
+                className="group inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border-2 border-white/25 px-4 text-[15px] font-semibold text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900 sm:px-5"
+              >
+                Tous les projets
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
             </div>
           </div>
 
@@ -262,16 +273,6 @@ export function CaseStudiesReach() {
           <div className="hidden lg:order-2 lg:flex lg:aspect-square lg:w-full lg:items-start lg:justify-center">
             <ReachMap activeCity={active.city} />
           </div>
-        </div>
-
-        <div className="mt-10 flex justify-center lg:mt-4 lg:justify-end">
-          <Link
-            href="/references"
-            className="group inline-flex items-center gap-2 rounded-xl border-2 border-white/25 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-          >
-            Explorer tous les projets
-            <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-          </Link>
         </div>
       </div>
     </section>
