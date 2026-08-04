@@ -11,7 +11,9 @@ function SolutionCard({ service }: { service: Service }) {
       href={`/services#${service.slug}`}
       // `relative` : sans bloc conteneur positionné, le <span class="sr-only">
       // se positionnerait par rapport à la section et échapperait au rognage.
-      className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card ring-0 ring-brand-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-7"
+      className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card ring-0 ring-brand-200 transition-all duration-300 
+      hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 hover:ring-offset-1
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-7"
     >
       <div className="flex items-center gap-3">
         <service.icon
@@ -92,17 +94,15 @@ export function Solutions() {
                   id="solutions-title"
                   className="mt-6 text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[42px] lg:leading-[1.1]"
                 >
-                  Le réseau lâche, le carburant flambe.{" "}
+                  Entre délestages à répétition et coûts élevés de carburant,{" "}
                   <span className="text-brand-600">
-                    Votre site, lui, ne s&apos;arrête plus.
+                    Votre site, lui, reste indépendant.
                   </span>
                 </h2>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-                  Six domaines d&apos;intervention, un seul interlocuteur à
-                  appeler. Audit gratuit, dimensionnement, installation,
-                  maintenance : vous récupérez des journées de travail
-                  entières — et une facture d&apos;énergie qui cesse de
-                  grimper.
+                  Ne laissez plus l&apos;instabilité du réseau paralyser vos équipes ou vous garder dans le noir. 
+                  De l&apos;étude de vos besoins jusqu&apos;à la maintenance de vos équipements, 
+                  nous installons un système solaire autonome qui garantit une alimentation continue 24h/24, sans interruption.
                 </p>
               </Reveal>
 
@@ -110,13 +110,17 @@ export function Solutions() {
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:mt-10">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white ring-offset-1 transition-all duration-200 hover:bg-ember-800 hover:ring-4 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-all duration-200 
+                    hover:scale-105 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Obtenez un devis gratuit
                   </Link>
                   <Link
                     href="/services"
-                    className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 ring-offset-1 transition-all duration-200 hover:bg-black/[0.04] hover:ring-4 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                    className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 
+                    transition-all duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Tous nos services
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

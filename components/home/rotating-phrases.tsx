@@ -4,7 +4,7 @@ import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const PHRASES = [
-  "Éliminez les délestages",
+  "Éliminez les coupures",
   "Réduisez vos factures",
   "Gagnez en autonomie",
 ] as const;
