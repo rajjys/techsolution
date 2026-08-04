@@ -168,7 +168,8 @@ export function CaseStudiesReach() {
               >
                 <Link
                   href={`/references/${active.slug}`}
-                  className="group relative block h-full overflow-hidden rounded-3xl ring-1 ring-white/10 transition-all duration-300 hover:ring-4 hover:ring-solar-500/45 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-solar-500"
+                  className="group relative block h-full overflow-hidden rounded-3xl ring-1 ring-white/10 transition-all duration-300 
+                  hover:ring-4 hover:ring-solar-500/45 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-solar-500"
                 >
                   <Image
                     src={active.image}
@@ -261,7 +262,9 @@ export function CaseStudiesReach() {
 
               <Link
                 href="/references"
-                className="group inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border-2 border-white/25 px-4 text-[15px] font-semibold text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900 sm:px-5"
+                className="group inline-flex h-11 shrink-0 items-center gap-2 rounded-xl border-2 border-white/25 px-4 text-[15px] font-semibold text-white transition-all duration-200 
+                hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-offset-1 hover:ring-white/15 focus-visible:outline-none 
+                focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900 sm:px-5"
               >
                 Tous les projets
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -297,7 +300,9 @@ function CarouselButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="flex h-11 w-12 items-center justify-center rounded-xl border-2 border-white/25 text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900"
+      className="flex h-11 w-12 items-center justify-center rounded-xl border-2 border-white/25 text-white transition-all duration-200 
+      hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-offset-1 hover:ring-white/15 
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900"
     >
       {children}
     </button>

@@ -1,115 +1,35 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Check,
-  PlugZap,
-  RadioTower,
-  ShieldCheck,
-  Sun,
-  Wrench,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 import { Eyebrow } from "@/components/section";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { services, type Service } from "@/lib/data/services";
 
-type Solution = {
-  title: string;
-  icon: LucideIcon;
-  /**
-   * Deux points, dans cet ordre : d'abord le résultat pour le client,
-   * ensuite seulement le « comment » technique.
-   */
-  points: [string, string];
-  /** Ancre de la page /services (les pages dédiées n'existent pas encore). */
-  href: string;
-};
-
-/**
- * Les six domaines d'intervention. Le solaire résidentiel et professionnel
- * sont réunis en une seule offre : même métier, dimensionnements différents.
- */
-const solutions: Solution[] = [
-  {
-    title: "Énergie solaire",
-    icon: Sun,
-    points: [
-      "Ne subissez plus les coupures, chez vous comme au bureau.",
-      "Centrales et kits dimensionnés sur audit de charge, batteries 100 % lithium.",
-    ],
-    href: "/services#energie-solaire",
-  },
-  {
-    title: "Backup & stockage",
-    icon: Zap,
-    points: [
-      "Gardez vos équipements critiques allumés, 24 h/24.",
-      "Onduleurs hybrides, parcs batteries lithium et supervision, même hors réseau.",
-    ],
-    href: "/services#backup-stockage",
-  },
-  {
-    title: "Infrastructure électrique",
-    icon: PlugZap,
-    points: [
-      "Arrêtez de remplacer du matériel grillé par le réseau.",
-      "Tableaux, distribution basse tension, protection foudre et mise en conformité.",
-    ],
-    href: "/services#infrastructure-electrique",
-  },
-  {
-    title: "Télécoms & médias",
-    icon: RadioTower,
-    points: [
-      "Restez à l'antenne, même quand tout le quartier s'éteint.",
-      "Énergie autonome pour stations de radio, serveurs et sites télécoms isolés.",
-    ],
-    href: "/services#telecom-medias",
-  },
-  {
-    title: "Sécurité électronique",
-    icon: ShieldCheck,
-    points: [
-      "Sachez ce qui se passe sur votre site, à toute heure.",
-      "Alarmes, contrôle d'accès et vidéosurveillance adossés à une alimentation secourue.",
-    ],
-    href: "/services#securite-electronique",
-  },
-  {
-    title: "Maintenance & climatisation",
-    icon: Wrench,
-    points: [
-      "Ne perdez plus une journée d'activité sur une panne.",
-      "Contrats préventifs, dépannage rapide et entretien de vos climatisations.",
-    ],
-    href: "/services#maintenance-froid",
-  },
-];
-
-function SolutionCard({ solution }: { solution: Solution }) {
+function SolutionCard({ service }: { service: Service }) {
   return (
     <Link
-      href={solution.href}
-      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-7"
+      href={`/services#${service.slug}`}
+      // `relative` : sans bloc conteneur positionné, le <span class="sr-only">
+      // se positionnerait par rapport à la section et échapperait au rognage.
+      className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card ring-0 ring-brand-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-7"
     >
       <div className="flex items-center gap-3">
-        <solution.icon
-          className="size-6 shrink-0 text-brand-600"
+        <service.icon
+          className="size-6 shrink-0 text-solar-600"
           strokeWidth={1.8}
         />
         <h3 className="text-[17px] font-bold leading-snug text-slate-900 sm:text-lg">
-          {solution.title}
+          {service.shortTitle}
         </h3>
       </div>
 
       <hr className="mt-5 border-t border-dashed border-slate-200" />
 
       <ul className="mt-5 space-y-3">
-        {solution.points.map((point) => (
+        {[service.outcome, service.delivery].map((point) => (
           <li key={point} className="flex items-start gap-3">
             <Check
-              className="mt-[3px] size-4 shrink-0 text-brand-600"
+              className="mt-[3px] size-4 shrink-0 text-solar-600"
               strokeWidth={2.5}
               aria-hidden="true"
             />
@@ -124,7 +44,7 @@ function SolutionCard({ solution }: { solution: Solution }) {
         <hr className="border-t border-dashed border-slate-200" />
         <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-brand-600">
           En savoir plus
-          <span className="sr-only"> sur {solution.title}</span>
+          <span className="sr-only"> sur {service.shortTitle}</span>
           <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
         </span>
       </div>
@@ -172,19 +92,17 @@ export function Solutions() {
                   id="solutions-title"
                   className="mt-6 text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[42px] lg:leading-[1.1]"
                 >
-                  L&apos;accès à l&apos;électricité reste un défi majeur en
-                  RDC.{" "}
+                  Le réseau lâche, le carburant flambe.{" "}
                   <span className="text-brand-600">
-                    Tech Solution le relève.
+                    Votre site, lui, ne s&apos;arrête plus.
                   </span>
                 </h2>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-                  Coupures à répétition, carburant qui s&apos;envole,
-                  équipements qui grillent : votre activité s&apos;arrête
-                  pendant que les factures continuent. Nous relevons ce défi
-                  chantier après chantier — de l&apos;audit gratuit à la
-                  maintenance, pour les ménages comme pour les institutions,
-                  partout dans le pays.
+                  Six domaines d&apos;intervention, un seul interlocuteur à
+                  appeler. Audit gratuit, dimensionnement, installation,
+                  maintenance : vous récupérez des journées de travail
+                  entières — et une facture d&apos;énergie qui cesse de
+                  grimper.
                 </p>
               </Reveal>
 
@@ -192,13 +110,13 @@ export function Solutions() {
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:mt-10">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-ember-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white ring-offset-1 transition-all duration-200 hover:bg-ember-800 hover:ring-4 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Obtenez un devis gratuit
                   </Link>
                   <Link
                     href="/services"
-                    className="group inline-flex items-center justify-center gap-2 rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                    className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 ring-offset-1 transition-all duration-200 hover:bg-black/[0.04] hover:ring-4 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
                   >
                     Tous nos services
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -210,9 +128,9 @@ export function Solutions() {
 
           {/* Colonne de droite — grille des services */}
           <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
-            {solutions.map((solution) => (
-              <StaggerItem key={solution.title} y={18} className="h-full">
-                <SolutionCard solution={solution} />
+            {services.map((service) => (
+              <StaggerItem key={service.slug} y={18} className="h-full">
+                <SolutionCard service={service} />
               </StaggerItem>
             ))}
           </Stagger>

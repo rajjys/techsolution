@@ -10,8 +10,16 @@ import {
 
 export type Service = {
   slug: string;
+  /** Intitulé complet — page /services. */
   title: string;
+  /** Intitulé court — carte d'accueil et navigation rapide. */
   shortTitle: string;
+  /**
+   * Carte d'accueil, dans cet ordre : d'abord le résultat pour le client,
+   * ensuite seulement le « comment » technique.
+   */
+  outcome: string;
+  delivery: string;
   excerpt: string;
   description: string;
   icon: LucideIcon;
@@ -30,6 +38,10 @@ export const services: Service[] = [
     slug: "energie-solaire",
     title: "Énergie solaire photovoltaïque",
     shortTitle: "Énergie solaire",
+    outcome:
+      "Ne subissez plus les coupures, chez vous comme au bureau.",
+    delivery:
+      "Centrales et kits dimensionnés sur audit de charge, batteries 100 % lithium.",
     excerpt:
       "Centrales et kits solaires pour sites domestiques, industriels et institutionnels — de l'étude au raccordement.",
     description:
@@ -55,6 +67,10 @@ export const services: Service[] = [
     slug: "backup-stockage",
     title: "Systèmes backup & stockage d'énergie",
     shortTitle: "Backup & stockage",
+    outcome:
+      "Gardez vos équipements critiques allumés, 24 h/24.",
+    delivery:
+      "Onduleurs hybrides, parcs batteries lithium et supervision, même hors réseau.",
     excerpt:
       "Onduleurs hybrides et parcs batteries lithium pour une continuité électrique 24h/24, même hors réseau.",
     description:
@@ -78,6 +94,10 @@ export const services: Service[] = [
     slug: "infrastructure-electrique",
     title: "Infrastructure électrique industrielle",
     shortTitle: "Infrastructure électrique",
+    outcome:
+      "Arrêtez de remplacer du matériel grillé par le réseau.",
+    delivery:
+      "Tableaux, distribution basse tension, protection foudre et mise en conformité.",
     excerpt:
       "Tableaux, distribution basse tension, protection contre les surtensions et mise en conformité des bâtiments.",
     description:
@@ -101,6 +121,10 @@ export const services: Service[] = [
     slug: "telecom-medias",
     title: "Télécommunications & médias",
     shortTitle: "Télécoms & médias",
+    outcome:
+      "Restez à l'antenne, même quand tout le quartier s'éteint.",
+    delivery:
+      "Énergie autonome pour stations de radio, serveurs et sites télécoms isolés.",
     excerpt:
       "Alimentation autonome des stations de radio, serveurs et sites télécoms isolés à travers l'Est de la RDC.",
     description:
@@ -124,6 +148,10 @@ export const services: Service[] = [
     slug: "securite-electronique",
     title: "Sécurité électronique",
     shortTitle: "Sécurité électronique",
+    outcome:
+      "Sachez ce qui se passe sur votre site, à toute heure.",
+    delivery:
+      "Alarmes, contrôle d'accès et vidéosurveillance adossés à une alimentation secourue.",
     excerpt:
       "Systèmes d'alarme, contrôle d'accès et vidéosurveillance pour bureaux, banques et sites sensibles.",
     description:
@@ -142,7 +170,11 @@ export const services: Service[] = [
   {
     slug: "maintenance-froid",
     title: "Maintenance & climatisation",
-    shortTitle: "Maintenance & froid",
+    shortTitle: "Maintenance & climatisation",
+    outcome:
+      "Ne perdez plus une journée d'activité sur une panne.",
+    delivery:
+      "Contrats préventifs, dépannage rapide et entretien de vos climatisations.",
     excerpt:
       "Maintenance préventive et corrective des installations électriques, solaires et de climatisation.",
     description:

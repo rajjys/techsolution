@@ -20,17 +20,17 @@ const commitments: Commitment[] = [
   {
     icon: BatteryCharging,
     title: "Matériel industriel",
-    text: "Batteries 100 % lithium, onduleurs hybrides et composants éprouvés. Jamais de plomb.",
+    text: "Batteries 100 % lithium, onduleurs hybrides et panneaux solaires monocristallins.",
   },
   {
     icon: ShieldCheck,
     title: "Garantie renouvelable",
-    text: "Un an renouvelable sur les batteries, et un service après-vente réellement joignable.",
+    text: "Un an renouvelable sur les kits solaires, et un service après-vente joignable.",
   },
   {
     icon: MapPin,
     title: "Équipes en RDC",
-    text: "Techniciens basés sur place, mobilisables rapidement sur tout le territoire.",
+    text: "Techniciens basés sur place, mobilisables rapidement sur tout le territoire national.",
   },
   {
     icon: CalendarCheck,
