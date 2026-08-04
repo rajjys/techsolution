@@ -186,7 +186,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
           <Link
             href={`/contact?produit=${kit.slug}`}
             className={cn(
-              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition-all duration-200 hover:ring-4 hover:ring-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               kit.highlight
                 ? "bg-brand-600 text-white"
                 : "border-2 border-brand-400 text-brand-600",
@@ -274,13 +274,15 @@ export function KitsSelector() {
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4 lg:shrink-0">
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 hover:bg-ember-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 
+                hover:scale-105 transition-transform duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
               >
                 Devis gratuit
               </Link>
               <Link
                 href="/produits"
-                className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 transition-colors duration-200 hover:bg-black/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
+                className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold 
+                text-ember-700 transition-colors duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
               >
                 Tout le catalogue
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

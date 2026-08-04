@@ -47,6 +47,7 @@ const config: Config = {
         },
         /* Marque — bleu officiel du logo (#3130D0) */
         brand: {
+          50: "#F2F2FD",  // New: Very soft, almost-white tint for subtle backgrounds
           100: "#E5E5FB",
           200: "#C9C8F6",
           300: "#A6A5EF",
@@ -55,6 +56,8 @@ const config: Config = {
           600: "#2A28B8",
           700: "#232199",
           800: "#1C1A7A",
+          900: "#15135A",  // New: Deep, legible navy for high-contrast text or dark-mode cards
+          950: "#0B0A33",  // New: Near-black indigo, perfect for dark-mode backgrounds
         },
         /* Marque — jaune solaire / ambre électrique */
         solar: {

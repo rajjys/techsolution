@@ -47,11 +47,10 @@ export function SolarStatement() {
               Chaque jour, 4,5 — 5,5kWh par mètre carré tombent sur les 26
               provinces du pays. Pourtant, selon la Banque mondiale, moins
               20% des Congolais disposent d&apos;un accès fiable au
-              réseau electrique — les autres paient le carburant au prix fort.
+              réseau electrique — le reste paye le carburant au prix fort.
               <br/>
               Le solaire n&apos;est pas
-              un dépannage : c&apos;est une infrastructure énergétique que vous
-              possédez et pilotez, 24 h/24.
+              un dépannage : c&apos;est une infrastructure énergétique qui vous permet de répondre à vos besoins en énergie de manière autonome.
             </p>
 
             <figcaption className="mt-6 lg:mt-8 flex justify-start items-center gap-2">

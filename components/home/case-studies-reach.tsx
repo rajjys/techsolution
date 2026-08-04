@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Gauge, MapPin } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
+import { Eyebrow } from "@/components/section";
 import { DRC_BOUNDS, DRC_OUTLINE } from "@/lib/data/drc";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
 import { cn } from "@/lib/utils";
@@ -14,9 +15,9 @@ import { cn } from "@/lib/utils";
 /* ─── Carte : matrice de points (calculée une fois au chargement du module) ─── */
 const W = 560;
 const H = 560;
-const PAD = 24;
-const STEP = 13;
-const DOT_R = 2.8;
+const PAD = 10;
+const STEP = 12;
+const DOT_R = 3;
 
 function project(lon: number, lat: number): [number, number] {
   const x =
@@ -55,7 +56,7 @@ const MapDots = React.memo(function MapDots() {
   return (
     <>
       {DOTS.map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={DOT_R} fill="#FFFFFF" opacity={0.14} />
+        <circle key={i} cx={d.x} cy={d.y} r={DOT_R} className="fill-brand-300" opacity={0.28} />
       ))}
     </>
   );
@@ -77,12 +78,12 @@ function ReachMap({ activeCity }: { activeCity: string }) {
         if (city.name === activeCity) return null;
         return (
           <g key={city.name}>
-            <circle cx={x} cy={y} r={3.6} fill="#93A9C9" />
+            <circle cx={x} cy={y} r={3.6} className="fill-brand-200" />
             <text
               x={x + city.dx}
               y={y + city.dy}
               textAnchor={city.anchor}
-              className="fill-[#8FA6C6] font-sans text-[11px] font-medium"
+              className="fill-brand-200/80 font-sans text-[11px] font-medium"
             >
               {city.name}
             </text>
@@ -100,7 +101,7 @@ function ReachMap({ activeCity }: { activeCity: string }) {
                 <animate attributeName="r" values="7;15;7" dur="2.4s" repeatCount="indefinite" />
                 <animate attributeName="opacity" values="0.5;0;0.5" dur="2.4s" repeatCount="indefinite" />
               </circle>
-              <circle cx={x} cy={y} r={6.5} fill="#FFB800" stroke="#0B192C" strokeWidth={2.5} />
+              <circle cx={x} cy={y} r={6.5} fill="#FFB800" stroke="#15135A" strokeWidth={2.5} />
               <text
                 x={x + city.dx}
                 y={y + city.dy}
@@ -117,13 +118,6 @@ function ReachMap({ activeCity }: { activeCity: string }) {
 }
 
 /* ─── Section ─── */
-const categoryChip: Record<string, string> = {
-  Solaire: "bg-solar-500 text-navy-950",
-  Backup: "bg-navy-700 text-white",
-  Électricité: "bg-amber-500 text-navy-950",
-  Télécoms: "bg-sky-600 text-white",
-  Maintenance: "bg-slate-600 text-white",
-};
 
 export function CaseStudiesReach() {
   const [index, setIndex] = React.useState(0);
@@ -138,20 +132,23 @@ export function CaseStudiesReach() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-navy-950 py-14 sm:py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-brand-900 py-14 sm:py-20 lg:py-28">
       <div
         className="absolute -right-40 -top-40 size-[480px] rounded-full bg-solar-500/10 blur-3xl"
         aria-hidden="true"
       />
       <div className="container relative">
-        {/* En-tête centré */}
+        {/* En-tête centré — même grammaire que les autres sections */}
         <Reveal className="text-center">
-          <h2 className="mx-auto text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[46px] lg:leading-[1.08]">
+          <Eyebrow onDark className="justify-center">
+            Nos réalisations
+          </Eyebrow>
+          <h2 className="mx-auto mt-6 text-balance text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[46px] lg:leading-[1.08]">
             Nos réalisations, d&apos;un bout à l&apos;autre de la RDC.
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-navy-100/85 sm:text-base md:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-200 sm:text-base md:text-lg">
             Des installations livrées à travers{" "}
-            <span className="font-semibold text-white">9 provinces</span> —
+            <span className="font-semibold text-solar-400">9 provinces</span> —
             parcourez nos projets.
           </p>
         </Reveal>
@@ -171,31 +168,26 @@ export function CaseStudiesReach() {
               >
                 <Link
                   href={`/references/${active.slug}`}
-                  className="group relative block h-full overflow-hidden rounded-3xl ring-1 ring-white/10"
+                  className="group relative block h-full overflow-hidden rounded-3xl ring-1 ring-white/10 transition-all duration-300 hover:ring-4 hover:ring-solar-500/45 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-solar-500"
                 >
                   <Image
                     src={active.image}
                     alt={active.imageAlt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 46vw"
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover object-center"
                   />
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/85 via-40% to-navy-950/15"
+                    className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/85 via-40% to-brand-950/15"
                     aria-hidden="true"
                   />
 
                   {/* Badges haut */}
                   <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
-                    <span
-                      className={cn(
-                        "inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide",
-                        categoryChip[active.category],
-                      )}
-                    >
+                    <span className="inline-flex items-center rounded-full border border-white/20 bg-brand-950/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-solar-400 backdrop-blur">
                       {active.category}
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-navy-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-brand-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
                       <Gauge className="size-3.5 text-solar-400" />
                       {active.spec}
                     </span>
@@ -209,7 +201,7 @@ export function CaseStudiesReach() {
                     <p className="mt-1.5 text-sm font-semibold text-solar-300">
                       {active.client}
                     </p>
-                    <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-navy-100">
+                    <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-brand-100">
                       {active.summary}
                     </p>
                     <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
@@ -228,61 +220,85 @@ export function CaseStudiesReach() {
             </AnimatePresence>
             </div>
 
+            {/* Contrôles — rattachés à la carte, en un seul bloc :
+                progression et navigation côte à côte, pas aux deux bouts */}
+            <div className="mt-5 flex items-center gap-5">
+              <div className="flex items-center gap-1.5">
+                {caseStudies.map((cs, i) => (
+                  <button
+                    key={cs.slug}
+                    onClick={() => go(i)}
+                    aria-label={`Projet à ${cs.city}`}
+                    aria-current={i === index ? "true" : undefined}
+                    className={cn(
+                      "h-2 rounded-full transition-all",
+                      i === index
+                        ? "w-7 bg-solar-500"
+                        : "w-2 bg-white/25 hover:bg-white/50",
+                    )}
+                  />
+                ))}
+              </div>
+
+              {/* gap-2.5 : les anneaux de survol (4 px) ne se touchent pas */}
+              <div className="flex items-center gap-2.5">
+                <CarouselButton
+                  label="Projet précédent"
+                  onClick={() => go(index - 1)}
+                >
+                  <ArrowLeft className="size-5" />
+                </CarouselButton>
+                <CarouselButton
+                  label="Projet suivant"
+                  onClick={() => go(index + 1)}
+                >
+                  <ArrowRight className="size-5" />
+                </CarouselButton>
+              </div>
+            </div>
           </div>
 
           {/* Carte — masquée sur mobile, à droite sur laptop */}
-          <div className="hidden lg:order-2 lg:flex lg:h-[560px] lg:items-center lg:justify-center">
+          <div className="hidden lg:order-2 lg:flex lg:aspect-square lg:w-full lg:items-start lg:justify-center">
             <ReachMap activeCity={active.city} />
           </div>
         </div>
 
-        {/* Contrôles : progression + navigation (gauche) · lien (droite) —
-            une seule ligne sur ordinateur ; le lien passe dessous et se centre sur mobile */}
-        <div className="mt-8 grid items-center gap-5 sm:mt-10 lg:grid-cols-2 lg:gap-12">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-1.5">
-              {caseStudies.map((cs, i) => (
-                <button
-                  key={cs.slug}
-                  onClick={() => go(i)}
-                  aria-label={`Projet à ${cs.city}`}
-                  aria-current={i === index ? "true" : undefined}
-                  className={cn(
-                    "h-2 rounded-full transition-all",
-                    i === index
-                      ? "w-6 bg-solar-500"
-                      : "w-2 bg-white/25 hover:bg-white/50",
-                  )}
-                />
-              ))}
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => go(index - 1)}
-                aria-label="Projet précédent"
-                className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-              >
-                <ArrowLeft className="size-5" />
-              </button>
-              <button
-                onClick={() => go(index + 1)}
-                aria-label="Projet suivant"
-                className="flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-white hover:bg-white hover:text-navy-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-              >
-                <ArrowRight className="size-5" />
-              </button>
-            </div>
-          </div>
-
+        <div className="mt-10 flex justify-center lg:mt-4 lg:justify-end">
           <Link
             href="/references"
-            className="group inline-flex items-center gap-2 justify-self-end text-base font-semibold text-brand-300 transition-colors hover:text-white"
+            className="group inline-flex items-center gap-2 rounded-xl border-2 border-white/25 px-6 py-3 text-base font-semibold text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
           >
-            Voir tous les projets
+            Explorer tous les projets
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Bouton de navigation du carrousel — rectangulaire comme le reste de la
+ * page (kits, CTA), avec l'anneau de survol commun.
+ */
+function CarouselButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="flex h-11 w-12 items-center justify-center rounded-xl border-2 border-white/25 text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-brand-900 hover:ring-4 hover:ring-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-900"
+    >
+      {children}
+    </button>
   );
 }
