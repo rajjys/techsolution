@@ -8,6 +8,7 @@ import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { services } from "@/lib/data/services";
 import { site } from "@/lib/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
@@ -21,14 +22,23 @@ export const metadata: Metadata = {
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ produit?: string }>;
+  searchParams: Promise<{ produit?: string; service?: string }>;
 }) {
-  const { produit } = await searchParams;
+  const { produit, service } = await searchParams;
 
-  const defaultSubject = produit ? "Catalogue produits" : undefined;
+  /* `?service=` vient des CTA de /services : l'objet et le message sont
+     préremplis pour que le visiteur n'ait plus qu'à décrire son site. */
+  const requestedService = services.find((item) => item.slug === service);
+
+  const defaultSubject = produit
+    ? "Catalogue produits"
+    : requestedService?.contactSubject;
+
   const defaultMessage = produit
     ? `Bonjour Tech Solution,\n\nJe souhaite obtenir un devis pour « ${produit} ».\n\nSite à équiper (ville/province) : \nBesoins estimés : `
-    : undefined;
+    : requestedService
+      ? `Bonjour Tech Solution,\n\nJe souhaite une étude pour un projet — ${requestedService.shortTitle}.\n\nSite à équiper (ville/province) : \nBesoins estimés : `
+      : undefined;
 
   return (
     <>

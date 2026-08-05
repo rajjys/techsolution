@@ -1,58 +1,10 @@
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Eyebrow } from "@/components/section";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { services, type Service } from "@/lib/data/services";
-
-function SolutionCard({ service }: { service: Service }) {
-  return (
-    <Link
-      href={`/services#${service.slug}`}
-      // `relative` : sans bloc conteneur positionné, le <span class="sr-only">
-      // se positionnerait par rapport à la section et échapperait au rognage.
-      className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card ring-0 ring-brand-200 transition-all duration-300 
-      hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 hover:ring-offset-1
-      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:p-7"
-    >
-      <div className="flex items-center gap-3">
-        <service.icon
-          className="size-6 shrink-0 text-solar-600"
-          strokeWidth={1.8}
-        />
-        <h3 className="text-[17px] font-bold leading-snug text-slate-900 sm:text-lg">
-          {service.shortTitle}
-        </h3>
-      </div>
-
-      <hr className="mt-5 border-t border-dashed border-slate-200" />
-
-      <ul className="mt-5 space-y-3">
-        {[service.outcome, service.delivery].map((point) => (
-          <li key={point} className="flex items-start gap-3">
-            <Check
-              className="mt-[3px] size-4 shrink-0 text-solar-600"
-              strokeWidth={2.5}
-              aria-hidden="true"
-            />
-            <span className="text-sm leading-relaxed text-slate-600">
-              {point}
-            </span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-auto pt-8">
-        <hr className="border-t border-dashed border-slate-200" />
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-900 transition-colors group-hover:text-brand-600">
-          En savoir plus
-          <span className="sr-only"> sur {service.shortTitle}</span>
-          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-        </span>
-      </div>
-    </Link>
-  );
-}
+import { ServiceCard } from "@/components/services/service-card";
+import { services } from "@/lib/data/services";
 
 /**
  * Grille des solutions — colonne de gauche fixée (sticky) pendant le
@@ -134,7 +86,7 @@ export function Solutions() {
           <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:gap-6">
             {services.map((service) => (
               <StaggerItem key={service.slug} y={18} className="h-full">
-                <SolutionCard service={service} />
+                <ServiceCard service={service} />
               </StaggerItem>
             ))}
           </Stagger>

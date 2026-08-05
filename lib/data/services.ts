@@ -8,6 +8,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import type { Project } from "@/lib/data/clients";
+
 export type Service = {
   slug: string;
   /** Intitulé complet — page /services. */
@@ -27,6 +29,14 @@ export type Service = {
   references: string[];
   image: string;
   imageAlt: string;
+  /**
+   * Catégorie de réalisation correspondante — c'est ce lien qui permet à
+   * « Voir les réalisations » de filtrer /references sur le bon domaine,
+   * sans table de correspondance parallèle à maintenir.
+   */
+  projectCategory: Project["category"];
+  /** Objet préselectionné dans le formulaire de contact. */
+  contactSubject: string;
 };
 
 /**
@@ -60,6 +70,8 @@ export const services: Service[] = [
       "Salles du royaume LTJ — Goma & Bunia",
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
+    contactSubject: "Étude & devis — Énergie solaire",
+    projectCategory: "Solaire",
     image: "/gallery-web/service-solaire.jpg",
     imageAlt: "Centrale solaire Tech Solution installée sur toiture en RDC",
   },
@@ -87,6 +99,8 @@ export const services: Service[] = [
       "Installations backup LTJ — Bunia & Butembo",
       "Alimentation du serveur GRECOM — Goma",
     ],
+    contactSubject: "Backup & stockage d'énergie",
+    projectCategory: "Backup",
     image: "/gallery-web/service-backup.jpg",
     imageAlt: "Onduleur hybride et batterie lithium Tech Solution",
   },
@@ -114,6 +128,8 @@ export const services: Service[] = [
       "Rénovation électrique complète — banque CADECO Mahagi",
       "Installations tertiaires — Afriland First Bank Bunia",
     ],
+    contactSubject: "Infrastructure électrique",
+    projectCategory: "Électricité",
     image: "/gallery-web/service-electricite.jpg",
     imageAlt: "Techniciens Tech Solution câblant une armoire électrique",
   },
@@ -141,6 +157,8 @@ export const services: Service[] = [
       "Radio La Colombe Mahagi & Radio Amani Aveba",
       "Serveur télécom GRECOM-RDC — Goma",
     ],
+    contactSubject: "Télécoms & médias",
+    projectCategory: "Télécoms",
     image: "/gallery-web/service-telecom.jpg",
     imageAlt: "Onduleur Tech Solution alimentant une salle technique",
   },
@@ -164,6 +182,8 @@ export const services: Service[] = [
       "Intégration avec alimentation secourue 24h/24",
     ],
     references: ["Système d'alarme — Save the Children, Bunia"],
+    contactSubject: "Sécurité électronique",
+    projectCategory: "Sécurité",
     image: "/gallery-web/service-securite.jpg",
     imageAlt: "Tableau électrique et protection installés par Tech Solution",
   },
@@ -190,6 +210,8 @@ export const services: Service[] = [
       "Maintenance climatisation & installations — Afriland First Bank Bunia",
       "Suivi des parcs solaires installés (LTJ, ONG, radios)",
     ],
+    contactSubject: "Maintenance & climatisation",
+    projectCategory: "Maintenance",
     image: "/gallery-web/service-maintenance.jpg",
     imageAlt: "Technicien Tech Solution en intervention de maintenance",
   },
@@ -255,3 +277,14 @@ export const faqs = [
       "Nous répondons sous 24 h ouvrées à toute demande via le formulaire de contact ou WhatsApp. Pour les projets complexes, le devis détaillé est remis après la visite technique du site.",
   },
 ] as const;
+
+/**
+ * Objets du formulaire de contact — dérivés des services pour qu'un domaine
+ * ajouté ici apparaisse automatiquement dans le sélecteur, suivis des deux
+ * entrées qui ne correspondent à aucune expertise.
+ */
+export const contactSubjects: string[] = [
+  ...services.map((service) => service.contactSubject),
+  "Catalogue produits",
+  "Autre demande",
+];

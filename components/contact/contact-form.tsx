@@ -5,22 +5,12 @@ import { CheckCircle2, Loader2, Send, TriangleAlert } from "lucide-react";
 
 import { WhatsAppIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { contactSubjects } from "@/lib/data/services";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
-
-export const contactSubjects = [
-  "Étude & devis — Énergie solaire",
-  "Backup & stockage d'énergie",
-  "Infrastructure électrique",
-  "Télécoms & médias",
-  "Sécurité électronique",
-  "Maintenance & climatisation",
-  "Catalogue produits",
-  "Autre demande",
-] as const;
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 

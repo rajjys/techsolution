@@ -10,6 +10,7 @@ import {
   Phone,
 } from "lucide-react";
 
+import { Glow } from "@/components/glow";
 import { DrcMap } from "@/components/drc-map";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
@@ -17,6 +18,7 @@ import { Section, SectionHeading } from "@/components/section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { clients, projects, sectorGroups } from "@/lib/data/clients";
+import { services } from "@/lib/data/services";
 import { provinces } from "@/lib/data/drc";
 import { site } from "@/lib/site";
 
@@ -41,9 +43,49 @@ const projectCategoryStyles: Record<string, string> = {
   Maintenance: "border-slate-200 bg-slate-100 text-slate-600",
 };
 
-export default function ReferencesPage() {
+/** Puce de filtre — même grammaire que les chips d'ancrage de /services. */
+function FilterChip({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      scroll={false}
+      aria-current={active ? "true" : undefined}
+      className={
+        active
+          ? "inline-flex items-center rounded-full border border-brand-600 bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+          : "inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-card transition-all duration-200 hover:border-brand-300 hover:text-brand-700 hover:ring-4 hover:ring-brand-100 hover:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+      }
+    >
+      {children}
+    </Link>
+  );
+}
+
+export default async function ReferencesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ domaine?: string }>;
+}) {
+  const { domaine } = await searchParams;
   const activeProvinces = provinces.filter((p) => p.active);
   const totalProvinces = provinces.length;
+
+  /* Le domaine vient de /services ; la catégorie correspondante est portée
+     par le service lui-même (cf. `projectCategory`). */
+  const activeService = services.find((service) => service.slug === domaine);
+  const visibleProjects = activeService
+    ? projects.filter(
+        (project) => project.category === activeService.projectCategory,
+      )
+    : projects;
 
   return (
     <>
@@ -197,17 +239,43 @@ export default function ReferencesPage() {
         </div>
       </Section>
 
-      {/* Réalisations */}
-      <Section className="bg-slate-50">
+      {/* Réalisations — filtrables par domaine depuis /services */}
+      <Section id="realisations" className="relative isolate bg-surface-cool">
+        <Glow variant="cool" corner="bottom-left" />
         <div className="container">
           <SectionHeading
+            rule
             eyebrow="Réalisations"
-            title={`${projects.length} projets documentés, livrés et opérationnels`}
+            title={
+              activeService
+                ? `${visibleProjects.length} réalisation${visibleProjects.length > 1 ? "s" : ""} en ${activeService.shortTitle.toLowerCase()}`
+                : `${projects.length} projets documentés, livrés et opérationnels`
+            }
             lead="Centrales solaires, backups, sécurité électronique et maintenance — chaque ligne correspond à une installation réelle."
           />
 
-          <Stagger className="mt-12 grid gap-4 md:grid-cols-2">
-            {projects.map((project, index) => (
+          {/* Filtre par domaine — les libellés viennent des services */}
+          <div
+            role="group"
+            aria-label="Filtrer les réalisations par domaine"
+            className="mt-8 flex flex-wrap gap-2"
+          >
+            <FilterChip href="/references#realisations" active={!activeService}>
+              Tous les domaines
+            </FilterChip>
+            {services.map((service) => (
+              <FilterChip
+                key={service.slug}
+                href={`/references?domaine=${service.slug}#realisations`}
+                active={activeService?.slug === service.slug}
+              >
+                {service.shortTitle}
+              </FilterChip>
+            ))}
+          </div>
+
+          <Stagger className="mt-10 grid gap-4 md:grid-cols-2">
+            {visibleProjects.map((project, index) => (
               <StaggerItem key={`${project.title}-${project.city}-${index}`}>
                 <article className="flex h-full items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-card transition-shadow hover:shadow-soft">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-solar-500/15">
@@ -236,6 +304,20 @@ export default function ReferencesPage() {
               </StaggerItem>
             ))}
           </Stagger>
+
+          {visibleProjects.length === 0 ? (
+            <p className="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white/60 p-8 text-center text-sm text-slate-600">
+              Aucune réalisation publiée dans ce domaine pour le moment — nous y
+              intervenons pourtant.{" "}
+              <Link
+                href="/contact"
+                className="font-semibold text-brand-700 underline underline-offset-4"
+              >
+                Demandez la farde technique
+              </Link>{" "}
+              pour les références détaillées.
+            </p>
+          ) : null}
         </div>
       </Section>
 

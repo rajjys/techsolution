@@ -87,6 +87,14 @@ déclencherait aussi sur les icônes de tête.
 Sur mobile, des boutons empilés sont `w-full` (`block`) : deux largeurs
 différentes dans une colonne se lisent comme une erreur.
 
+**La paire canonique.** Un bloc de contenu détaillé propose deux sorties et
+pas plus : *agir* (`primary` → `/contact`, préqualifié par un paramètre) et
+*se rassurer* (`outline-ember` → la preuve correspondante). Une page ne
+recopie pas la preuve : elle y renvoie. C'est ce que fait chaque expertise de
+/services, dont le second CTA pointe vers `/references?domaine=<slug>` — le
+lien entre un service et sa catégorie de réalisation est porté par la donnée
+(`Service.projectCategory`), pas par une table de correspondance parallèle.
+
 ## 4. Titres
 
 **Deux grammaires, pas plus** — voir `SectionHeading`.
