@@ -67,6 +67,12 @@ const buttonVariants = cva(
         card: "bg-brand-600 text-white hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-500",
         "card-outline":
           "border-2 border-brand-400 text-brand-600 hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-500",
+        /**
+         * Secondaire neutre : la couleur reste au picto (le vert WhatsApp,
+         * par exemple) plutôt que d'inonder tout le bouton.
+         */
+        neutral:
+          "border-2 border-slate-200 bg-white text-slate-900 hover:border-brand-300 hover:ring-4 hover:ring-brand-100 hover:ring-offset-1 focus-visible:ring-brand-500",
         ghost:
           "text-slate-700 hover:bg-brand-50 hover:text-brand-700 focus-visible:ring-brand-500",
         whatsapp:
@@ -99,6 +105,7 @@ const buttonVariants = cva(
           "outline-brand",
           "outline-light",
           "card-outline",
+          "neutral",
         ] as const
       ).flatMap((variant) => [
         { variant, size: "sm" as const, class: "px-[18px] py-2" },

@@ -84,8 +84,15 @@ la surface et le voisinage. Voir `components/ui/button.tsx`.
 | `outline-brand` | Secondaire isolé, registre navigation |
 | `outline-light` | Secondaire sur surface sombre — s'inverse au survol |
 | `nav` | Chrome de navigation (header, menu) — `brand-700`, jamais `ember` |
-| `card` / `card-outline` | Action à l'intérieur d'une carte — `brand` |
-| `whatsapp` | Canal WhatsApp, vert officiel `#25D366` |
+| `card` / `card-outline` | Action à l'intérieur d'une carte ou d'un panneau produit — `brand` |
+| `neutral` | Secondaire neutre : blanc bordé, la couleur reste au picto |
+| `whatsapp` | Canal WhatsApp en plein vert — réservé aux endroits où c'est *le* canal proposé |
+
+`ember` reste l'action du **contenu éditorial** (une page qui pousse vers le
+devis). À l'intérieur d'un objet — carte, panneau de produit — l'action est en
+`brand` : elle appartient à l'objet, pas à la page. Deux boutons pleins et
+colorés côte à côte se disputent le regard : le second passe en `neutral`, et
+seul son picto garde sa couleur.
 
 **Constantes** : `rounded-xl` ; anneau au survol `ring-4` + `ring-offset-1` ;
 anneau de focus `ring-2` + `ring-offset-2` ; sur fond sombre, décalage d'anneau

@@ -19,7 +19,13 @@ import {
 export type KitSegment = "residentiel" | "professionnel" | "industriel";
 
 /** Ce qu'un kit fait tourner — un appareil, ou un lieu pour les fortes puissances. */
-export type KitLoad = { icon: LucideIcon; label: string };
+export type KitLoad = {
+  icon: LucideIcon;
+  /** Libellé court — pastilles compactes de l'accueil. */
+  label: string;
+  /** Libellé explicite — liste de la page produits, où la place ne manque pas. */
+  detail?: string;
+};
 
 export type Kit = {
   id: string;
@@ -100,10 +106,10 @@ export const kits: Kit[] = [
     panels: "1 panneau 450 W",
     specs: { inverter: "850 Va", battery: "150 Ah", panels: "1 × 450 W" },
     runs: [
-      { icon: Tv, label: 'TV 32"' },
-      { icon: Laptop, label: "Laptop" },
-      { icon: Lightbulb, label: "8 lampes" },
-      { icon: Smartphone, label: "Recharge" },
+      { icon: Tv, label: 'TV 32"', detail: "Une TV 32 pouces" },
+      { icon: Laptop, label: "Laptop", detail: "Un ordinateur portable" },
+      { icon: Lightbulb, label: "8 lampes", detail: "8 points d’éclairage" },
+      { icon: Smartphone, label: "Recharge", detail: "Recharge des téléphones" },
     ],
     usage: 'TV 32", laptop, 8 lampes, fer à repasser 400 W, décodeur, téléphone.',
   },
@@ -120,10 +126,10 @@ export const kits: Kit[] = [
     panels: "2 panneaux 450 W",
     specs: { inverter: "1,5 kVA", battery: "2,5 kWh", panels: "2 × 450 W" },
     runs: [
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: "TV" },
-      { icon: Laptop, label: "Laptop" },
-      { icon: Lightbulb, label: "Éclairage" },
+      { icon: Refrigerator, label: "Frigo", detail: "Réfrigérateur" },
+      { icon: Tv, label: "TV", detail: "Une TV 55 pouces" },
+      { icon: Laptop, label: "Laptop", detail: "Un ordinateur portable" },
+      { icon: Lightbulb, label: "Éclairage", detail: "Éclairage complet du logement" },
     ],
     usage: 'Frigo 120 L, TV 55", laptop, 14 lampes, fer à repasser, décodeur.',
     showcase: true,
@@ -141,10 +147,10 @@ export const kits: Kit[] = [
     panels: "4 panneaux 450 W",
     specs: { inverter: "3 kVA", battery: "5 kWh", panels: "4 × 450 W" },
     runs: [
-      { icon: Snowflake, label: "Congélateur" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 55"' },
-      { icon: Lightbulb, label: "30 lampes" },
+      { icon: Snowflake, label: "Congélateur", detail: "Congélateur" },
+      { icon: Refrigerator, label: "Frigo", detail: "Réfrigérateur" },
+      { icon: Tv, label: 'TV 55"', detail: "Une TV 55 pouces" },
+      { icon: Lightbulb, label: "30 lampes", detail: "30 points d’éclairage" },
     ],
     usage: 'Congélateur, frigo, TV 55", laptop, 30 lampes, fer à repasser, décodeur.',
   },
@@ -161,10 +167,10 @@ export const kits: Kit[] = [
     panels: "6 panneaux 550 W",
     specs: { inverter: "5 kVA", battery: "5 kWh", panels: "6 × 550 W" },
     runs: [
-      { icon: Snowflake, label: "Congélateur" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 100"' },
-      { icon: Lightbulb, label: "Éclairage" },
+      { icon: Snowflake, label: "Congélateur", detail: "Congélateur" },
+      { icon: Refrigerator, label: "Frigo", detail: "Réfrigérateur" },
+      { icon: Tv, label: 'TV 100"', detail: "Une TV 100 pouces" },
+      { icon: Lightbulb, label: "Éclairage", detail: "Éclairage complet du logement" },
     ],
     usage: 'Congélateur, frigo, TV 100", laptop, cafetière, éclairage complet.',
     featured: true,
@@ -183,10 +189,10 @@ export const kits: Kit[] = [
     panels: "10 panneaux 550 W",
     specs: { inverter: "8 kVA", battery: "10 kWh", panels: "10 × 550 W" },
     runs: [
-      { icon: Snowflake, label: "Congélateur" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 100"' },
-      { icon: Lightbulb, label: "Éclairage" },
+      { icon: Snowflake, label: "Congélateur", detail: "Congélateur" },
+      { icon: Refrigerator, label: "Frigo", detail: "Réfrigérateur" },
+      { icon: Tv, label: 'TV 100"', detail: "Une TV 100 pouces" },
+      { icon: Lightbulb, label: "Éclairage", detail: "Éclairage complet du logement" },
     ],
     usage: 'Fer à repasser, congélateur, frigo, TV 100", bouilloire, éclairage.',
   },
@@ -203,10 +209,10 @@ export const kits: Kit[] = [
     panels: "12 panneaux 550 W",
     specs: { inverter: "10 kVA", battery: "10 kWh", panels: "12 × 550 W" },
     runs: [
-      { icon: AirVent, label: "2 clims" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 100"' },
-      { icon: Laptop, label: "Bureau" },
+      { icon: AirVent, label: "2 clims", detail: "2 climatiseurs 9000 BTU" },
+      { icon: Refrigerator, label: "Frigo", detail: "Réfrigérateur" },
+      { icon: Tv, label: 'TV 100"', detail: "Une TV 100 pouces" },
+      { icon: Laptop, label: "Bureau", detail: "Poste de travail complet" },
     ],
     usage: '2 climatiseurs 9000 BTU, frigo, fer à repasser, congélateur, TV 100".',
     featured: true,
@@ -225,10 +231,10 @@ export const kits: Kit[] = [
     panels: "14 panneaux 550 W",
     specs: { inverter: "2 × 6 kVA", battery: "17,5 kWh", panels: "14 × 550 W" },
     runs: [
-      { icon: Building2, label: "Appartement" },
-      { icon: School, label: "École" },
-      { icon: Sprout, label: "Ferme" },
-      { icon: Hotel, label: "Auberge" },
+      { icon: Building2, label: "Appartement", detail: "Un appartement entier" },
+      { icon: School, label: "École", detail: "Une école" },
+      { icon: Sprout, label: "Ferme", detail: "Une ferme" },
+      { icon: Hotel, label: "Auberge", detail: "Une auberge" },
     ],
     usage: "Appartement, école, ferme, auberge, université.",
   },
@@ -245,10 +251,10 @@ export const kits: Kit[] = [
     panels: "30 panneaux 550 W",
     specs: { inverter: "2 × 10 kVA", battery: "35 kWh", panels: "30 × 550 W" },
     runs: [
-      { icon: Stethoscope, label: "Centre de santé" },
-      { icon: School, label: "École" },
-      { icon: Hotel, label: "Hôtel" },
-      { icon: Building2, label: "Appartement" },
+      { icon: Stethoscope, label: "Centre de santé", detail: "Un centre de santé" },
+      { icon: School, label: "École", detail: "Une école" },
+      { icon: Hotel, label: "Hôtel", detail: "Un hôtel" },
+      { icon: Building2, label: "Appartement", detail: "Un appartement entier" },
     ],
     usage: "Centre de santé, appartement, école, hôtel, université.",
   },
@@ -265,10 +271,10 @@ export const kits: Kit[] = [
     panels: "48 panneaux 550 W",
     specs: { inverter: "30 kVA · 3ϕ", battery: "52 kWh", panels: "48 × 550 W" },
     runs: [
-      { icon: Hotel, label: "Hôtel" },
-      { icon: Stethoscope, label: "Santé" },
-      { icon: School, label: "École" },
-      { icon: Factory, label: "Usine" },
+      { icon: Hotel, label: "Hôtel", detail: "Un hôtel" },
+      { icon: Stethoscope, label: "Santé", detail: "Un centre de santé" },
+      { icon: School, label: "École", detail: "Une école" },
+      { icon: Factory, label: "Usine", detail: "Un atelier industriel" },
     ],
     usage: "Hôpital, auberge, centre de santé, appartement, école, université, usine.",
     featured: true,

@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 
 import { kitSegments, kits } from "@/lib/data/kits";
+import { cn } from "@/lib/utils";
 
 /**
  * Comparatif complet — le pendant de l'échelle : elle fait choisir, le
@@ -9,8 +12,18 @@ import { kitSegments, kits } from "@/lib/data/kits";
  *
  * Table sémantique volontaire : c'est une vraie donnée tabulaire, et les
  * lecteurs d'écran doivent pouvoir la parcourir cellule par cellule.
+ *
+ * Chaque ligne renvoie à l'échelle : la puissance est un bouton qui
+ * sélectionne le palier et remonte à la règle. La ligne entière est cliquable
+ * pour la souris, le bouton porte l'affordance pour le clavier.
  */
-export function KitsTable() {
+export function KitsTable({
+  activeIndex,
+  onSelect,
+}: {
+  activeIndex: number;
+  onSelect: (index: number) => void;
+}) {
   return (
     <div className="no-scrollbar -mx-5 overflow-x-auto px-5 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
       <table className="w-full min-w-[46rem] border-collapse text-left">
@@ -56,15 +69,33 @@ export function KitsTable() {
                 </th>
               </tr>
 
-              {rows.map((kit) => (
+              {rows.map((kit) => {
+                const index = kits.indexOf(kit);
+                const isActive = index === activeIndex;
+                return (
                 <tr
                   key={kit.id}
-                  className="border-t border-slate-100 transition-colors hover:bg-brand-50/50"
+                  onClick={() => onSelect(index)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "cursor-pointer border-t border-slate-100 transition-colors",
+                    isActive ? "bg-brand-50" : "hover:bg-brand-50/50",
+                  )}
                 >
                   <th scope="row" className="py-4 pr-4 align-top">
-                    <span className="block font-display text-lg font-bold tabular-nums text-slate-900">
-                      {kit.power}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => onSelect(index)}
+                      className="block rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                    >
+                      <span className="block font-display text-lg font-bold tabular-nums text-slate-900 underline-offset-4 hover:underline">
+                        {kit.power}
+                      </span>
+                      <span className="sr-only">
+                        {" "}
+                        — voir ce palier sur l&apos;échelle
+                      </span>
+                    </button>
                     <span className="mt-0.5 block text-xs font-medium text-slate-500">
                       {kit.phase}
                     </span>
@@ -96,7 +127,8 @@ export function KitsTable() {
                     </Link>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           );
         })}
