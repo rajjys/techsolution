@@ -179,6 +179,12 @@ export const clients: Client[] = [
 
 export type Project = {
   title: string;
+  /**
+   * Slug de l'étude de cas correspondante, quand ce projet en a une : c'est
+   * ce lien qui évite de présenter deux fois la même réalisation sans dire
+   * qu'il s'agit de la même.
+   */
+  caseStudy?: string;
   client: string;
   city: string;
   province: string;
@@ -196,6 +202,7 @@ export const projects: Project[] = [
   {
     title: "Centrale solaire du bureau administratif du territoire (PDL-145T)",
     client: "État congolais — programme PDL-145T",
+    caseStudy: "pdl-145t-mahagi",
     city: "Mahagi",
     province: "Ituri",
     category: "Solaire",
@@ -203,6 +210,7 @@ export const projects: Project[] = [
   {
     title: "Rénovation électrique et centrale solaire de l'agence bancaire",
     client: "CADECO",
+    caseStudy: "cadeco-mahagi",
     city: "Mahagi",
     province: "Ituri",
     category: "Électricité",
@@ -217,6 +225,7 @@ export const projects: Project[] = [
   {
     title: "Installation backup du site RTO",
     client: "LTJ",
+    caseStudy: "ltj-butembo",
     city: "Butembo",
     province: "Nord-Kivu",
     category: "Backup",
@@ -252,6 +261,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du bureau",
     client: "LSC",
+    caseStudy: "lsc-numbi",
     city: "Numbi",
     province: "Sud-Kivu",
     category: "Solaire",
@@ -266,6 +276,7 @@ export const projects: Project[] = [
   {
     title: "Maintenance climatisation & installations de l'agence",
     client: "Afriland First Bank",
+    caseStudy: "afriland-bunia",
     city: "Bunia",
     province: "Ituri",
     category: "Maintenance",
@@ -273,6 +284,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du serveur télécom",
     client: "GRECOM-RDC",
+    caseStudy: "grecom-goma",
     city: "Goma",
     province: "Nord-Kivu",
     category: "Télécoms",

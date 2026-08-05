@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Gauge, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { CaseStudyCard } from "@/components/references/case-study-card";
 import { DRC_BOUNDS, DRC_OUTLINE } from "@/lib/data/drc";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
 import { cn } from "@/lib/utils";
@@ -166,57 +166,7 @@ export function CaseStudiesReach() {
                 exit={reduce ? { opacity: 0 } : { opacity: 0, x: dir * -40 }}
                 transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
-                <Link
-                  href={`/references/${active.slug}`}
-                  className="group relative block h-full overflow-hidden rounded-3xl transition-all duration-300 
-                  hover:ring-4 ring-offset-2 hover:ring-white/45 hover:ring-offset-brand-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-solar-500"
-                >
-                  <Image
-                    src={active.image}
-                    alt={active.imageAlt}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 46vw"
-                    className="object-cover object-center"
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/85 via-40% to-brand-950/15"
-                    aria-hidden="true"
-                  />
-
-                  {/* Badges haut */}
-                  <div className="absolute inset-x-5 top-5 flex items-center justify-between gap-3">
-                    <span className="inline-flex items-center rounded-full border border-white/20 bg-brand-950/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-solar-400 backdrop-blur">
-                      {active.category}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-brand-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-                      <Gauge className="size-3.5 text-solar-400" />
-                      {active.spec}
-                    </span>
-                  </div>
-
-                  {/* Contenu bas */}
-                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                    <h3 className="line-clamp-2 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-[28px]">
-                      {active.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm font-semibold text-solar-300">
-                      {active.client}
-                    </p>
-                    <p className="mt-3 line-clamp-2 text-[15px] leading-relaxed text-brand-100">
-                      {active.summary}
-                    </p>
-                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
-                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-solar-400">
-                        <MapPin className="size-4" />
-                        {active.city} — {active.province}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-white">
-                        Voir le projet
-                        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                <CaseStudyCard study={active} variant="feature" />
               </motion.div>
             </AnimatePresence>
             </div>
