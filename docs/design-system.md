@@ -40,6 +40,20 @@ de l'aube à la nuit. C'est ce qui donne au parcours sa continuité.
 6. Les pages intérieures ouvrent en **clair** (`PageHero`, `brand-50`) : passer
    de l'accueil à une page interne ne doit pas donner l'impression de changer
    de site.
+7. **Une suite de blocs de même nature ne partage pas un seul fond.** Six
+   expertises posées sur une même teinte se lisent comme six lignes d'un
+   tableau. Chaque bloc devient sa propre `<section>`, avec sa surface (blanc /
+   teinté en alternance), son côté d'image et son propre titre. La variation
+   doit rester **prévisible** : deux surfaces qui alternent, pas six.
+8. Une section d'index (le menu d'une page) prend la teinte la plus soutenue
+   de la page — `surface-cool-deep` — pour que les cartes blanches y ressortent
+   et qu'on la distingue immédiatement du contenu qu'elle annonce.
+
+**Pleine largeur.** Une image qui illustre un bloc majeur occupe la moitié de
+la section et touche le bord de l'écran (`lg:absolute lg:inset-y-0 lg:w-1/2`),
+le texte restant aligné sur la grille du conteneur. C'est ce qui distingue une
+scène d'une ligne de tableau. Sous `lg`, l'image repasse dans le flux, au-dessus
+du texte.
 
 ## 2. Rôles de couleur
 
@@ -156,6 +170,14 @@ Points de rupture à vérifier : **360 / 640 / 768 / 1024 / 1280**.
 - Français, vouvoiement, apostrophes typographiques (`’` via `&apos;`).
 - Un titre énonce un **résultat pour le client**, pas une capacité technique.
   « Ne subissez plus les coupures » plutôt que « Systèmes photovoltaïques ».
+  L'intitulé de métier n'est pas supprimé pour autant : il descend en surtitre,
+  où il sert de repère sans occuper la place du message.
+- Un paragraphe ouvre sur **la situation du lecteur**, jamais sur « Nous
+  concevons, nous installons… ». La capacité vient en deuxième phrase, une fois
+  le problème nommé. Test rapide : si la première phrase peut commencer par
+  « Nous », elle est à réécrire.
+- Une étape de processus annonce **ce que le client reçoit**, pas ce que
+  l'entreprise fait. D'où le champ `deliverable` sur chaque étape.
 - Les chiffres doivent être sourcés. Tout chiffre non issu de la farde
   officielle porte un commentaire `⚠️ À SOURCER` dans le code.
 - Une seule conclusion par page : le pied de page. Pas de second appel à

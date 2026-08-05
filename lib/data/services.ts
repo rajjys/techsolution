@@ -55,7 +55,7 @@ export const services: Service[] = [
     excerpt:
       "Centrales et kits solaires pour sites domestiques, industriels et institutionnels — de l'étude au raccordement.",
     description:
-      "Nous concevons, dimensionnons et installons des systèmes solaires complets : centrales pour bâtiments administratifs et bancaires, kits professionnels pour bureaux d'ONG, salles communautaires et stations de radio. Chaque installation est dimensionnée selon un audit de charge précis, avec des équipements conformes aux exigences des bailleurs et institutions.",
+      "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Une centrale solaire dimensionnée sur vos charges réelles inverse la logique : elle produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
     icon: Sun,
     capabilities: [
       "Audit énergétique et dimensionnement sur mesure",
@@ -86,7 +86,7 @@ export const services: Service[] = [
     excerpt:
       "Onduleurs hybrides et parcs batteries lithium pour une continuité électrique 24h/24, même hors réseau.",
     description:
-      "Coupures réseau, sites isolés, équipements critiques : nous installons des systèmes de secours complets — onduleurs hybrides, parcs batteries lithium et supervision — qui garantissent la continuité de vos opérations. Nos backups alimentent déjà des serveurs télécoms, des stations de radio et des bureaux d'organisations internationales.",
+      "Un serveur qui s'éteint, une salle technique qui redémarre, une chaîne du froid qui rompt : certaines coupures coûtent bien plus cher que l'électricité qu'elles font perdre. Nous plaçons entre le réseau et vos équipements critiques un onduleur hybride et un parc batteries lithium dimensionnés sur la durée réelle des coupures de votre zone, avec supervision et sans rupture au basculement. Ces systèmes alimentent déjà des serveurs télécoms, des stations de radio et des bureaux d'organisations internationales.",
     icon: BatteryCharging,
     capabilities: [
       "Onduleurs hybrides mono et triphasés",
@@ -115,7 +115,7 @@ export const services: Service[] = [
     excerpt:
       "Tableaux, distribution basse tension, protection contre les surtensions et mise en conformité des bâtiments.",
     description:
-      "Nous réalisons et rénovons les infrastructures électriques des bâtiments professionnels : tableaux et armoires de distribution, câblage structuré, protection foudre et surtension, mise en conformité complète. Notre rénovation de l'agence CADECO de Mahagi illustre notre capacité à moderniser des sites bancaires en activité.",
+      "Surtensions à répétition, câblage vétuste, tableaux saturés : le matériel grille, les assurances se retournent et les audits bloquent. Nous reprenons l'infrastructure à la source — tableaux et armoires de distribution, câblage structuré, parafoudres et protection contre les surtensions — jusqu'à la mise en conformité complète, plans et dossiers techniques à l'appui. La rénovation de l'agence CADECO de Mahagi a été menée sur un site bancaire resté en activité.",
     icon: PlugZap,
     capabilities: [
       "Tableaux et armoires de distribution basse tension",
@@ -144,7 +144,7 @@ export const services: Service[] = [
     excerpt:
       "Alimentation autonome des stations de radio, serveurs et sites télécoms isolés à travers l'Est de la RDC.",
     description:
-      "Les infrastructures de communication n'ont pas droit à la coupure. Nous alimentons en énergie stable et autonome les stations de radio communautaires et nationales, les serveurs et les sites télécoms : cinq stations de radio équipées en kits solaires et un serveur télécom sécurisé à Goma en témoignent.",
+      "Une station qui sort de l'antenne perd son audience ; un site télécom qui tombe perd sa zone. Ces infrastructures n'ont pas droit à la coupure : nous les rendons autonomes, en solaire seul ou en hybride solaire + backup, dimensionné sur la consommation réelle de l'émetteur et de la salle technique. Cinq stations de radio équipées en kits solaires et un serveur télécom sécurisé à Goma fonctionnent sur ce principe.",
     icon: RadioTower,
     capabilities: [
       "Énergie autonome pour stations de radio et TV",
@@ -173,7 +173,7 @@ export const services: Service[] = [
     excerpt:
       "Systèmes d'alarme, contrôle d'accès et vidéosurveillance pour bureaux, banques et sites sensibles.",
     description:
-      "Nous protégeons les sites de nos clients avec des systèmes de sécurité électronique fiables : alarmes anti-intrusion, contrôle d'accès et vidéosurveillance, intégrés à une alimentation secourue pour rester opérationnels en toute circonstance. Le bureau de Save the Children à Bunia nous a confié la sécurisation de ses locaux.",
+      "Un site que l'on ne voit pas est un site que l'on ne protège pas — et une alarme qui s'éteint avec le courant ne protège rien du tout. Nous installons alarmes anti-intrusion, contrôle d'accès et vidéosurveillance IP adossés à une alimentation secourue, pour qu'ils restent opérationnels pendant les coupures, c'est-à-dire précisément quand le risque augmente. Le bureau de Save the Children à Bunia nous a confié la sécurisation de ses locaux.",
     icon: ShieldCheck,
     capabilities: [
       "Systèmes d'alarme anti-intrusion certifiés",
@@ -198,7 +198,7 @@ export const services: Service[] = [
     excerpt:
       "Maintenance préventive et corrective des installations électriques, solaires et de climatisation.",
     description:
-      "Une installation performante est une installation entretenue. Nos équipes assurent la maintenance préventive et corrective des systèmes électriques, solaires et de climatisation — avec des contrats adaptés aux exigences des institutions financières, comme celui mené pour Afriland First Bank à Bunia.",
+      "Une installation performante est une installation entretenue : sans suivi, une panne évitable coûte une journée d'activité, parfois davantage. Nos contrats couvrent la maintenance préventive et corrective de vos systèmes électriques, solaires et de climatisation, avec interventions planifiées, rapports techniques périodiques et assistance prioritaire — y compris sur des installations que nous n'avons pas posées. Afriland First Bank à Bunia nous confie ce suivi.",
     icon: Wrench,
     capabilities: [
       "Contrats de maintenance préventive planifiée",
@@ -217,31 +217,39 @@ export const services: Service[] = [
   },
 ];
 
-/** Processus d'intervention — démarche 100% client. */
+/**
+ * Processus d'intervention — démarche 100% client.
+ * Chaque étape porte son livrable : c'est ce que le client reçoit, et non ce
+ * que l'entreprise fait, qui rend le parcours lisible.
+ */
 export const processSteps = [
   {
     step: "01",
     title: "Étude & audit gratuit",
     description:
-      "Visite du site, analyse des besoins énergétiques et audit de charge complet, sans engagement.",
+      "Nous venons mesurer ce que votre site consomme réellement, équipement par équipement, et relever les contraintes d'implantation. Aucun engagement, aucun frais.",
+    deliverable: "Rapport d'audit de charge",
   },
   {
     step: "02",
     title: "Conception & dimensionnement",
     description:
-      "Proposition technique détaillée, schémas, dimensionnement précis et devis transparent.",
+      "Vous recevez une proposition technique chiffrée : puissance, autonomie, composants et schémas. Vous savez exactement ce que vous achetez et ce que cela alimentera.",
+    deliverable: "Schémas techniques et devis détaillé",
   },
   {
     step: "03",
     title: "Installation certifiée",
     description:
-      "Déploiement par nos techniciens qualifiés, dans les délais, avec des équipements garantis.",
+      "Nos techniciens déploient l'installation dans les délais annoncés, avec des équipements garantis, puis la mettent en service en votre présence.",
+    deliverable: "Système installé et mis en service",
   },
   {
     step: "04",
     title: "Maintenance & suivi",
     description:
-      "Mise en service, formation de vos équipes et contrats de maintenance pour durer.",
+      "Vos équipes sont formées à l'exploitation courante, et un contrat d'entretien planifié prend le relais : contrôles périodiques, rapports et assistance prioritaire.",
+    deliverable: "Équipes formées et contrat d'entretien",
   },
 ] as const;
 

@@ -16,11 +16,14 @@ import type { Service } from "@/lib/data/services";
 export function ServiceCard({
   service,
   href,
+  index,
   className,
 }: {
   service: Service;
   /** Par défaut l'ancre de la page services ; la page elle-même passe `#slug`. */
   href?: string;
+  /** Numéro de chapitre — affiché en filigrane, il relie la carte à sa section. */
+  index?: number;
   className?: string;
 }) {
   return (
@@ -44,6 +47,14 @@ export function ServiceCard({
         <h3 className="text-[17px] font-bold leading-snug text-slate-900 sm:text-lg">
           {service.shortTitle}
         </h3>
+        {index !== undefined ? (
+          <span
+            className="ml-auto font-display text-xl font-bold tabular-nums text-brand-200 transition-colors group-hover:text-brand-400"
+            aria-hidden="true"
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        ) : null}
       </div>
 
       <hr className="mt-5 border-t border-dashed border-slate-200" />
