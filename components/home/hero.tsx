@@ -28,7 +28,7 @@ export function Hero() {
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-48 lg:pt-14 lg:text-left xl:-ml-8">
+        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-60 lg:pt-16 lg:text-left xl:-ml-8">
           <Reveal mode="mount">
             <h1 className="text-[30px] font-medium leading-[1.15] tracking-[-0.02em] text-navy-950 sm:text-[42px] sm:leading-[1.12] md:text-6xl lg:max-w-[800px] lg:text-[72px] lg:leading-[1.1]">
               Fini les délestages. Une énergie stable pour vos activités, 24h/24.&nbsp;
@@ -55,10 +55,10 @@ export function Hero() {
               </Link>
               <Link
                 href="/references"
-                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-700/30 px-4 py-3.5 sm:w-auto
+                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-700/30 px-4 py-3 sm:w-auto
                 text-base font-medium text-brand-700 bg-brand-200/15 transition-all duration-200
                 hover:ring-4 hover:ring-offset-1 hover:ring-brand-200 
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-4 sm:text-lg"
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-[0.8rem] sm:text-lg"
               >
                 Découvrir nos réalisations
                 <ArrowRight className="size-5 transition-transform duration-200 group-hover:translate-x-1" />

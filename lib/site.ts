@@ -15,9 +15,39 @@ export const site = {
   whatsappNumber: "243821250250",
   email: "info@techsolution.cd",
   base: "Bunia, Province de l'Ituri — RDC",
+  hours: "Lun. – Sam., 8h00 – 17h00",
   foundedYear: 2024,
   approach: "100% client",
 } as const;
+
+export type Office = {
+  city: string;
+  /** Siège ou antenne — affiché en pastille à côté de la ville. */
+  role: string;
+  street: string;
+  region: string;
+  headquarters?: boolean;
+};
+
+/**
+ * Implantations — Bunia est le siège ; Kinshasa couvre l'Ouest du pays.
+ * Source unique consommée par le pied de page et la page contact.
+ */
+export const offices: Office[] = [
+  {
+    city: "Bunia",
+    role: "Siège",
+    street: "Boulevard de la Libération, près du Rond-Point Zéro",
+    region: "Province de l'Ituri",
+    headquarters: true,
+  },
+  {
+    city: "Kinshasa",
+    role: "Antenne",
+    street: "Limete, 2ᵉ Rue Industrielle",
+    region: "Ville-province de Kinshasa",
+  },
+];
 
 export type NavLink = {
   label: string;

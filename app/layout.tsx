@@ -5,7 +5,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { WhatsAppFab } from "@/components/whatsapp-fab";
-import { site } from "@/lib/site";
+import { offices, site } from "@/lib/site";
 
 import "./globals.css";
 
@@ -71,12 +71,13 @@ const organizationJsonLd = {
   foundingDate: String(site.foundedYear),
   slogan: site.tagline,
   description: site.description,
-  address: {
+  address: offices.map((office) => ({
     "@type": "PostalAddress",
-    addressLocality: "Bunia",
-    addressRegion: "Ituri",
+    streetAddress: office.street,
+    addressLocality: office.city,
+    addressRegion: office.region,
     addressCountry: "CD",
-  },
+  })),
   areaServed: {
     "@type": "Country",
     name: "République Démocratique du Congo",
