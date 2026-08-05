@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Info, PackageCheck, ShieldCheck, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  PackageCheck,
+  Ruler,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 
+import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
-import { Section } from "@/components/section";
-import { KitsCatalogue } from "@/components/products/kits-catalogue";
+import { Section, SectionHeading } from "@/components/section";
+import { KitsTable } from "@/components/products/kits-table";
+import { PowerLadder } from "@/components/products/power-ladder";
 import { Button } from "@/components/ui/button";
+import { kits } from "@/lib/data/kits";
 
 export const metadata: Metadata = {
   title: "Kits solaires & Catalogue",
@@ -24,7 +33,7 @@ const commitments = [
   {
     icon: PackageCheck,
     title: "Dimensionnement inclus",
-    description: "Chaque équipement est validé par l'étude de votre site.",
+    description: "Chaque kit est validé par l'audit gratuit de votre site.",
   },
   {
     icon: Truck,
@@ -41,16 +50,14 @@ export default function ProduitsPage() {
         eyebrow="Kits solaires"
         title={
           <>
-            Des kits solaires hybrides{" "}
-            <span className="text-brand-600">
-              clés en main
-            </span>
+            De la lampe qui reste allumée à{" "}
+            <span className="text-brand-600">l&apos;établissement entier.</span>
           </>
         }
-        lead="De 650 Va à 30 kVA triphasé : onduleurs hybrides, batteries lithium et panneaux, dimensionnés pour vos charges réelles — de la maison au site industriel."
+        lead={`${kits.length} kits hybrides clés en main, de 650 Va à 30 kVA triphasé. Situez-vous sur l'échelle : la composition suit.`}
       >
         <Reveal mode="mount" delay={0.15}>
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <div className="mt-9 grid gap-4 sm:grid-cols-3">
             {commitments.map((commitment) => (
               <div
                 key={commitment.title}
@@ -73,36 +80,67 @@ export default function ProduitsPage() {
         </Reveal>
       </PageHero>
 
+      {/* L'échelle — on se situe, puis on affine cran par cran */}
+      <Section className="relative isolate bg-surface-cool-deep">
+        <Glow variant="cool-deep" corner="bottom-right" />
+        <div className="container relative">
+          <SectionHeading
+            align="center"
+            eyebrow="Trouvez votre palier"
+            title="Une seule échelle, du foyer à l'usine."
+            lead="Repérez d'abord la zone qui vous correspond, puis avancez d'un cran : chaque palier affiche ce qu'il fait tourner et ce qu'il contient."
+          />
+
+          <div className="mt-12 lg:mt-16">
+            <PowerLadder />
+          </div>
+        </div>
+      </Section>
+
+      {/* Le comparatif — l'échelle fait choisir, le tableau fait vérifier */}
       <Section className="bg-white">
         <div className="container">
-          <Reveal>
-            <KitsCatalogue />
+          <SectionHeading
+            rule
+            eyebrow="Comparatif complet"
+            title="Les neuf paliers, côte à côte."
+            lead="Les compositions types de notre catalogue. La composition exacte est confirmée après l'audit gratuit de votre site."
+          />
+
+          <Reveal delay={0.1} className="mt-10 lg:mt-12">
+            <KitsTable />
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <div className="mt-14 flex flex-col items-start justify-between gap-6 rounded-2xl border border-brand-100 bg-brand-50/60 p-7 md:flex-row md:items-center">
+          <Reveal delay={0.15}>
+            <div className="mt-12 flex flex-col items-start gap-6 rounded-2xl border border-brand-100 bg-brand-50/60 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
               <div className="flex items-start gap-4">
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-950">
-                  <Info className="size-5 text-solar-500" />
+                  <Ruler className="size-5 text-solar-400" />
                 </span>
                 <div>
-                  <h2 className="font-display text-base font-bold text-slate-900">
-                    Compositions types — ajustables à votre site
+                  <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
+                    Aucun palier ne correspond ?
                   </h2>
-                  <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-slate-600">
-                    Ces kits sont nos configurations les plus déployées. La
-                    composition exacte est confirmée après l&apos;audit gratuit
-                    de votre site : charges, autonomie souhaitée et contraintes
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
+                    Centrales hybrides, parcs batteries, triphasé sur mesure :
+                    nous dimensionnons hors catalogue à partir de vos charges
+                    réelles, de l&apos;autonomie visée et de vos contraintes
                     d&apos;implantation.
                   </p>
                 </div>
               </div>
-              <Button asChild className="shrink-0">
-                <Link href="/contact">
-                  Planifier mon audit
-                  <ArrowRight />
-                </Link>
-              </Button>
+
+              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:shrink-0">
+                <Button asChild>
+                  <Link href="/contact">Planifier mon audit</Link>
+                </Button>
+                <Button variant="outline-ember" className="group" asChild>
+                  <Link href="/services#energie-solaire">
+                    Notre expertise solaire
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </Reveal>
         </div>

@@ -37,11 +37,11 @@ export function ProcessTimeline() {
     <ol ref={ref} className="relative mt-12 lg:mt-16">
       {/* Rail — creux, puis remplissage progressif par-dessus */}
       <div
-        className="absolute inset-y-0 left-[15px] w-px bg-white/15 sm:left-[19px]"
+        className="absolute inset-y-0 left-[14px] w-[3px] bg-white/15 sm:left-[18px]"
         aria-hidden="true"
       />
       <motion.div
-        className="absolute inset-y-0 left-[15px] w-px origin-top bg-gradient-to-b from-solar-500 via-solar-500 to-solar-500/30 sm:left-[19px]"
+        className="absolute inset-y-0 left-[14px] w-[3px] origin-top bg-gradient-to-b from-solar-500 via-solar-500 to-solar-500/30 sm:left-[18px]"
         style={{ scaleY: reduce ? 1 : progress }}
         aria-hidden="true"
       />

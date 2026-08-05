@@ -145,13 +145,31 @@ les cartes, les boutons, les contrôles de carrousel et les images cliquables.
 Séparateurs internes en pointillés (`border-dashed border-slate-200`). Sur
 fond sombre, les fiches passent en verre dépoli : `border-white/10 bg-white/[0.03]`.
 
-## 6. Mouvement
+## 6. Catalogues
+
+Une gamme ordonnée (les kits vont de 650 Va à 30 kVA) ne se présente pas en
+grille de cartes : à neuf éléments c'est déjà un mur, à vingt c'est illisible.
+Deux vues complémentaires, jamais redondantes :
+
+- **L'échelle** (`PowerLadder`) fait *choisir*. Un seul axe, les zones d'usage
+  marquées au-dessus — libellées du point de vue du client (« Ma maison », pas
+  « Résidentiel ») — et un palier détaillé à la fois. Ajouter un produit
+  ajoute un cran, pas une carte de plus dans un mur.
+- **Le comparatif** (`KitsTable`) fait *vérifier*. Vraie `<table>` sémantique,
+  groupée par usage, repères courts alignés en colonnes.
+
+Un contrôle de ce type est un `tablist` : sélection au clic, aux flèches et par
+Origine/Fin, un seul élément dans l'ordre de tabulation (tabindex mouvant), et
+le panneau lié par `aria-controls` / `aria-labelledby`. Sans cela, le motif est
+une jolie souricière au clavier.
+
+## 7. Mouvement
 
 `Reveal` / `Stagger` / `StaggerItem`. Décalage vertical de 14 à 30 px, retards
 de 0,07 à 0,1 s par élément. `mode="mount"` au-dessus de la ligne de flottaison,
 au défilement en dessous. Tout est neutralisé sous `prefers-reduced-motion`.
 
-## 7. Responsive
+## 8. Responsive
 
 Points de rupture à vérifier : **360 / 640 / 768 / 1024 / 1280**.
 
@@ -165,7 +183,7 @@ Points de rupture à vérifier : **360 / 640 / 768 / 1024 / 1280**.
 - Le corps de page est en `overflow-x: clip` et non `hidden` : `hidden` ferait
   du body un conteneur de défilement et casserait tous les `sticky`.
 
-## 8. Contenu
+## 9. Contenu
 
 - Français, vouvoiement, apostrophes typographiques (`’` via `&apos;`).
 - Un titre énonce un **résultat pour le client**, pas une capacité technique.

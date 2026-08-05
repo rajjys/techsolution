@@ -1,105 +1,25 @@
 import Link from "next/link";
-import {
-  AirVent,
-  ArrowRight,
-  BatteryCharging,
-  Factory,
-  Hotel,
-  Laptop,
-  Lightbulb,
-  Refrigerator,
-  School,
-  Snowflake,
-  Stethoscope,
-  SunMedium,
-  Tv,
-  Zap,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, BatteryCharging, SunMedium, Zap } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { showcaseKits, type Kit } from "@/lib/data/kits";
 import { cn } from "@/lib/utils";
-
-type Appliance = { icon: LucideIcon; label: string };
-
-type ShowcaseKit = {
-  name: string;
-  slug: string;
-  power: string;
-  /** Bandeau haut de carte ; remplacé par « Le plus demandé » si highlight. */
-  segment: string;
-  outcome: string;
-  specs: { inverter: string; battery: string; panels: string };
-  /** Max 4 — remplace la phrase « Idéal pour » : on scanne, on ne lit pas. */
-  appliances: Appliance[];
-  highlight?: boolean;
-};
 
 /**
  * Quatre paliers couvrant toute l'échelle (foyer → villa → bureau →
- * établissement). Les paliers intermédiaires (650 Va, 3, 8, 12, 20 kVA)
- * vivent dans le catalogue — cf. lib/data/kits.ts.
+ * établissement), lus dans lib/data/kits.ts : les compositions ne vivent
+ * qu'à un seul endroit. Les paliers intermédiaires (650 Va, 3, 8, 12,
+ * 20 kVA) restent réservés au catalogue.
  */
-const kits: ShowcaseKit[] = [
-  {
-    name: "Kit Solaire Hybride 1,5 kVA",
-    slug: "kit-solaire-hybride-15-kva",
-    power: "1,5 kVA",
-    segment: "Monophasé · Compact",
-    outcome: "L'essentiel du foyer, sans coupure.",
-    specs: { inverter: "1,5 kVA", battery: "2,5 kWh", panels: "2 × 450 W" },
-    appliances: [
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: "TV" },
-      { icon: Laptop, label: "Laptop" },
-      { icon: Lightbulb, label: "Éclairage" },
-    ],
-  },
-  {
-    name: "Kit Solaire Hybride 5 kVA",
-    slug: "kit-solaire-hybride-5-kva",
-    power: "5 kVA",
-    segment: "Monophasé · Villa",
-    outcome: "Toute la villa en autonomie 24/7.",
-    specs: { inverter: "5 kVA", battery: "5 kWh", panels: "6 × 550 W" },
-    appliances: [
-      { icon: Snowflake, label: "Congélateur" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 100"' },
-      { icon: Lightbulb, label: "Éclairage" },
-    ],
-    highlight: true,
-  },
-  {
-    name: "Kit Solaire Hybride 10 kVA",
-    slug: "kit-solaire-hybride-10-kva",
-    power: "10 kVA",
-    segment: "Monophasé · Confort",
-    outcome: "Clim, frigo et bureau, sans arbitrage.",
-    specs: { inverter: "10 kVA", battery: "10 kWh", panels: "12 × 550 W" },
-    appliances: [
-      { icon: AirVent, label: "2 clims" },
-      { icon: Refrigerator, label: "Frigo" },
-      { icon: Tv, label: 'TV 100"' },
-      { icon: Laptop, label: "Bureau" },
-    ],
-  },
-  {
-    name: "Kit Solaire Semi-Industriel 30 kVA",
-    slug: "kit-solaire-semi-industriel-30-kva",
-    power: "30 kVA",
-    segment: "Triphasé · Commercial",
-    outcome: "La puissance d'un établissement entier.",
-    specs: { inverter: "30 kVA · 3ϕ", battery: "52 kWh", panels: "48 × 550 W" },
-    appliances: [
-      { icon: Hotel, label: "Hôtel" },
-      { icon: Stethoscope, label: "Santé" },
-      { icon: School, label: "École" },
-      { icon: Factory, label: "Usine" },
-    ],
-  },
-];
+const kits = showcaseKits;
+
+/**
+ * Un seul palier porte « Le plus demandé » ici : le premier de la sélection
+ * qui l'est dans son segment — le 5 kVA. Le catalogue, lui, étoile le plus
+ * demandé de chacun des trois segments.
+ */
+const highlighted = kits.find((kit) => kit.featured)?.id;
 
 const specRows = [
   { key: "inverter" as const, icon: Zap, label: "Onduleur" },
@@ -107,7 +27,8 @@ const specRows = [
   { key: "panels" as const, icon: SunMedium, label: "Panneaux" },
 ];
 
-function KitCard({ kit }: { kit: ShowcaseKit }) {
+function KitCard({ kit }: { kit: Kit }) {
+  const highlight = kit.id === highlighted;
   return (
     <article
       className={cn(
@@ -115,7 +36,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
         // <span class="sr-only"> du bouton se positionne par rapport à la
         // section et échappe au rognage du rail, ce qui élargissait la page.
         "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white transition-all duration-300 hover:-translate-y-1",
-        kit.highlight
+        highlight
           ? "shadow-[0_22px_50px_-24px_rgba(11,25,44,0.45)] hover:shadow-[0_32px_66px_-24px_rgba(11,25,44,0.5)]"
           : "border-slate-200 shadow-[0_14px_40px_-30px_rgba(11,25,44,0.5)] hover:shadow-[0_26px_58px_-28px_rgba(11,25,44,0.45)]",
       )}
@@ -124,12 +45,12 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
       <div
         className={cn(
           "px-4 py-2.5 text-center text-[10.5px] font-bold uppercase tracking-[0.14em]",
-          kit.highlight
+          highlight
             ? "bg-brand-600 text-white"
             : "bg-slate-100 text-slate-500",
         )}
       >
-        {kit.highlight ? "Le plus demandé" : kit.segment}
+        {highlight ? "Le plus demandé" : `${kit.phase} · ${kit.tier}`}
       </div>
 
       <div className="flex flex-1 flex-col p-6">
@@ -170,7 +91,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
           Fait tourner
         </p>
         <ul className="mt-3 flex flex-wrap gap-1.5">
-          {kit.appliances.map((item) => (
+          {kit.runs.map((item) => (
             <li
               key={item.label}
               className="inline-flex items-center gap-1.5 rounded-full bg-brand-100/50 px-2.5 py-1 text-[11px] font-medium text-slate-600"
@@ -187,10 +108,10 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
 
         <div className="mt-auto pt-6">
           <Link
-            href={`/contact?produit=${kit.slug}`}
+            href={`/contact?produit=${encodeURIComponent(kit.name)}`}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
-              kit.highlight
+              highlight
                 ? "bg-brand-600 text-white"
                 : "border-2 border-brand-400 text-brand-600",
             )}
@@ -252,7 +173,7 @@ export function KitsSelector() {
         <div className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:-mx-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
           {kits.map((kit, index) => (
             <Reveal
-              key={kit.slug}
+              key={kit.id}
               delay={index * 0.07}
               y={18}
               className="w-[80vw] max-w-[19rem] shrink-0 snap-start sm:w-[19rem] lg:w-auto lg:max-w-none lg:shrink"
