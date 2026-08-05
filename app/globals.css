@@ -17,7 +17,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 213 60% 11%; /* navy-950 #0B192C */
+    --primary: 241 67% 12%; /* brand-950 #0B0A33 */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96%; /* slate-100 */
@@ -65,7 +65,7 @@
   }
 
   ::selection {
-    @apply bg-solar-500/90 text-navy-950;
+    @apply bg-solar-500/90 text-slate-900;
   }
 
   /* Cibles d'ancres sous le header sticky */
@@ -75,28 +75,6 @@
 }
 
 @layer utilities {
-  /* Grille « blueprint » discrète — sections claires */
-  .bg-grid-slate {
-    background-image: linear-gradient(
-        to right,
-        rgba(30, 62, 98, 0.055) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, rgba(30, 62, 98, 0.055) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
-
-  /* Grille « blueprint » — sections navy */
-  .bg-grid-navy {
-    background-image: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0.045) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 44px 44px;
-  }
-
   /* Fondu latéral pour les marquees / carrousels */
   .mask-fade-x {
     mask-image: linear-gradient(

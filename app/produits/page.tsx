@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Info, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 
-import { CtaPanel } from "@/components/cta-panel";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
@@ -38,11 +37,12 @@ export default function ProduitsPage() {
   return (
     <>
       <PageHero
+        breadcrumb={[{ label: "Produits" }]}
         eyebrow="Kits solaires"
         title={
           <>
             Des kits solaires hybrides{" "}
-            <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
+            <span className="text-brand-600">
               clés en main
             </span>
           </>
@@ -54,16 +54,16 @@ export default function ProduitsPage() {
             {commitments.map((commitment) => (
               <div
                 key={commitment.title}
-                className="flex items-start gap-3.5 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur"
+                className="flex items-start gap-3.5 rounded-2xl border border-slate-200 bg-white p-5 shadow-card"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-solar-500/15">
-                  <commitment.icon className="size-5 text-solar-500" />
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-100/60">
+                  <commitment.icon className="size-5 text-brand-600" />
                 </span>
                 <span>
-                  <span className="block text-sm font-bold text-white">
+                  <span className="block text-sm font-bold text-slate-900">
                     {commitment.title}
                   </span>
-                  <span className="mt-1 block text-xs leading-relaxed text-navy-100/75">
+                  <span className="mt-1 block text-xs leading-relaxed text-slate-600">
                     {commitment.description}
                   </span>
                 </span>
@@ -80,9 +80,9 @@ export default function ProduitsPage() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="mt-14 flex flex-col items-start justify-between gap-6 rounded-2xl border border-navy-100 bg-navy-50/60 p-7 md:flex-row md:items-center">
+            <div className="mt-14 flex flex-col items-start justify-between gap-6 rounded-2xl border border-brand-100 bg-brand-50/60 p-7 md:flex-row md:items-center">
               <div className="flex items-start gap-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-navy-950">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-950">
                   <Info className="size-5 text-solar-500" />
                 </span>
                 <div>
@@ -107,11 +107,6 @@ export default function ProduitsPage() {
           </Reveal>
         </div>
       </Section>
-
-      <CtaPanel
-        title="Besoin d'une configuration sur mesure ?"
-        lead="Au-delà des kits standards, nous concevons des centrales hybrides et parcs batteries dimensionnés exactement pour votre site — et assurons l'installation partout en RDC."
-      />
     </>
   );
 }

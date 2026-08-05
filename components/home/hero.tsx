@@ -30,7 +30,7 @@ export function Hero() {
       <div className="container relative">
         <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-60 lg:pt-16 lg:text-left xl:-ml-8">
           <Reveal mode="mount">
-            <h1 className="text-[30px] font-medium leading-[1.15] tracking-[-0.02em] text-navy-950 sm:text-[42px] sm:leading-[1.12] md:text-6xl lg:max-w-[800px] lg:text-[72px] lg:leading-[1.1]">
+            <h1 className="text-[30px] font-medium leading-[1.15] tracking-[-0.02em] text-slate-900 sm:text-[42px] sm:leading-[1.12] md:text-6xl lg:max-w-[800px] lg:text-[72px] lg:leading-[1.1]">
               Fini les délestages. Une énergie stable pour vos activités, 24h/24.&nbsp;
               <RotatingPhrases />
             </h1>

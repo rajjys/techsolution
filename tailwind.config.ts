@@ -31,7 +31,21 @@ const config: Config = {
     },
     extend: {
       colors: {
-        /* Marque — bleu marine corporate */
+        /*
+         * Surfaces de section — le rythme de fond de la page d'accueil.
+         * `cool` et `cool-deep` portent toujours la paire de halos radiaux
+         * (cf. <Glow />) ; `warm` est une ponctuation, une seule par page.
+         */
+        surface: {
+          cool: "#F4F7FE",
+          "cool-deep": "#E8EEFA",
+          warm: "#FAF7F0",
+        },
+        /**
+         * @deprecated Palette héritée. Les fonds sont passés sur `brand` et
+         * le texte quasi-noir sur `slate-900`. Ne pas utiliser dans du
+         * nouveau code — cf. docs/design-system.md.
+         */
         navy: {
           50: "#F2F6FB",
           100: "#E3EBF5",

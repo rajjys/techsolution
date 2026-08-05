@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Eye, Target } from "lucide-react";
 
-import { CtaPanel } from "@/components/cta-panel";
 import { Engagement } from "@/components/home/engagement";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
@@ -20,11 +19,12 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
+        breadcrumb={[{ label: "À propos" }]}
         eyebrow="À propos"
         title={
           <>
             Une ingénierie au service de la{" "}
-            <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
+            <span className="text-brand-600">
               révolution énergétique
             </span>
           </>
@@ -36,7 +36,7 @@ export default function AboutPage() {
       <Section className="bg-white">
         <div className="container grid gap-6 md:grid-cols-2 lg:gap-8">
           <Reveal className="rounded-3xl border border-slate-200 bg-slate-50 p-8 lg:p-10">
-            <span className="flex size-12 items-center justify-center rounded-xl bg-navy-950">
+            <span className="flex size-12 items-center justify-center rounded-xl bg-brand-950">
               <Eye className="size-6 text-solar-500" />
             </span>
             <h2 className="mt-6 text-2xl font-bold text-slate-900">
@@ -51,7 +51,7 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={0.08} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 lg:p-10">
-            <span className="flex size-12 items-center justify-center rounded-xl bg-navy-950">
+            <span className="flex size-12 items-center justify-center rounded-xl bg-brand-950">
               <Target className="size-6 text-solar-500" />
             </span>
             <h2 className="mt-6 text-2xl font-bold text-slate-900">
@@ -97,8 +97,6 @@ export default function AboutPage() {
           </Stagger>
         </div>
       </Section>
-
-      <CtaPanel />
     </>
   );
 }

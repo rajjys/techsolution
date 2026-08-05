@@ -10,7 +10,6 @@ import {
   Phone,
 } from "lucide-react";
 
-import { CtaPanel } from "@/components/cta-panel";
 import { DrcMap } from "@/components/drc-map";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
@@ -28,13 +27,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/references" },
 };
 
+/**
+ * Catégories de réalisation — cantonnées aux quatre familles du système
+ * (solar, brand, ember, slate). L'ambre, l'émeraude et le ciel employés
+ * jusqu'ici n'appartenaient à aucune d'elles.
+ */
 const projectCategoryStyles: Record<string, string> = {
-  Solaire: "bg-solar-50 text-solar-800 border-solar-500/30",
-  Backup: "bg-navy-50 text-navy-800 border-navy-200",
-  Électricité: "bg-amber-50 text-amber-800 border-amber-200",
-  Sécurité: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  Maintenance: "bg-slate-100 text-slate-700 border-slate-200",
-  Télécoms: "bg-sky-50 text-sky-800 border-sky-200",
+  Solaire: "border-solar-500/30 bg-solar-50 text-solar-800",
+  Backup: "border-brand-200 bg-brand-50 text-brand-800",
+  Électricité: "border-ember-200 bg-ember-50 text-ember-800",
+  Télécoms: "border-brand-200 bg-white text-brand-700",
+  Sécurité: "border-slate-300 bg-white text-slate-700",
+  Maintenance: "border-slate-200 bg-slate-100 text-slate-600",
 };
 
 export default function ReferencesPage() {
@@ -44,11 +48,12 @@ export default function ReferencesPage() {
   return (
     <>
       <PageHero
+        breadcrumb={[{ label: "Références" }]}
         eyebrow="Clients & Références"
         title={
           <>
             Un track record{" "}
-            <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
+            <span className="text-brand-600">
               vérifiable
             </span>
             , des clients exigeants
@@ -57,31 +62,31 @@ export default function ReferencesPage() {
         lead={`${clients.length} organisations de référence, ${projects.length} réalisations documentées : la farde technique complète — personnes de contact incluses — est disponible sur demande.`}
       >
         <Reveal mode="mount" delay={0.15}>
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5 sm:gap-x-10">
             <div>
-              <p className="font-display text-3xl font-bold text-white">
+              <p className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
                 {projects.length}
               </p>
-              <p className="text-xs font-medium uppercase tracking-wide text-navy-200">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Réalisations livrées
               </p>
             </div>
-            <div className="h-10 w-px bg-white/15" aria-hidden="true" />
+            <div className="h-10 w-px bg-brand-200" aria-hidden="true" />
             <div>
-              <p className="font-display text-3xl font-bold text-white">
+              <p className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
                 {clients.length}
               </p>
-              <p className="text-xs font-medium uppercase tracking-wide text-navy-200">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Clients institutionnels
               </p>
             </div>
-            <div className="h-10 w-px bg-white/15" aria-hidden="true" />
+            <div className="h-10 w-px bg-brand-200" aria-hidden="true" />
             <div>
-              <p className="font-display text-3xl font-bold text-white">
+              <p className="font-display text-3xl font-bold text-slate-900 sm:text-4xl">
                 {activeProvinces.length}
-                <span className="text-lg text-navy-300">/{totalProvinces}</span>
+                <span className="text-lg text-slate-400">/{totalProvinces}</span>
               </p>
-              <p className="text-xs font-medium uppercase tracking-wide text-navy-200">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
                 Provinces livrées / couvertes
               </p>
             </div>
@@ -110,7 +115,7 @@ export default function ReferencesPage() {
                   <Reveal>
                     <div className="flex flex-col gap-2 border-b border-slate-200 pb-5 md:flex-row md:items-end md:justify-between">
                       <div className="flex items-center gap-3.5">
-                        <span className="flex size-11 items-center justify-center rounded-xl bg-navy-950">
+                        <span className="flex size-11 items-center justify-center rounded-xl bg-brand-950">
                           <group.icon className="size-5 text-solar-500" />
                         </span>
                         <div>
@@ -122,7 +127,7 @@ export default function ReferencesPage() {
                           </p>
                         </div>
                       </div>
-                      <Badge variant="navy" className="shrink-0 self-start md:self-auto">
+                      <Badge variant="brand" className="shrink-0 self-start md:self-auto">
                         {groupClients.length} référence
                         {groupClients.length > 1 ? "s" : ""}
                       </Badge>
@@ -134,7 +139,7 @@ export default function ReferencesPage() {
                       <StaggerItem key={client.name}>
                         <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-soft">
                           <div className="flex items-start justify-between gap-3">
-                            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-navy-950 font-display text-sm font-bold text-solar-500">
+                            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-950 font-display text-sm font-bold text-solar-500">
                               {client.monogram}
                             </span>
                             <Badge variant="outline" className="gap-1">
@@ -169,10 +174,10 @@ export default function ReferencesPage() {
           </div>
 
           <Reveal delay={0.1}>
-            <div className="mt-14 flex flex-col items-start justify-between gap-5 rounded-2xl bg-navy-950 p-7 md:flex-row md:items-center">
+            <div className="mt-14 flex flex-col items-start justify-between gap-5 rounded-2xl bg-brand-950 p-7 md:flex-row md:items-center">
               <div className="flex items-start gap-4">
                 <Phone className="mt-1 size-5 shrink-0 text-solar-500" />
-                <p className="max-w-2xl text-sm leading-relaxed text-navy-100">
+                <p className="max-w-2xl text-sm leading-relaxed text-brand-100">
                   <span className="font-semibold text-white">
                     Vérification des références :
                   </span>{" "}
@@ -181,7 +186,7 @@ export default function ReferencesPage() {
                   transmise sur demande aux services achats et logistique.
                 </p>
               </div>
-              <Button variant="solar" asChild className="shrink-0">
+              <Button variant="primary-dark" asChild className="shrink-0">
                 <Link href="/contact">
                   Demander la farde
                   <ArrowRight />
@@ -262,13 +267,13 @@ export default function ReferencesPage() {
                       key={province.name}
                       className={
                         province.active
-                          ? "inline-flex items-center gap-1.5 rounded-full bg-solar-500 px-3 py-1 text-xs font-bold text-navy-950 shadow-sm"
+                          ? "inline-flex items-center gap-1.5 rounded-full bg-solar-500 px-3 py-1 text-xs font-bold text-slate-900 shadow-sm"
                           : "inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-500"
                       }
                     >
                       {province.active ? (
                         <span
-                          className="size-1.5 rounded-full bg-navy-950"
+                          className="size-1.5 rounded-full bg-brand-950"
                           aria-hidden="true"
                         />
                       ) : null}
@@ -288,7 +293,7 @@ export default function ReferencesPage() {
 
             <Reveal delay={0.2}>
               <div className="mt-8 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <Building2 className="size-8 shrink-0 text-navy-800" />
+                <Building2 className="size-8 shrink-0 text-brand-800" />
                 <p className="text-sm leading-relaxed text-slate-600">
                   <span className="font-semibold text-slate-900">
                     Villes d&apos;intervention :
@@ -302,11 +307,6 @@ export default function ReferencesPage() {
           </div>
         </div>
       </Section>
-
-      <CtaPanel
-        title="Ajoutez votre organisation à nos références"
-        lead="Rejoignez les institutions qui ont fait le choix d'une énergie fiable : étude gratuite, devis transparent, installation certifiée."
-      />
     </>
   );
 }

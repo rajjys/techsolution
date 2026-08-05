@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { WhatsAppIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/section";
-import { navLinks, offices, site } from "@/lib/site";
+import { footerLinks, offices, site } from "@/lib/site";
 import { services } from "@/lib/data/services";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
@@ -177,7 +177,7 @@ export function Footer() {
           <nav aria-label="Navigation pied de page" className="lg:pr-12">
             <ColumnTitle>Navigation</ColumnTitle>
             <ul className="mt-5 space-y-1 text-sm lg:text-[15px]">
-              {navLinks.map((link) => (
+              {footerLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

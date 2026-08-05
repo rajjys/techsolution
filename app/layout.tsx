@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0B192C",
+  themeColor: "#0B0A33",
 };
 
 const organizationJsonLd = {
@@ -104,7 +104,7 @@ export default function RootLayout({
         </noscript>
         <a
           href="#contenu"
-          className="sr-only z-[100] rounded-xl bg-navy-950 px-5 py-3 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[100] rounded-xl bg-brand-950 px-5 py-3 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           Aller au contenu principal
         </a>

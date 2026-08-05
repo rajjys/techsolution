@@ -33,11 +33,12 @@ export default async function ContactPage({
   return (
     <>
       <PageHero
+        breadcrumb={[{ label: "Contact" }]}
         eyebrow="Contact"
         title={
           <>
             Parlons de votre{" "}
-            <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
+            <span className="text-brand-600">
               projet énergétique
             </span>
           </>
@@ -54,7 +55,7 @@ export default async function ContactPage({
                 href={`tel:${site.phone}`}
                 className="group flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-soft"
               >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-navy-950 transition-colors group-hover:bg-navy-800">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950 transition-colors group-hover:bg-brand-800">
                   <Phone className="size-6 text-solar-500" />
                 </span>
                 <span>
@@ -73,7 +74,7 @@ export default async function ContactPage({
                 href={`mailto:${site.email}`}
                 className="group flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-soft"
               >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-navy-950 transition-colors group-hover:bg-navy-800">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950 transition-colors group-hover:bg-brand-800">
                   <Mail className="size-6 text-solar-500" />
                 </span>
                 <span className="min-w-0">
@@ -121,7 +122,7 @@ export default async function ContactPage({
             <Reveal delay={0.18}>
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
                 <div className="flex items-start gap-5">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-navy-950">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950">
                     <MapPin className="size-6 text-solar-500" />
                   </span>
                   <div>

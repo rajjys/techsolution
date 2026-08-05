@@ -52,12 +52,12 @@ export function KitsCatalogue() {
               className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card transition-shadow hover:shadow-soft"
             >
               {/* Bandeau puissance */}
-              <div className="relative flex items-center justify-between gap-3 bg-navy-950 px-6 py-5">
+              <div className="relative flex items-center justify-between gap-3 bg-brand-950 px-6 py-5">
                 <div>
                   <p className="font-display text-2xl font-bold text-white">
                     {kit.power}
                   </p>
-                  <p className="text-xs font-medium text-navy-200">
+                  <p className="text-xs font-medium text-brand-200">
                     {kit.phase}
                   </p>
                 </div>
@@ -65,7 +65,7 @@ export function KitsCatalogue() {
                   <Sun className="size-6 text-solar-500" />
                 </span>
                 {kit.featured ? (
-                  <span className="absolute -top-0 right-0 inline-flex items-center gap-1 rounded-bl-xl bg-solar-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-navy-950">
+                  <span className="absolute -top-0 right-0 inline-flex items-center gap-1 rounded-bl-xl bg-solar-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-slate-900">
                     <Sparkles className="!size-3" />
                     Populaire
                   </span>
@@ -102,11 +102,11 @@ export function KitsCatalogue() {
                 </div>
 
                 <div className="mt-6 flex items-center gap-2 border-t border-slate-100 pt-5">
-                  <span className="text-sm font-bold text-navy-900">
+                  <span className="text-sm font-bold text-brand-900">
                     Sur devis
                   </span>
                   <div className="ml-auto flex items-center gap-2">
-                    <Button size="sm" variant="secondary" asChild>
+                    <Button size="sm" variant="card-outline" asChild>
                       <a
                         href={buildProductWhatsAppLink(kit.name)}
                         target="_blank"
@@ -116,7 +116,7 @@ export function KitsCatalogue() {
                         <WhatsAppIcon className="!size-4 text-[#25D366]" />
                       </a>
                     </Button>
-                    <Button size="sm" asChild>
+                    <Button size="sm" variant="card" asChild>
                       <Link href={`/contact?produit=${encodeURIComponent(kit.name)}`}>
                         Devis
                         <ArrowRight className="!size-3.5" />

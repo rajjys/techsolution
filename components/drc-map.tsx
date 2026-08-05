@@ -63,7 +63,7 @@ function computeDots(): Dot[] {
 const DOTS = computeDots();
 
 const TONE_FILL: Record<Dot["tone"], string> = {
-  base: "#C7D7EA", // navy-200
+  base: "#C7D7EA", // brand-200
   near: "#FFD34D", // solar-300
   hot: "#FFB800", // solar-500
 };
@@ -153,7 +153,7 @@ export function DrcMap({
                   x={x + city.labelDx}
                   y={y + city.labelDy}
                   textAnchor={city.labelAnchor}
-                  className="fill-navy-950 font-sans text-[13px] font-bold"
+                  className="fill-brand-950 font-sans text-[13px] font-bold"
                   paintOrder="stroke"
                   stroke="#FFFFFF"
                   strokeWidth={4.5}
@@ -173,11 +173,11 @@ export function DrcMap({
             Sites d&apos;intervention livrés
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-block size-3 rounded-full border-2 border-navy-400 bg-white" />
+            <span className="inline-block size-3 rounded-full border-2 border-brand-400 bg-white" />
             Villes repères
           </span>
           <span className="inline-flex items-center gap-2">
-            <span className="inline-block size-3 rounded-full bg-navy-200" />
+            <span className="inline-block size-3 rounded-full bg-brand-200" />
             Zone d&apos;intervention — 26 provinces
           </span>
         </div>

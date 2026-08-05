@@ -8,13 +8,14 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-transparent bg-navy-950 text-white",
-        solar: "border-transparent bg-solar-500 text-navy-950",
+        default: "border-transparent bg-brand-950 text-white",
+        solar: "border-transparent bg-solar-500 text-slate-900",
         "solar-soft": "border-solar-500/30 bg-solar-50 text-solar-800",
-        navy: "border-navy-200 bg-navy-50 text-navy-800",
+        brand: "border-brand-200 bg-brand-50 text-brand-800",
+        ember: "border-ember-200 bg-ember-50 text-ember-800",
         outline: "border-slate-200 bg-white text-slate-700",
         "outline-light": "border-white/25 bg-white/10 text-white backdrop-blur",
-        success: "border-emerald-200 bg-emerald-50 text-emerald-700",
+        muted: "border-slate-200 bg-slate-100 text-slate-700",
       },
     },
     defaultVariants: {

@@ -134,7 +134,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
 
       <div className="flex flex-1 flex-col p-6">
         {/* Ancre de la carte : la puissance joue le rôle du prix */}
-        <p className="font-display text-[34px] font-bold leading-none text-navy-950">
+        <p className="font-display text-[34px] font-bold leading-none text-slate-900">
           {kit.power}
         </p>
         {/* Deux lignes réservées : les fiches techniques restent alignées
@@ -158,7 +158,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
                 />
                 {label}
               </dt>
-              <dd className="whitespace-nowrap font-display text-[13.5px] font-bold text-navy-950">
+              <dd className="whitespace-nowrap font-display text-[13.5px] font-bold text-slate-900">
                 {kit.specs[key]}
               </dd>
             </div>
@@ -189,7 +189,7 @@ function KitCard({ kit }: { kit: ShowcaseKit }) {
           <Link
             href={`/contact?produit=${kit.slug}`}
             className={cn(
-              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
+              "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               kit.highlight
                 ? "bg-brand-600 text-white"
                 : "border-2 border-brand-400 text-brand-600",

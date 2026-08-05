@@ -2,8 +2,11 @@ import { WhatsAppIcon } from "@/components/icons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 /**
- * Bouton flottant WhatsApp — pastille discrète et premium
- * (sans pulsation), texte visible dès sm.
+ * Bouton flottant WhatsApp — pastille au repos, libellé déplié au survol.
+ *
+ * Le libellé s'ouvre vers la gauche : le bord droit étant ancré, la pastille
+ * ne bouge pas sous le curseur. Masqué sous lg, où l'accès WhatsApp vit déjà
+ * dans le menu.
  */
 export function WhatsAppFab() {
   return (
@@ -12,13 +15,16 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Nous contacter sur WhatsApp"
-      className="fixed bottom-7 right-7 z-40 hidden items-center gap-3 rounded-full border border-slate-200/80 bg-white/95 py-2.5 pl-5 pr-2.5 shadow-lift backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 lg:flex"
+      className="group fixed bottom-6 right-6 z-40 hidden items-center rounded-full bg-[#25D366] shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 lg:inline-flex"
     >
-      <span className="text-sm font-semibold text-slate-800">
-        Nous contacter sur WhatsApp
+      <span
+        aria-hidden="true"
+        className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold text-white opacity-0 transition-all duration-300 ease-out group-hover:max-w-[14rem] group-hover:opacity-100 group-focus-visible:max-w-[14rem] group-focus-visible:opacity-100"
+      >
+        <span className="block pl-5">Nous contacter sur WhatsApp</span>
       </span>
-      <span className="flex size-9 items-center justify-center rounded-full bg-[#25D366]">
-        <WhatsAppIcon className="size-5 text-white" />
+      <span className="grid size-14 shrink-0 place-items-center">
+        <WhatsAppIcon className="size-7 text-white" />
       </span>
     </a>
   );

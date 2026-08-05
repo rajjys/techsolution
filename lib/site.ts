@@ -54,11 +54,20 @@ export type NavLink = {
   href: string;
 };
 
+/**
+ * Navigation principale — sans « Contact » : l'appel à l'action du header,
+ * le bouton flottant et la conclusion du pied de page y mènent déjà.
+ */
 export const navLinks: NavLink[] = [
   { label: "Services", href: "/services" },
   { label: "Produits", href: "/produits" },
   { label: "Références", href: "/references" },
   { label: "À propos", href: "/about" },
+];
+
+/** Pied de page — le plan du site y reste complet, Contact compris. */
+export const footerLinks: NavLink[] = [
+  ...navLinks,
   { label: "Contact", href: "/contact" },
 ];
 

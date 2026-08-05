@@ -40,10 +40,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Toujours visible quand le menu mobile est ouvert
-  React.useEffect(() => {
-    if (mobileOpen) setHidden(false);
-  }, [mobileOpen]);
+  /**
+   * Le menu s'ouvre : on réaffiche l'en-tête. C'est un effet de bord de
+   * l'interaction, pas une synchronisation d'état — donc un gestionnaire
+   * d'évènement, pas un `useEffect` (qui provoquait un rendu en cascade).
+   */
+  const handleMenuOpenChange = (open: boolean) => {
+    setMobileOpen(open);
+    if (open) setHidden(false);
+  };
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -56,7 +61,7 @@ export function Header() {
       )}
     >
       {/* Barre utilitaire */}
-      <div className="hidden bg-navy-950 text-navy-100 lg:block">
+      <div className="hidden bg-brand-950 text-brand-100 lg:block">
         <div className="container flex h-9 items-center justify-center text-xs xl:!max-w-[1304px]">
           <div className="flex items-center gap-6">
             <a
@@ -107,8 +112,8 @@ export function Header() {
                 className={cn(
                   "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
                   isActive(link.href)
-                    ? "text-navy-950"
-                    : "text-slate-600 hover:bg-navy-50 hover:text-navy-950",
+                    ? "text-slate-900"
+                    : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
                 )}
               >
                 {link.label}
@@ -120,18 +125,13 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
-            <Link
-              href="/contact"
-              className="rounded-xl bg-brand-700 px-4 py-3 text-base font-semibold shadow-sm text-white transition-all duration-200 
-              hover:-translate-y-0.5 hover:shadow-lg hover:ring-4 hover:ring-offset-1 hover:ring-brand-200 
-              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
-            >
-              Demander un devis
-            </Link>
+            <Button variant="nav" size="sm" className="py-3 text-base" asChild>
+              <Link href="/contact">Demander un devis</Link>
+            </Button>
           </div>
 
           {/* Menu mobile */}
-          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <Sheet open={mobileOpen} onOpenChange={handleMenuOpenChange}>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
@@ -168,7 +168,7 @@ export function Header() {
                       "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
                       isActive(link.href)
                         ? "bg-brand-600 text-white"
-                        : "text-slate-700 hover:bg-navy-50",
+                        : "text-slate-700 hover:bg-brand-50",
                     )}
                   >
                     {link.label}
@@ -183,14 +183,15 @@ export function Header() {
               </nav>
 
               <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button variant="brand" className="w-full" asChild>
+                <Button variant="nav" block asChild>
                   <Link href="/contact" onClick={() => setMobileOpen(false)}>
                     Demander un devis gratuit
                   </Link>
                 </Button>
                 <Button
-                  variant="outline"
-                  className="w-full border-[#25D366] bg-white text-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366]"
+                  variant="card-outline"
+                  block
+                  className="border-[#25D366] bg-white text-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366] hover:ring-[#25D366]/25"
                   asChild
                 >
                   <a
@@ -206,7 +207,7 @@ export function Header() {
                   <a
                     href={`tel:${site.phone}`}
                     className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
-                    border border-slate-200 px-4 py-3 text-sm font-semibold text-navy-900 transition-colors hover:border-brand-300 hover:bg-navy-50 whitespace-nowrap"
+                    border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-900 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
                   >
                     <Phone className="size-4 text-brand-600" />
                     {site.phoneDisplay}
@@ -214,7 +215,7 @@ export function Header() {
                   <a
                     href={`mailto:${site.email}`}
                     className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
-                    border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-navy-50 whitespace-nowrap"
+                    border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
                   >
                     <Mail className="size-4 text-brand-600" />
                     {site.email}

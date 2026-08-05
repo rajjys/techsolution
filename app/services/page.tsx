@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, CheckCircle2 } from "lucide-react";
 
-import { CtaPanel } from "@/components/cta-panel";
+import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeading } from "@/components/section";
@@ -28,11 +28,12 @@ export default function ServicesPage() {
   return (
     <>
       <PageHero
+        breadcrumb={[{ label: "Services" }]}
         eyebrow="Services & Expertise"
         title={
           <>
             Des capacités d&apos;ingénierie{" "}
-            <span className="bg-gradient-to-r from-solar-500 to-solar-400 bg-clip-text text-transparent">
+            <span className="text-brand-600">
               complètes
             </span>{" "}
             pour vos infrastructures
@@ -49,9 +50,9 @@ export default function ServicesPage() {
               <a
                 key={service.slug}
                 href={`#${service.slug}`}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-navy-100 backdrop-blur transition-colors hover:border-solar-500/60 hover:bg-solar-500/10 hover:text-solar-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+                className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-card transition-all duration-200 hover:border-brand-300 hover:text-brand-700 hover:ring-4 hover:ring-brand-100 hover:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
               >
-                <service.icon className="size-4 text-solar-500" />
+                <service.icon className="size-4 text-solar-600" />
                 {service.shortTitle}
               </a>
             ))}
@@ -79,12 +80,12 @@ export default function ServicesPage() {
                       className={cn(
                         "absolute -inset-3 rounded-[2rem] blur-lg",
                         reversed
-                          ? "bg-gradient-to-tl from-solar-200/60 to-navy-200/40"
-                          : "bg-gradient-to-tr from-navy-200/50 to-solar-200/50",
+                          ? "bg-gradient-to-tl from-solar-200/60 to-brand-200/40"
+                          : "bg-gradient-to-tr from-brand-200/50 to-solar-200/50",
                       )}
                       aria-hidden="true"
                     />
-                    <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-navy-950/10">
+                    <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-brand-950/10">
                       <Image
                         src={service.image}
                         alt={service.imageAlt}
@@ -94,11 +95,11 @@ export default function ServicesPage() {
                         className="h-[300px] w-full object-cover sm:h-[400px]"
                       />
                       <div
-                        className="absolute inset-0 bg-gradient-to-t from-navy-950/35 to-transparent"
+                        className="absolute inset-0 bg-gradient-to-t from-brand-950/35 to-transparent"
                         aria-hidden="true"
                       />
                       <span className="absolute left-4 top-4 inline-flex size-12 items-center justify-center rounded-xl bg-white/95 shadow-md backdrop-blur">
-                        <service.icon className="size-6 text-navy-900" />
+                        <service.icon className="size-6 text-brand-900" />
                       </span>
                     </div>
                   </div>
@@ -106,6 +107,7 @@ export default function ServicesPage() {
 
                 <div className={cn(reversed && "lg:order-1")}>
                   <SectionHeading
+                    size="block"
                     eyebrow={`Expertise ${String(index + 1).padStart(2, "0")}`}
                     title={service.title}
                     lead={service.description}
@@ -127,7 +129,7 @@ export default function ServicesPage() {
 
                   <Reveal delay={0.18}>
                     <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
-                      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-navy-800">
+                      <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-brand-800">
                         <BadgeCheck className="size-4 text-solar-600" />
                         Références livrées
                       </p>
@@ -169,12 +171,8 @@ export default function ServicesPage() {
       </div>
 
       {/* Processus */}
-      <Section className="relative overflow-hidden bg-navy-950">
-        <div className="absolute inset-0 bg-grid-navy" aria-hidden="true" />
-        <div
-          className="absolute -right-32 top-0 size-[420px] rounded-full bg-solar-500/10 blur-3xl"
-          aria-hidden="true"
-        />
+      <Section className="relative isolate overflow-hidden bg-brand-950">
+        <Glow variant="dark" corner="top-right" />
         <div className="container relative">
           <SectionHeading
             align="center"
@@ -194,7 +192,7 @@ export default function ServicesPage() {
                   <h3 className="mt-4 text-lg font-bold text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-navy-100/80">
+                  <p className="mt-2.5 text-sm leading-relaxed text-brand-100/80">
                     {step.description}
                   </p>
                   {index < processSteps.length - 1 ? (
@@ -243,11 +241,6 @@ export default function ServicesPage() {
           </Reveal>
         </div>
       </Section>
-
-      <CtaPanel
-        title="Votre site mérite une énergie fiable et durable"
-        lead="Décrivez-nous votre besoin : nos ingénieurs planifient l'audit gratuit de votre site et vous remettent un dimensionnement précis."
-      />
     </>
   );
 }

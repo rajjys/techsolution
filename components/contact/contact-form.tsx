@@ -289,7 +289,6 @@ export function ContactForm({
       <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
         <Button
           type="submit"
-          variant="solar"
           size="lg"
           disabled={status === "loading"}
           className="sm:min-w-[240px]"

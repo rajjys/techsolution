@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 
-import { CtaPanel } from "@/components/cta-panel";
+import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
@@ -41,26 +41,22 @@ export default async function CaseStudyPage({
   return (
     <>
       {/* En-tête */}
-      <section className="relative overflow-hidden bg-navy-950">
-        <div className="absolute inset-0 bg-grid-navy" aria-hidden="true" />
-        <div
-          className="absolute -right-32 -top-40 size-[440px] rounded-full bg-solar-500/15 blur-3xl"
-          aria-hidden="true"
-        />
+      <section className="relative isolate overflow-hidden bg-brand-950">
+        <Glow variant="dark" corner="top-right" />
         <div className="container relative py-14 md:py-20">
           <Reveal mode="mount" className="max-w-3xl">
             <Link
               href="/references"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-navy-200 transition-colors hover:text-solar-500"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-200 transition-colors hover:text-solar-500"
             >
               <ArrowLeft className="size-4" />
               Toutes nos références
             </Link>
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center rounded-full bg-solar-500 px-3 py-1 text-xs font-bold text-navy-950">
+              <span className="inline-flex items-center rounded-full bg-solar-500 px-3 py-1 text-xs font-bold text-slate-900">
                 {study.category}
               </span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-navy-100">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-100">
                 <MapPin className="size-4 text-solar-500" />
                 {study.city} — {study.province}
               </span>
@@ -68,7 +64,7 @@ export default async function CaseStudyPage({
             <h1 className="mt-4 text-3xl font-bold leading-[1.12] text-white md:text-5xl">
               {study.title}
             </h1>
-            <p className="mt-4 text-lg text-navy-100/85">{study.client}</p>
+            <p className="mt-4 text-lg text-brand-100/85">{study.client}</p>
           </Reveal>
         </div>
       </section>
@@ -76,7 +72,7 @@ export default async function CaseStudyPage({
       <Section className="bg-white">
         <div className="container grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <div>
-            <Reveal className="overflow-hidden rounded-3xl shadow-soft ring-1 ring-navy-950/10">
+            <Reveal className="overflow-hidden rounded-3xl shadow-soft ring-1 ring-brand-950/10">
               <Image
                 src={study.image}
                 alt={study.imageAlt}
@@ -122,7 +118,7 @@ export default async function CaseStudyPage({
                 <p className="text-sm text-slate-600">
                   Un projet similaire en vue ?
                 </p>
-                <Button className="mt-4 w-full" asChild>
+                <Button block className="mt-4" asChild>
                   <Link
                     href={`/contact?produit=${study.slug}`}
                   >
@@ -135,11 +131,6 @@ export default async function CaseStudyPage({
           </Reveal>
         </div>
       </Section>
-
-      <CtaPanel
-        title="Votre site mérite la même fiabilité"
-        lead="Décrivez-nous votre besoin : nos ingénieurs planifient l'audit gratuit de votre site et vous remettent un dimensionnement précis."
-      />
     </>
   );
 }

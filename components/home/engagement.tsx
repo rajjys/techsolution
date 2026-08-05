@@ -34,10 +34,10 @@ export function Engagement() {
         <Reveal className="relative order-2 lg:order-1">
           <div className="relative">
             <div
-              className="absolute -inset-3 rounded-[2rem] bg-gradient-to-tr from-navy-200/50 to-solar-200/50 blur-lg"
+              className="absolute -inset-3 rounded-[2rem] bg-gradient-to-tr from-brand-200/50 to-solar-200/50 blur-lg"
               aria-hidden="true"
             />
-            <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-navy-950/10">
+            <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-brand-950/10">
               <Image
                 src="/gallery-web/engagement.jpg"
                 alt="Équipe Tech Solution installant une centrale solaire en RDC"
@@ -64,7 +64,7 @@ export function Engagement() {
             title={
               <>
                 Une ingénierie au service de la{" "}
-                <span className="bg-gradient-to-r from-solar-600 to-solar-500 bg-clip-text text-transparent">
+                <span className="text-brand-600">
                   révolution énergétique
                 </span>
               </>
@@ -76,7 +76,7 @@ export function Engagement() {
             {pillars.map((pillar, index) => (
               <Reveal key={pillar.title} delay={0.08 * (index + 1)}>
                 <div className="flex gap-5">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-navy-950 shadow-sm">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-950 shadow-sm">
                     <pillar.icon className="size-5 text-solar-500" />
                   </span>
                   <div>
