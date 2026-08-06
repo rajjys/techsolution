@@ -16,6 +16,13 @@ export const site = {
   email: "info@techsolution.cd",
   base: "Bunia, Province de l'Ituri — RDC",
   hours: "Lun. – Sam., 8h00 – 17h00",
+  /**
+   * Farde technique publique — téléchargeable sans formulaire. C'est une
+   * copie de docs/FARDE TECH SOLUTION.pdf : la version publique est destinée
+   * à être expurgée (coordonnées des clients notamment), l'originale reste
+   * la source interne.
+   */
+  fardeUrl: "/farde-tech-solution.pdf",
   foundedYear: 2024,
   approach: "100% client",
 } as const;

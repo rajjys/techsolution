@@ -179,6 +179,8 @@ export const clients: Client[] = [
 
 export type Project = {
   title: string;
+  /** Secteur du client — facette de filtrage de la liste des réalisations. */
+  sectorGroup: SectorGroup;
   /**
    * Slug de l'étude de cas correspondante, quand ce projet en a une : c'est
    * ce lien qui évite de présenter deux fois la même réalisation sans dire
@@ -202,6 +204,7 @@ export const projects: Project[] = [
   {
     title: "Centrale solaire du bureau administratif du territoire (PDL-145T)",
     client: "État congolais — programme PDL-145T",
+    sectorGroup: "public",
     caseStudy: "pdl-145t-mahagi",
     city: "Mahagi",
     province: "Ituri",
@@ -210,6 +213,7 @@ export const projects: Project[] = [
   {
     title: "Rénovation électrique et centrale solaire de l'agence bancaire",
     client: "CADECO",
+    sectorGroup: "banque",
     caseStudy: "cadeco-mahagi",
     city: "Mahagi",
     province: "Ituri",
@@ -218,6 +222,7 @@ export const projects: Project[] = [
   {
     title: "Installation backup du site RTO",
     client: "LTJ",
+    sectorGroup: "prive",
     city: "Bunia",
     province: "Ituri",
     category: "Backup",
@@ -225,6 +230,7 @@ export const projects: Project[] = [
   {
     title: "Installation backup du site RTO",
     client: "LTJ",
+    sectorGroup: "prive",
     caseStudy: "ltj-butembo",
     city: "Butembo",
     province: "Nord-Kivu",
@@ -233,6 +239,7 @@ export const projects: Project[] = [
   {
     title: "Système solaire — salle du royaume",
     client: "LTJ",
+    sectorGroup: "prive",
     city: "Goma",
     province: "Nord-Kivu",
     category: "Solaire",
@@ -240,6 +247,7 @@ export const projects: Project[] = [
   {
     title: "Système solaire — salle du royaume",
     client: "LTJ",
+    sectorGroup: "prive",
     city: "Bunia",
     province: "Ituri",
     category: "Solaire",
@@ -247,6 +255,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du bureau pays",
     client: "ALIMA-RDC",
+    sectorGroup: "ong",
     city: "Bunia",
     province: "Ituri",
     category: "Solaire",
@@ -254,6 +263,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du bureau",
     client: "CARE International",
+    sectorGroup: "ong",
     city: "Bunia",
     province: "Ituri",
     category: "Solaire",
@@ -261,6 +271,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du bureau",
     client: "LSC",
+    sectorGroup: "ong",
     caseStudy: "lsc-numbi",
     city: "Numbi",
     province: "Sud-Kivu",
@@ -269,6 +280,7 @@ export const projects: Project[] = [
   {
     title: "Système d'alarme du bureau",
     client: "Save the Children",
+    sectorGroup: "ong",
     city: "Bunia",
     province: "Ituri",
     category: "Sécurité",
@@ -276,6 +288,7 @@ export const projects: Project[] = [
   {
     title: "Maintenance climatisation & installations de l'agence",
     client: "Afriland First Bank",
+    sectorGroup: "banque",
     caseStudy: "afriland-bunia",
     city: "Bunia",
     province: "Ituri",
@@ -284,6 +297,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — alimentation du serveur télécom",
     client: "GRECOM-RDC",
+    sectorGroup: "telecom",
     caseStudy: "grecom-goma",
     city: "Goma",
     province: "Nord-Kivu",
@@ -292,6 +306,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — Radio La Colombe",
     client: "Radio La Colombe",
+    sectorGroup: "telecom",
     city: "Mahagi",
     province: "Ituri",
     category: "Télécoms",
@@ -299,6 +314,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — Radio Canal Révélation",
     client: "Radio Canal Révélation",
+    sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
     category: "Télécoms",
@@ -306,6 +322,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — Radio Amani",
     client: "Radio Amani",
+    sectorGroup: "telecom",
     city: "Aveba",
     province: "Ituri",
     category: "Télécoms",
@@ -313,6 +330,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — RTNC",
     client: "RTNC Bunia",
+    sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
     category: "Télécoms",
@@ -320,6 +338,7 @@ export const projects: Project[] = [
   {
     title: "Kit solaire — Radio RTFi",
     client: "RTFi Bunia",
+    sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
     category: "Télécoms",
