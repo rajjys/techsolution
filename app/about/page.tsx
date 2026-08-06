@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Eye, Target } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Engagement } from "@/components/about/engagement";
 import { Glow } from "@/components/glow";
@@ -38,6 +38,10 @@ export default function AboutPage() {
           </>
         }
         lead={`Tech Solution est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut.`}
+        image={{
+          src: "/gallery-web/technicien-intervention.jpg",
+          alt: "Technicien Tech Solution intervenant dans une armoire électrique",
+        }}
       />
 
       {/* Raison d'être — le seul registre chaud hors de l'accueil */}
@@ -63,42 +67,37 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <div className="mx-auto mt-12 grid max-w-4xl gap-5 md:grid-cols-2 lg:mt-16">
-            <Reveal>
-              <div className="h-full rounded-3xl border border-slate-200 bg-white/80 p-7 backdrop-blur lg:p-8">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-brand-950">
-                  <Eye className="size-5 text-solar-400" aria-hidden="true" />
-                </span>
-                <h2 className="mt-5 text-xl font-bold text-slate-900">
-                  Notre vision
-                </h2>
-                <p className="mt-3 leading-relaxed text-slate-600">
-                  Devenir un acteur incontournable de la transformation
-                  énergétique et technologique en Afrique, avec des solutions
-                  durables, accessibles et au service des communautés.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <div className="h-full rounded-3xl border border-slate-200 bg-white/80 p-7 backdrop-blur lg:p-8">
-                <span className="flex size-11 items-center justify-center rounded-xl bg-brand-950">
-                  <Target
-                    className="size-5 text-solar-400"
-                    aria-hidden="true"
-                  />
-                </span>
-                <h2 className="mt-5 text-xl font-bold text-slate-900">
-                  Notre mission
-                </h2>
-                <p className="mt-3 leading-relaxed text-slate-600">
-                  Fournir des solutions fiables en énergie solaire et en
-                  technologies de proximité, tout en contribuant activement à la
-                  protection de l&apos;environnement et à la lutte contre la
-                  déforestation.
-                </p>
-              </div>
-            </Reveal>
+          {/*
+            Deux colonnes séparées par un filet plutôt que deux encadrés à
+            pictogramme : dans un bandeau éditorial, une boîte grise cassait le
+            registre, et l'icône n'ajoutait rien que le libellé ne dise déjà.
+          */}
+          <div className="mx-auto mt-14 grid max-w-4xl gap-10 border-t border-slate-300/70 pt-10 md:grid-cols-2 md:gap-14 md:divide-x md:divide-slate-300/70 lg:mt-20">
+            {[
+              {
+                label: "Notre vision",
+                text: "Devenir un acteur incontournable de la transformation énergétique et technologique en Afrique, avec des solutions durables, accessibles et au service des communautés.",
+              },
+              {
+                label: "Notre mission",
+                text: "Fournir des solutions fiables en énergie solaire et en technologies de proximité, tout en contribuant activement à la protection de l'environnement et à la lutte contre la déforestation.",
+              },
+            ].map((block, index) => (
+              <Reveal key={block.label} delay={index * 0.08}>
+                <div className={index === 1 ? "md:pl-14" : undefined}>
+                  <h2 className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+                    <span
+                      className="h-[3px] w-8 shrink-0 rounded-full bg-[#C67C36]"
+                      aria-hidden="true"
+                    />
+                    {block.label}
+                  </h2>
+                  <p className="mt-5 text-lg leading-relaxed text-slate-700 sm:text-xl sm:leading-[1.6]">
+                    {block.text}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </Section>

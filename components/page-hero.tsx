@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
@@ -25,6 +26,7 @@ export function PageHero({
   lead,
   breadcrumb,
   compact = false,
+  image,
   children,
 }: {
   eyebrow: string;
@@ -37,6 +39,13 @@ export function PageHero({
    * doit apparaître sans faire défiler.
    */
   compact?: boolean;
+  /**
+   * Illustration posée **à côté** du texte, jamais dessous : une photo de
+   * chantier porte souvent la marque ou un visage, qu'un voile de lisibilité
+   * viendrait masquer. Colonne à part, donc, qui passe sous le texte en
+   * dessous de `lg`.
+   */
+  image?: { src: string; alt: string };
   children?: React.ReactNode;
 }) {
   const trail = [{ label: "Accueil", href: "/" }, ...(breadcrumb ?? [])];
@@ -80,19 +89,50 @@ export function PageHero({
           </nav>
         ) : null}
 
-        <Reveal mode="mount" className="max-w-3xl">
-          <Eyebrow>{eyebrow}</Eyebrow>
-          <h1 className="mt-5 text-balance text-[30px] font-bold leading-[1.15] tracking-[-0.01em] text-slate-900 sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[56px] lg:leading-[1.06]">
-            {title}
-          </h1>
-          {lead ? (
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              {lead}
-            </p>
-          ) : null}
-        </Reveal>
+        <div
+          className={cn(
+            image &&
+              "grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 xl:gap-20",
+          )}
+        >
+          <div className="min-w-0">
+            <Reveal mode="mount" className={image ? undefined : "max-w-3xl"}>
+              <Eyebrow>{eyebrow}</Eyebrow>
+              <h1
+                className={cn(
+                  "mt-5 text-balance font-bold leading-[1.15] tracking-[-0.01em] text-slate-900",
+                  image
+                    ? "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px] lg:leading-[1.08]"
+                    : "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[56px] lg:leading-[1.06]",
+                )}
+              >
+                {title}
+              </h1>
+              {lead ? (
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                  {lead}
+                </p>
+              ) : null}
+            </Reveal>
 
-        {children}
+            {children}
+          </div>
+
+          {image ? (
+            <Reveal mode="mount" delay={0.12} className="min-w-0">
+              <div className="relative aspect-[3/2] overflow-hidden rounded-3xl shadow-soft ring-1 ring-slate-900/5">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  className="object-cover object-center"
+                />
+              </div>
+            </Reveal>
+          ) : null}
+        </div>
       </div>
     </section>
   );

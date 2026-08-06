@@ -2,91 +2,89 @@ import Image from "next/image";
 import { Leaf, MapPin, Medal } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
-import { Section, SectionHeading } from "@/components/section";
+import { SectionHeading } from "@/components/section";
 
 const pillars = [
   {
     icon: Medal,
     title: "Excellence certifiée",
-    description:
-      "Qualité, performance et durabilité garanties sur chaque installation — aux standards des institutions et des bailleurs.",
+    description: "Aux standards des institutions et des bailleurs.",
   },
   {
     icon: MapPin,
     title: "Proximité locale",
-    description:
-      "Des solutions pensées pour les réalités congolaises, déployées par des équipes présentes sur le terrain.",
+    description: "Des équipes présentes sur le terrain, pas à distance.",
   },
   {
     icon: Leaf,
     title: "Engagement durable",
-    description:
-      "Promotion des énergies renouvelables et lutte active contre la déforestation, au cœur de notre mission.",
+    description: "Du renouvelable contre la déforestation, pas un argument.",
   },
 ];
 
 /**
- * Ce qui ne se voit pas sur une facture — l'image du chantier d'un côté,
- * les trois engagements de l'autre. Contenu de la farde officielle.
+ * Notre engagement — l'image occupe la moitié de la section et touche le bord
+ * de l'écran, comme les expertises de /services : une photo de chantier
+ * mérite une scène, pas une vignette flottante à côté d'un mur de texte.
  */
 export function Engagement() {
   return (
-    <Section className="overflow-hidden bg-white">
-      <div className="container grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-        <Reveal className="relative order-2 lg:order-1" y={30}>
-          <div className="relative overflow-hidden rounded-3xl shadow-soft ring-1 ring-slate-900/5">
-            <Image
-              src="/gallery-web/engagement.jpg"
-              alt="Équipe Tech Solution installant une centrale solaire en RDC"
-              width={1400}
-              height={933}
-              sizes="(max-width: 1024px) 100vw, 46vw"
-              className="h-[320px] w-full object-cover sm:h-[440px]"
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-brand-950/45 via-transparent to-transparent"
-              aria-hidden="true"
-            />
-            <figure className="absolute inset-x-5 bottom-5 rounded-2xl bg-white/95 p-5 shadow-md backdrop-blur sm:inset-x-7 sm:bottom-7">
-              <blockquote className="font-display text-[15px] font-bold leading-snug text-slate-900 sm:text-base">
-                « Bâtir un avenir où la technologie rime avec l&apos;écologie. »
-              </blockquote>
-              <figcaption className="mt-1.5 text-xs text-slate-500">
-                La ligne de conduite que nous nous sommes donnée
-              </figcaption>
-            </figure>
-          </div>
-        </Reveal>
+    <section
+      aria-labelledby="engagement-title"
+      className="relative isolate overflow-hidden bg-white lg:min-h-[34rem]"
+    >
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-slate-200"
+        aria-hidden="true"
+      />
 
-        <div className="order-1 lg:order-2">
-          <SectionHeading
-            rule
-            eyebrow="Notre engagement"
-            title="Une installation qui dure vaut mieux qu'une installation qui impressionne."
-            lead="Le matériel bon marché revient toujours plus cher : en pannes, en déplacements, en journées d'activité perdues. Nous dimensionnons pour la durée, et nous restons joignables après la mise en service."
-          />
+      <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:left-0 lg:aspect-auto lg:w-1/2">
+        <Image
+          src="/gallery-web/nzulo-station-eau-nord-kivu.jpg"
+          alt="Centrale solaire de la station de traitement d'eau de Nzulo, Nord-Kivu"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className="object-cover"
+        />
+      </div>
 
-          <div className="mt-10 space-y-7">
-            {pillars.map((pillar, index) => (
-              <Reveal key={pillar.title} delay={0.08 * (index + 1)}>
-                <div className="flex gap-5">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-950 shadow-sm">
-                    <pillar.icon className="size-5 text-solar-400" />
-                  </span>
-                  <div>
-                    <h3 className="text-base font-bold text-slate-900">
-                      {pillar.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
-                      {pillar.description}
-                    </p>
+      <div className="container relative">
+        <div className="grid lg:grid-cols-2">
+          <div className="py-12 sm:py-16 lg:col-start-2 lg:py-24 lg:pl-14 xl:pl-20">
+            <SectionHeading
+              id="engagement-title"
+              rule
+              eyebrow="Notre engagement"
+              title="Une installation qui dure vaut mieux qu'une installation qui impressionne."
+              lead="Le matériel bon marché revient toujours plus cher : en pannes, en déplacements, en journées perdues. Nous dimensionnons pour la durée."
+            />
+
+            <div className="mt-9 space-y-5 border-t border-dashed border-slate-300 pt-8">
+              {pillars.map((pillar, index) => (
+                <Reveal key={pillar.title} delay={0.08 * (index + 1)}>
+                  <div className="flex items-start gap-4">
+                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-100/60">
+                      <pillar.icon
+                        className="size-5 text-brand-700"
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <div className="min-w-0 pt-1">
+                      <h3 className="text-base font-bold text-slate-900">
+                        {pillar.title}
+                      </h3>
+                      <p className="mt-1 text-[15px] leading-relaxed text-slate-600">
+                        {pillar.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </Section>
+    </section>
   );
 }
