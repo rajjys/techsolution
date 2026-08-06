@@ -236,7 +236,14 @@ export function RealisationsList({ initialDomain }: { initialDomain?: string }) 
         </p>
       </div>
 
-      <Stagger className="divide-y divide-slate-100">
+      {/* `key` : la cascade ne se déclenche qu'une fois par montage. Sans
+          remontage, les lignes révélées par un changement de filtre restent
+          invisibles alors qu'elles occupent la place. */}
+      <Stagger
+        key={`${domain ?? "tous"}-${sector ?? "tous"}`}
+        gap={0.03}
+        className="divide-y divide-slate-100"
+      >
         {visible.map((project, index) => {
           /* Les projets documentés mènent à leur étude de cas ; les autres
              restent de simples lignes, sans fausse affordance. */

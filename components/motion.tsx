@@ -71,7 +71,15 @@ export function Reveal({
   );
 }
 
-/** Conteneur avec révélation en cascade des enfants directs. */
+/**
+ * Conteneur avec révélation en cascade des enfants directs.
+ *
+ * ⚠️ Liste dynamique : `whileInView` avec `once: true` ne se déclenche
+ * qu'une fois. Les enfants montés *après* (filtrage, pagination) héritent de
+ * l'état `hidden` et ne reçoivent jamais l'ordre d'apparaître — la place est
+ * prise, le contenu est invisible. Passer une `key` qui change avec le
+ * filtre pour forcer le remontage, ou renoncer à la cascade.
+ */
 export function Stagger({
   children,
   className,
