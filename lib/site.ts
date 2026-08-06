@@ -23,6 +23,14 @@ export const site = {
    * la source interne.
    */
   fardeUrl: "/farde-tech-solution.pdf",
+  /**
+   * Provinces où des installations ont été livrées, sur les 26 du pays.
+   * Chiffre déclaré par l'entreprise : les 17 réalisations publiées n'en
+   * documentent que trois (Ituri, Nord-Kivu, Sud-Kivu). Quand les six autres
+   * seront nommées, les passer à `active: true` dans lib/data/drc.ts et
+   * dériver ce nombre de là, pour que la carte les marque aussi.
+   */
+  provincesDelivered: 9,
   foundedYear: 2024,
   approach: "100% client",
 } as const;

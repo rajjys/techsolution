@@ -159,6 +159,18 @@ export function CountUp({
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const reduce = useReducedMotion();
 
+  /*
+   * Le rendu serveur porte la valeur finale : sans JavaScript, un compteur
+   * qui reste à « 0+ » annonce le contraire de ce qu'il devrait. On ne
+   * remet à zéro qu'une fois le script exécuté, avant que l'élément n'entre
+   * dans le champ de vision.
+   */
+  React.useEffect(() => {
+    const node = ref.current;
+    if (!node || reduce) return;
+    node.textContent = `0${suffix}`;
+  }, [reduce, suffix]);
+
   React.useEffect(() => {
     const node = ref.current;
     if (!node) return;
@@ -181,7 +193,8 @@ export function CountUp({
 
   return (
     <span ref={ref} className={cn("tabular-nums", className)}>
-      0{suffix}
+      {value}
+      {suffix}
     </span>
   );
 }

@@ -377,12 +377,3 @@ export const values = [
     description: "Travailler main dans la main avec partenaires et populations.",
   },
 ] as const;
-
-/**
- * Provinces où au moins une réalisation est documentée — dérivées des
- * projets, jamais saisies à la main : l'accueil et /references affichaient
- * deux chiffres différents (9 et 3) pour la même réalité.
- */
-export const deliveredProvinces = [
-  ...new Set(projects.map((project) => project.province)),
-];

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Eye, Target } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Eye, Target } from "lucide-react";
 
-import { Engagement } from "@/components/home/engagement";
-import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { Engagement } from "@/components/about/engagement";
+import { Glow } from "@/components/glow";
+import { CountUp, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeading } from "@/components/section";
+import { Button } from "@/components/ui/button";
 import { values } from "@/lib/data/clients";
-import { site } from "@/lib/site";
+import { metrics, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "À propos",
@@ -15,85 +18,171 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
+/** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */
+const DAYLIGHT =
+  "bg-[linear-gradient(184deg,#CE9A3A_0%,#C67C36_30%,#BB5F48_55%,#A15265_78%,#7E5382_100%)]";
+
 export default function AboutPage() {
   return (
     <>
       <PageHero
+        compact
         breadcrumb={[{ label: "À propos" }]}
         eyebrow="À propos"
         title={
           <>
-            Une ingénierie au service de la{" "}
+            Le problème n&apos;est pas le soleil.{" "}
             <span className="text-brand-600">
-              révolution énergétique
+              C&apos;est ce qui manque entre lui et vous.
             </span>
           </>
         }
-        lead={`Depuis ${site.foundedYear}, Tech Solution conçoit et déploie des solutions solaires et techniques fiables à travers la RDC — avec une exigence : des installations qui durent.`}
+        lead={`Tech Solution est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut.`}
       />
 
-      {/* Vision & Mission */}
-      <Section className="bg-white">
-        <div className="container grid gap-6 md:grid-cols-2 lg:gap-8">
-          <Reveal className="rounded-3xl border border-slate-200 bg-slate-50 p-8 lg:p-10">
-            <span className="flex size-12 items-center justify-center rounded-xl bg-brand-950">
-              <Eye className="size-6 text-solar-500" />
-            </span>
-            <h2 className="mt-6 text-2xl font-bold text-slate-900">
-              Notre vision
-            </h2>
-            <p className="mt-3 leading-relaxed text-slate-600">
-              Devenir un leader incontournable dans la transformation
-              énergétique et technologique en Afrique, en apportant des
-              solutions durables, accessibles et innovantes au service des
-              communautés.
-            </p>
+      {/* Raison d'être — le seul registre chaud hors de l'accueil */}
+      <Section className="relative isolate overflow-hidden bg-surface-warm">
+        <Glow variant="warm" />
+        <div className="container relative">
+          <Reveal>
+            <div className="mx-auto max-w-4xl">
+              <p
+                className={`text-balance bg-clip-text text-transparent ${DAYLIGHT} text-[26px] font-normal leading-[1.16] tracking-tight sm:text-[36px] md:text-[44px] lg:text-[52px]`}
+              >
+                Un pays qui reçoit chaque jour de quoi s&apos;éclairer plusieurs
+                fois, et qui achète pourtant son électricité au bidon.
+              </p>
+              <p className="mt-8 max-w-2xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg lg:mt-10">
+                Nous n&apos;avons pas monté cette entreprise pour vendre des
+                panneaux. Nous l&apos;avons montée parce que des bureaux, des
+                cliniques, des écoles et des stations de radio s&apos;arrêtent
+                chaque jour faute d&apos;une installation dimensionnée
+                correctement — et parce que remplacer un groupe électrogène par
+                un autre groupe électrogène n&apos;a jamais réglé le problème.
+              </p>
+            </div>
           </Reveal>
 
-          <Reveal delay={0.08} className="rounded-3xl border border-slate-200 bg-slate-50 p-8 lg:p-10">
-            <span className="flex size-12 items-center justify-center rounded-xl bg-brand-950">
-              <Target className="size-6 text-solar-500" />
-            </span>
-            <h2 className="mt-6 text-2xl font-bold text-slate-900">
-              Notre mission
-            </h2>
-            <p className="mt-3 leading-relaxed text-slate-600">
-              Fournir des solutions fiables en énergie solaire et en
-              technologies de proximité, tout en contribuant activement à la
-              protection de l&apos;environnement et à la lutte contre la
-              déforestation.
-            </p>
-          </Reveal>
+          <div className="mx-auto mt-12 grid max-w-4xl gap-5 md:grid-cols-2 lg:mt-16">
+            <Reveal>
+              <div className="h-full rounded-3xl border border-slate-200 bg-white/80 p-7 backdrop-blur lg:p-8">
+                <span className="flex size-11 items-center justify-center rounded-xl bg-brand-950">
+                  <Eye className="size-5 text-solar-400" aria-hidden="true" />
+                </span>
+                <h2 className="mt-5 text-xl font-bold text-slate-900">
+                  Notre vision
+                </h2>
+                <p className="mt-3 leading-relaxed text-slate-600">
+                  Devenir un acteur incontournable de la transformation
+                  énergétique et technologique en Afrique, avec des solutions
+                  durables, accessibles et au service des communautés.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="h-full rounded-3xl border border-slate-200 bg-white/80 p-7 backdrop-blur lg:p-8">
+                <span className="flex size-11 items-center justify-center rounded-xl bg-brand-950">
+                  <Target
+                    className="size-5 text-solar-400"
+                    aria-hidden="true"
+                  />
+                </span>
+                <h2 className="mt-5 text-xl font-bold text-slate-900">
+                  Notre mission
+                </h2>
+                <p className="mt-3 leading-relaxed text-slate-600">
+                  Fournir des solutions fiables en énergie solaire et en
+                  technologies de proximité, tout en contribuant activement à la
+                  protection de l&apos;environnement et à la lutte contre la
+                  déforestation.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </Section>
+
+      {/* Les chiffres — le sombre est la couleur de la preuve */}
+      <Section className="relative isolate overflow-hidden bg-brand-900">
+        <Glow variant="dark" corner="top-right" />
+        <div className="container relative">
+          <SectionHeading
+            align="center"
+            onDark
+            eyebrow={`Depuis ${site.foundedYear}`}
+            title="Ce que ça donne, concrètement."
+          />
+
+          <Stagger className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 lg:mt-16 lg:grid-cols-4 lg:gap-y-0 lg:divide-x lg:divide-white/10">
+            {metrics.map((metric) => (
+              <StaggerItem key={metric.label} className="lg:px-6">
+                <p className="font-display text-4xl font-bold tabular-nums text-solar-400 sm:text-5xl">
+                  <CountUp value={metric.value} suffix={metric.suffix} />
+                </p>
+                <h3 className="mt-3 text-base font-bold text-white lg:text-lg">
+                  {metric.label}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-brand-200">
+                  {metric.detail}
+                </p>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </Section>
 
       <Engagement />
 
-      {/* Valeurs */}
-      <Section className="bg-white">
-        <div className="container">
+      {/* Valeurs — sept principes, en fiches compactes */}
+      <Section className="relative isolate bg-surface-cool">
+        <Glow variant="cool" corner="bottom-left" />
+        <div className="container relative">
           <SectionHeading
-            align="center"
+            rule
             eyebrow="Nos valeurs"
-            title="Ce qui guide chacune de nos interventions"
-            lead="Sept principes au cœur de notre manière de travailler, sur chaque chantier."
+            title="Ce qui ne change pas d'un chantier à l'autre."
+            lead="Sept principes, écrits une fois et appliqués partout — y compris quand ils coûtent plus cher que l'alternative."
           />
-          <Stagger className="mx-auto mt-14 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+          <Stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-5">
             {values.map((value, index) => (
-              <StaggerItem key={value.title}>
-                <div className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
-                  <span className="font-display text-2xl font-bold text-solar-500">
+              <StaggerItem key={value.title} className="h-full">
+                <div className="flex h-full gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-card">
+                  <span className="font-display text-lg font-bold tabular-nums text-brand-200">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">
-                    {value.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {value.description}
-                  </p>
+                  <div className="min-w-0">
+                    <h3 className="text-[15px] font-bold text-slate-900">
+                      {value.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                      {value.description}
+                    </p>
+                  </div>
                 </div>
               </StaggerItem>
             ))}
+
+            {/* Huitième case : la suite logique de la lecture */}
+            <StaggerItem className="h-full">
+              <div className="flex h-full flex-col justify-center gap-4 rounded-2xl border border-dashed border-brand-300 bg-brand-50/60 p-5">
+                <p className="text-[15px] font-bold text-slate-900">
+                  Ces principes se vérifient sur le terrain.
+                </p>
+                <Button
+                  variant="outline-brand"
+                  size="sm"
+                  className="group self-start"
+                  asChild
+                >
+                  <Link href="/references">
+                    Voir nos réalisations
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </div>
+            </StaggerItem>
           </Stagger>
         </div>
       </Section>

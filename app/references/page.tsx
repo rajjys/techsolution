@@ -10,7 +10,7 @@ import { RealisationsList } from "@/components/references/realisations-list";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { presenceCities } from "@/lib/data/case-studies";
-import { clients, deliveredProvinces, projects } from "@/lib/data/clients";
+import { clients, projects } from "@/lib/data/clients";
 import { provinces } from "@/lib/data/drc";
 import { site } from "@/lib/site";
 
@@ -53,7 +53,7 @@ export default async function ReferencesPage({
                 { value: `${projects.length}`, label: "Installations" },
                 { value: `${clients.length}`, label: "Organisations" },
                 {
-                  value: `${deliveredProvinces.length}`,
+                  value: `${site.provincesDelivered}`,
                   suffix: `/${provinces.length}`,
                   label: "Provinces",
                 },
@@ -125,7 +125,7 @@ export default async function ReferencesPage({
               ))}
               <span className="w-full sm:w-auto">
                 — et une équipe projet mobilisable dans les{" "}
-                {provinces.length - deliveredProvinces.length} autres provinces.
+                {provinces.length - site.provincesDelivered} autres provinces.
               </span>
             </p>
           </Reveal>

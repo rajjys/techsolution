@@ -2,7 +2,7 @@ import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { CaseStudyShowcase } from "@/components/references/case-study-showcase";
 import { Eyebrow } from "@/components/section";
-import { deliveredProvinces } from "@/lib/data/clients";
+import { site } from "@/lib/site";
 
 /**
  * Réalisations — un projet à la fois, la carte de la RDC à côté.
@@ -24,7 +24,7 @@ export function CaseStudiesReach() {
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-200 sm:text-base md:text-lg">
             Des installations livrées dans{" "}
             <span className="font-semibold text-solar-400">
-              {deliveredProvinces.length} provinces
+              {site.provincesDelivered} provinces
             </span>{" "}
             — parcourez nos projets.
           </p>
