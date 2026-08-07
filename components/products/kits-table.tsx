@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { kitSegments, kits } from "@/lib/data/kits";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -28,7 +29,7 @@ export function KitsTable({
     <div className="no-scrollbar -mx-5 overflow-x-auto px-5 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
       <table className="w-full min-w-[46rem] border-collapse text-left">
         <caption className="sr-only">
-          Comparatif des {kits.length} kits solaires Tech Solution : puissance,
+          Comparatif des {kits.length} kits solaires {site.name} : puissance,
           onduleur, batterie et panneaux.
         </caption>
         <thead>

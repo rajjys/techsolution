@@ -94,7 +94,7 @@ export function Header() {
         <div className="container flex h-[72px] items-center justify-between gap-4 xl:!max-w-[1304px]">
           <Link
             href="/"
-            aria-label="Tech Solution RDC — Accueil"
+            aria-label={`${site.name} — Accueil`}
             className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2"
           >
             <Logo />
@@ -150,7 +150,7 @@ export function Header() {
                   </Link>
                 </SheetTitle>
                 <SheetDescription className="sr-only">
-                  Menu de navigation Tech Solution RDC
+                  Menu de navigation {site.name}
                 </SheetDescription>
               </div>
 

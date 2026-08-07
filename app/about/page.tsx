@@ -14,7 +14,7 @@ import { metrics, site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "À propos",
   description:
-    "Tech Solution RDC — notre mission, notre vision et nos valeurs. Une ingénierie au service de la révolution énergétique en République Démocratique du Congo.",
+    `${site.name} — notre mission, notre vision et nos valeurs. Une ingénierie au service de la révolution énergétique en République Démocratique du Congo.`,
   alternates: { canonical: "/about" },
 };
 
@@ -37,10 +37,10 @@ export default function AboutPage() {
             </span>
           </>
         }
-        lead={`Tech Solution est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut.`}
+        lead={`${site.name} est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut.`}
         image={{
           src: "/gallery-web/technicien-intervention.jpg",
-          alt: "Technicien Tech Solution intervenant dans une armoire électrique",
+          alt: `Technicien ${site.name} intervenant dans une armoire électrique`,
         }}
       />
 

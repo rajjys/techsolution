@@ -18,9 +18,8 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default:
-      "Tech Solution RDC — Énergie solaire, électricité & infrastructures techniques",
-    template: "%s | Tech Solution RDC",
+    default: `${site.name} — Énergie solaire, électricité & infrastructures techniques`,
+    template: `%s | ${site.name}`,
   },
   description: site.description,
   keywords: [
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
     "panneaux solaires Kinshasa",
     "électricité industrielle RDC",
     "backup batteries lithium",
-    "Tech Solution RDC",
+    site.name,
     "énergie Bunia Goma Butembo",
     "installateur solaire certifié RDC",
   ],
@@ -39,12 +38,12 @@ export const metadata: Metadata = {
     url: site.url,
     siteName: site.name,
     title:
-      "Tech Solution RDC — Énergie solaire, électricité & infrastructures techniques",
+      `${site.name} — Énergie solaire, électricité & infrastructures techniques`,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tech Solution RDC",
+    title: site.name,
     description: site.description,
   },
   robots: {
@@ -63,6 +62,7 @@ const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: site.legalName,
+  alternateName: site.name,
   url: site.url,
   logo: `${site.url}/assets/logo-full-blue.png`,
   image: `${site.url}/assets/logo-full-blue.png`,

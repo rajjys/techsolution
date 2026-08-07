@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
+import { site } from "@/lib/site";
 
 /**
  * Logo officiel TECH SOLUTION (public/assets).
@@ -34,7 +35,7 @@ export function Logo({
   return (
     <Image
       src={src}
-      alt="Tech Solution RDC — La révolution énergétique"
+      alt={`${site.name} — ${site.tagline}`}
       width={dims.width}
       height={dims.height}
       priority

@@ -9,13 +9,12 @@ import { PageHero } from "@/components/page-hero";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { services } from "@/lib/data/services";
-import { site } from "@/lib/site";
+import { offices, site } from "@/lib/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact & Devis gratuit",
-  description:
-    "Contactez Tech Solution RDC : étude gratuite, devis sous 24 h, Téléphone +243 821 250 250",
+  description: `Contactez ${site.name} : étude gratuite, devis sous 24 h, téléphone ${site.phoneDisplay}`,
   alternates: { canonical: "/contact" },
 };
 
@@ -35,9 +34,9 @@ export default async function ContactPage({
     : requestedService?.contactSubject;
 
   const defaultMessage = produit
-    ? `Bonjour Tech Solution,\n\nJe souhaite obtenir un devis pour « ${produit} ».\n\nSite à équiper (ville/province) : \nBesoins estimés : `
+    ? `Bonjour ${site.name},\n\nJe souhaite obtenir un devis pour « ${produit} ».\n\nSite à équiper (ville/province) : \nBesoins estimés : `
     : requestedService
-      ? `Bonjour Tech Solution,\n\nJe souhaite une étude pour un projet — ${requestedService.shortTitle}.\n\nSite à équiper (ville/province) : \nBesoins estimés : `
+      ? `Bonjour ${site.name},\n\nJe souhaite une étude pour un projet — ${requestedService.shortTitle}.\n\nSite à équiper (ville/province) : \nBesoins estimés : `
       : undefined;
 
   return (
@@ -135,16 +134,29 @@ export default async function ContactPage({
                   <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950">
                     <MapPin className="size-6 text-solar-500" />
                   </span>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Base opérationnelle
+                      Nos bureaux
                     </p>
-                    <p className="mt-1 font-display text-lg font-bold text-slate-900">
-                      {site.base}
-                    </p>
-                    <p className="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+                    <ul className="mt-3 space-y-3">
+                      {offices.map((office) => (
+                        <li key={office.city}>
+                          <p className="font-display text-base font-bold text-slate-900">
+                            {office.city}
+                            <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                              {office.role}
+                            </span>
+                          </p>
+                          <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                            {office.street}
+                          </p>
+                          <p className="text-xs text-slate-500">{office.region}</p>
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="mt-4 flex items-center gap-1.5 text-xs text-slate-500">
                       <Clock className="size-3.5 text-solar-600" />
-                      Lun. – Sam., 8h00 – 17h00 (heure de l&apos;Est)
+                      {site.hours}
                     </p>
                   </div>
                 </div>

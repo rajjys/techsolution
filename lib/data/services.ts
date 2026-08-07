@@ -8,6 +8,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { site } from "@/lib/site";
+
 import type { Project } from "@/lib/data/clients";
 
 export type Service = {
@@ -73,7 +75,7 @@ export const services: Service[] = [
     contactSubject: "Étude & devis — Énergie solaire",
     projectCategory: "Solaire",
     image: "/gallery-web/service-solaire.jpg",
-    imageAlt: "Centrale solaire Tech Solution installée sur toiture en RDC",
+    imageAlt: `Centrale solaire ${site.name} installée sur toiture en RDC`,
   },
   {
     slug: "backup-stockage",
@@ -102,7 +104,7 @@ export const services: Service[] = [
     contactSubject: "Backup & stockage d'énergie",
     projectCategory: "Backup",
     image: "/gallery-web/service-backup.jpg",
-    imageAlt: "Onduleur hybride et batterie lithium Tech Solution",
+    imageAlt: `Onduleur hybride et batterie lithium ${site.name}`,
   },
   {
     slug: "infrastructure-electrique",
@@ -131,7 +133,7 @@ export const services: Service[] = [
     contactSubject: "Infrastructure électrique",
     projectCategory: "Électricité",
     image: "/gallery-web/service-electricite.jpg",
-    imageAlt: "Techniciens Tech Solution câblant une armoire électrique",
+    imageAlt: `Techniciens ${site.name} câblant une armoire électrique`,
   },
   {
     slug: "telecom-medias",
@@ -160,7 +162,7 @@ export const services: Service[] = [
     contactSubject: "Télécoms & médias",
     projectCategory: "Télécoms",
     image: "/gallery-web/service-telecom.jpg",
-    imageAlt: "Onduleur Tech Solution alimentant une salle technique",
+    imageAlt: `Onduleur ${site.name} alimentant une salle technique`,
   },
   {
     slug: "securite-electronique",
@@ -185,7 +187,7 @@ export const services: Service[] = [
     contactSubject: "Sécurité électronique",
     projectCategory: "Sécurité",
     image: "/gallery-web/service-securite.jpg",
-    imageAlt: "Tableau électrique et protection installés par Tech Solution",
+    imageAlt: `Tableau électrique et protection installés par ${site.name}`,
   },
   {
     slug: "maintenance-froid",
@@ -213,7 +215,7 @@ export const services: Service[] = [
     contactSubject: "Maintenance & climatisation",
     projectCategory: "Maintenance",
     image: "/gallery-web/service-maintenance.jpg",
-    imageAlt: "Technicien Tech Solution en intervention de maintenance",
+    imageAlt: `Technicien ${site.name} en intervention de maintenance`,
   },
 ];
 

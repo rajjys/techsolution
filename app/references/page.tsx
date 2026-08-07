@@ -17,7 +17,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Clients, Références & Présence en RDC",
   description:
-    "Le track record Tech Solution RDC : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...",
+    `Le track record ${site.name} : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...`,
   alternates: { canonical: "/references" },
 };
 

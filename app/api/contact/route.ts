@@ -52,7 +52,7 @@ function buildEmailHtml(data: z.infer<typeof contactSchema>): string {
   <div style="font-family:Helvetica,Arial,sans-serif;background:#F8FAFC;padding:32px;">
     <div style="max-width:560px;margin:0 auto;background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid #E2E8F0;">
       <div style="background:#0B192C;padding:24px 28px;">
-        <p style="margin:0;color:#FFB800;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.15em;">Tech Solution RDC — ${escapeHtml(site.domain)}</p>
+        <p style="margin:0;color:#FFB800;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:0.15em;">${escapeHtml(site.legalName)} — ${escapeHtml(site.domain)}</p>
         <h1 style="margin:6px 0 0;color:#FFFFFF;font-size:20px;">Nouvelle demande de devis</h1>
       </div>
       <table style="width:100%;border-collapse:collapse;">
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
   const to = process.env.CONTACT_TO_EMAIL ?? site.email;
   const from =
     process.env.CONTACT_FROM_EMAIL ??
-    "Tech Solution RDC <onboarding@resend.dev>";
+    `${site.legalName} <onboarding@resend.dev>`;
 
   if (!apiKey) {
     console.warn(

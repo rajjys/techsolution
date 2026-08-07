@@ -150,7 +150,7 @@ export function Footer() {
           <div className="flex flex-col justify-center border-t border-white/10 pt-9 lg:border-l lg:border-t-0 lg:pl-14 lg:pt-0 xl:pl-20">
             <Link
               href="/"
-              aria-label="Tech Solution RDC — Accueil"
+              aria-label={`${site.name} — Accueil`}
               className="inline-block self-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-4 focus-visible:ring-offset-brand-950"
             >
               <Logo onDark variant="full" className="h-16 w-auto lg:h-20" />

@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/motion";
+import { site } from "@/lib/site";
 
 /**
  * Bandeau éditorial — respiration typographique entre les réalisations
@@ -59,7 +60,7 @@ export function SolarStatement() {
                 aria-hidden="true"
               />
               <span className="text-sm font-medium uppercase tracking-wider text-slate-500 lg:text-base">
-                Tech Solution RDC • Ingénierie &amp; Autonomie Énergétique
+                {site.name} • Ingénierie &amp; Autonomie Énergétique
               </span>
             </figcaption>
           </figure>

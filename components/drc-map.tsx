@@ -1,4 +1,5 @@
 import { DRC_BOUNDS, DRC_OUTLINE, mapCities } from "@/lib/data/drc";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -80,7 +81,7 @@ export function DrcMap({
       <svg
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label="Carte de la République Démocratique du Congo montrant les sites d'intervention de Tech Solution : Bunia, Mahagi, Aveba, Butembo, Goma et Numbi"
+        aria-label={`Carte de la République Démocratique du Congo montrant les sites d'intervention de ${site.name} : Bunia, Mahagi, Aveba, Butembo, Goma et Numbi`}
         className="h-auto w-full"
       >
         {/* Matrice de points du territoire */}

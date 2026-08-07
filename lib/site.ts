@@ -14,8 +14,7 @@ export const site = {
   phoneDisplay: "+243 821 250 250",
   whatsappNumber: "243821250250",
   email: "info@techsolution.cd",
-  base: "Bunia, Province de l'Ituri — RDC",
-  hours: "Lun. – Sam., 8h00 – 17h00",
+  hours: "Lun. – Sam., 8h00 – 17h00 (heure de l'Est)",
   /**
    * Farde technique publique — téléchargeable sans formulaire. C'est une
    * copie de docs/FARDE TECH SOLUTION.pdf : la version publique est destinée
@@ -63,6 +62,16 @@ export const offices: Office[] = [
     region: "Ville-province de Kinshasa",
   },
 ];
+
+/** Siège social — source unique pour le NAP principal. */
+export function getHeadquarters(): Office {
+  return offices.find((office) => office.headquarters) ?? offices[0];
+}
+
+/** Adresse postale complète sur une ligne (cohérence NAP footer / contact / JSON-LD). */
+export function formatOfficeAddress(office: Office): string {
+  return `${office.street}, ${office.city}, ${office.region}`;
+}
 
 export type NavLink = {
   label: string;
