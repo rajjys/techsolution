@@ -108,7 +108,7 @@ function KitCard({ kit }: { kit: Kit }) {
 
         <div className="mt-auto pt-6">
           <Link
-            href={`/contact?produit=${encodeURIComponent(kit.name)}`}
+            href={`/contact?produit=${kit.id}`}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               highlight
