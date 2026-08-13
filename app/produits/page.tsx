@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
+  Download,
   PackageCheck,
   Ruler,
   ShieldCheck,
@@ -22,6 +23,7 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { kits } from "@/lib/data/kits";
+import { site } from "@/lib/site";
 import { faqs } from "@/lib/data/services";
 
 export const metadata: Metadata = {
@@ -69,6 +71,27 @@ export default function ProduitsPage() {
           </>
         }
         lead={`${kits.length} kits hybrides clés en main, de 650 Va à 30 kVA triphasé. Situez-vous sur l'échelle : la composition suit.`}
+        image={{
+          src: "/gallery-web/onduleurs-mur.jpg",
+          alt: "Onduleurs hybrides Tech Solution installés et mis en service",
+          position: "68% 45%",
+        }}
+        actions={
+          <>
+            <Button className="group" asChild>
+              <Link href="#echelle-title">
+                Trouver mon palier
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+            <Button variant="neutral" asChild>
+              <a href={site.fardeUrl} download>
+                <Download className="size-4 text-brand-600" />
+                Télécharger le catalogue
+              </a>
+            </Button>
+          </>
+        }
       />
 
       <KitsExplorer />

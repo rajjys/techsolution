@@ -190,6 +190,27 @@ export default function ServicesPage() {
           </>
         }
         lead="Délestages, carburant, matériel grillé, sites isolés : nous traitons la cause — de l'audit de charge jusqu'au contrat d'entretien, partout en RDC."
+        image={{
+          src: "/gallery-web/technicien-toiture.jpg",
+          alt: "Deux techniciens posant des panneaux solaires sur une toiture",
+          position: "62% 55%",
+        }}
+        actions={
+          <>
+            <Button className="group" asChild>
+              <Link href="/contact">
+                Demander une étude gratuite
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+            <Button variant="neutral" className="group" asChild>
+              <Link href="#energie-solaire">
+                Voir les six domaines
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </>
+        }
       />
 
       {/* Index — la porte d'entrée : on part du besoin, pas du catalogue */}

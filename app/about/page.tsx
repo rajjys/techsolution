@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 
 import { Engagement } from "@/components/about/engagement";
 import { Glow } from "@/components/glow";
@@ -41,7 +41,24 @@ export default function AboutPage() {
         image={{
           src: "/gallery-web/technicien-intervention.jpg",
           alt: `Technicien ${site.name} intervenant dans une armoire électrique`,
+          position: "50% 40%",
         }}
+        actions={
+          <>
+            <Button className="group" asChild>
+              <Link href="/contact">
+                Parler de votre projet
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+            <Button variant="neutral" asChild>
+              <a href={site.fardeUrl} download>
+                <Download className="size-4 text-brand-600" />
+                Télécharger la farde
+              </a>
+            </Button>
+          </>
+        }
       />
 
       {/* Raison d'être — le seul registre chaud hors de l'accueil */}

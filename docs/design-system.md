@@ -55,6 +55,24 @@ le texte restant aligné sur la grille du conteneur. C'est ce qui distingue une
 scène d'une ligne de tableau. Sous `lg`, l'image repasse dans le flux, au-dessus
 du texte.
 
+**Photo derrière du texte** (hero d'accueil, `PageHero`) — deux couches, pas
+une :
+
+1. un **masque en dégradé sur l'image elle-même**
+   (`[mask-image:linear-gradient(...)]`). C'est lui qui supprime l'arête où la
+   photo commence. Un voile posé par-dessus ne la cache pas : on voit le bord,
+   comme un mur derrière un nuage ;
+2. un **voile de la couleur du fond** pour le contraste du texte. Sur mobile il
+   est **uniforme** (`bg-brand-50/90`) : un dégradé y fait varier la lisibilité
+   d'une ligne à l'autre, et c'est toujours le chapô qui passe sous le seuil.
+   Il redevient directionnel à partir de `lg`, où le texte est cantonné à une
+   moitié.
+
+La photo est décorative (`alt=""`), son sujet décrit en `sr-only` dans le flux :
+annoncée deux fois, elle gêne. Le fil d'Ariane reste en tête et à gauche, hors
+du bloc centré verticalement. Les appels à l'action se posent **sous** le chapô,
+jamais à côté.
+
 ## 2. Rôles de couleur
 
 | Rampe | Rôle | Interdit |

@@ -7,6 +7,14 @@ import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
 import { cn } from "@/lib/utils";
 
+export type HeroImage = {
+  src: string;
+  /** Décrit le sujet : l'image est décorative, ce texte part en sr-only. */
+  alt: string;
+  /** `object-position` — pour amener le sujet dans la zone dégagée du voile. */
+  position?: string;
+};
+
 /**
  * En-tête des pages intérieures.
  *
@@ -15,8 +23,14 @@ import { cn } from "@/lib/utils";
  * de changer de site. Le sombre reste réservé aux moments de preuve
  * (réalisations, méthode) et à la conclusion (pied de page).
  *
- * `children` reçoit le contenu propre à la page — chips d'ancrage, chiffres,
- * engagements — posé sous le chapô.
+ * Avec une photo, deux dispositifs se superposent :
+ *
+ * 1. un **masque en dégradé** sur l'image elle-même — c'est lui qui supprime
+ *    le bord franc. Un simple voile posé par-dessus laissait voir l'arête où
+ *    la photo commençait, comme un mur derrière un nuage ;
+ * 2. un **voile de la couleur du fond** pour le contraste du texte. Sur
+ *    mobile il est uniforme : un dégradé y faisait varier la lisibilité d'une
+ *    ligne à l'autre, et le chapô passait en dessous du seuil.
  *
  * @see docs/design-system.md — « Rythme des fonds »
  */
@@ -27,6 +41,7 @@ export function PageHero({
   breadcrumb,
   compact = false,
   image,
+  actions,
   children,
 }: {
   eyebrow: string;
@@ -39,13 +54,9 @@ export function PageHero({
    * doit apparaître sans faire défiler.
    */
   compact?: boolean;
-  /**
-   * Illustration posée **à côté** du texte, jamais dessous : une photo de
-   * chantier porte souvent la marque ou un visage, qu'un voile de lisibilité
-   * viendrait masquer. Colonne à part, donc, qui passe sous le texte en
-   * dessous de `lg`.
-   */
-  image?: { src: string; alt: string };
+  image?: HeroImage;
+  /** Appels à l'action, posés sous le chapô — jamais à côté. */
+  actions?: React.ReactNode;
   children?: React.ReactNode;
 }) {
   const trail = [{ label: "Accueil", href: "/" }, ...(breadcrumb ?? [])];
@@ -54,33 +65,42 @@ export function PageHero({
     <section
       className={cn(
         "relative isolate overflow-hidden bg-brand-50",
-        image && "min-h-[28rem] lg:min-h-[32rem]",
+        image && "min-h-[30rem] lg:min-h-[34rem]",
       )}
     >
       {image ? (
         <>
           {/*
-            Même dispositif que le hero de l'accueil : l'image occupe le bord
-            droit d'un seul tenant, et c'est le voile — de la couleur du fond —
-            qui fait la jonction. Aucune coupure entre le texte et la photo.
+            Sous lg la photo occupe tout le cadre ; à partir de lg elle part du
+            quart gauche. Dans les deux cas le masque la fait naître en fondu.
           */}
-          <div className="absolute inset-0 -z-10 lg:left-[36%]" aria-hidden="true">
+          <div
+            className="absolute inset-0 -z-10 lg:left-[24%]
+            [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_34%)]
+            [mask-image:linear-gradient(to_bottom,transparent_0%,black_34%)]
+            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_46%)]
+            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_46%)]"
+            aria-hidden="true"
+          >
             <Image
               src={image.src}
               alt=""
               fill
               priority
               sizes="100vw"
-              className="object-cover object-[50%_42%]"
+              className="object-cover"
+              style={{ objectPosition: image.position ?? "50% 45%" }}
             />
           </div>
+
           {/*
-            Sous lg le voile est vertical : dense en haut, où se lit le texte,
-            il s'éclaircit vers le bas pour laisser voir le chantier.
+            Voile uniforme sous lg — la lisibilité ne doit pas dépendre de
+            l'endroit où tombe la ligne. Il redevient directionnel à partir de
+            lg, où le texte est cantonné à la moitié gauche.
           */}
           <div
-            className="absolute inset-0 -z-10 bg-gradient-to-b from-brand-50 from-25% via-brand-50/90 via-62% to-brand-50/45
-            lg:bg-gradient-to-r lg:from-brand-50 lg:from-30% lg:via-brand-50/80 lg:via-52% lg:to-transparent lg:to-72%"
+            className="absolute inset-0 -z-10 bg-brand-50/90
+            lg:bg-gradient-to-r lg:from-brand-50 lg:from-24% lg:via-brand-50/75 lg:via-46% lg:to-transparent lg:to-72%"
             aria-hidden="true"
           />
         </>
@@ -90,22 +110,15 @@ export function PageHero({
 
       <div
         className={cn(
-          "container relative pt-8 sm:pt-10 lg:pt-14",
+          "container relative flex flex-col pt-8 sm:pt-10 lg:pt-14",
           compact ? "pb-8 lg:pb-10" : "pb-10 sm:pb-14 lg:pb-20",
-          image && "flex min-h-[28rem] flex-col justify-center lg:min-h-[32rem]",
+          image && "min-h-[30rem] lg:min-h-[34rem]",
         )}
       >
+        {/* Toujours en tête et aligné à gauche, comme sur toutes les pages */}
         {breadcrumb ? (
-          <nav
-            aria-label="Fil d'Ariane"
-            className={cn("mb-7 lg:mb-9", image && "lg:mb-8")}
-          >
-            <ol
-              className={cn(
-                "flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500",
-                image && "justify-center lg:justify-start",
-              )}
-            >
+          <nav aria-label="Fil d'Ariane" className="mb-7 lg:mb-9">
+            <ol className="flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500">
               {trail.map((crumb, index) => (
                 <li key={crumb.label} className="flex items-center gap-1">
                   {index > 0 ? (
@@ -132,40 +145,46 @@ export function PageHero({
           </nav>
         ) : null}
 
-        <Reveal
-          mode="mount"
-          className={cn(
-            image ? "max-w-xl text-center lg:text-left" : "max-w-3xl",
-          )}
-        >
-          <Eyebrow className={image ? "justify-center lg:justify-start" : undefined}>
-            {eyebrow}
-          </Eyebrow>
-          <h1
-            className={cn(
-              "mt-5 text-balance font-bold leading-[1.15] tracking-[-0.01em] text-slate-900",
-              image
-                ? "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px] lg:leading-[1.08]"
-                : "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[56px] lg:leading-[1.06]",
-            )}
+        <div className={cn(image && "flex flex-1 flex-col justify-center")}>
+          <Reveal
+            mode="mount"
+            className={cn(image ? "max-w-xl" : "max-w-3xl")}
           >
-            {title}
-          </h1>
-          {lead ? (
-            <p
+            <Eyebrow>{eyebrow}</Eyebrow>
+            <h1
               className={cn(
-                "mt-5 text-base leading-relaxed text-slate-600 sm:text-lg",
-                image ? "" : "max-w-2xl",
+                "mt-5 text-balance font-bold leading-[1.15] tracking-[-0.01em] text-slate-900",
+                image
+                  ? "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-[44px] lg:text-[48px] lg:leading-[1.08]"
+                  : "text-[30px] sm:text-4xl sm:leading-[1.12] md:text-5xl lg:text-[56px] lg:leading-[1.06]",
               )}
             >
-              {lead}
-            </p>
-          ) : null}
-          {/* L'image est décorative : son sujet est décrit ici. */}
-          {image ? <span className="sr-only">{image.alt}</span> : null}
-        </Reveal>
+              {title}
+            </h1>
+            {lead ? (
+              <p
+                className={cn(
+                  "mt-5 text-base leading-relaxed text-slate-600 sm:text-lg",
+                  image ? "" : "max-w-2xl",
+                )}
+              >
+                {lead}
+              </p>
+            ) : null}
+            {/* L'image est décorative : son sujet est décrit ici. */}
+            {image ? <span className="sr-only">{image.alt}</span> : null}
+          </Reveal>
 
-        {children}
+          {actions ? (
+            <Reveal mode="mount" delay={0.12}>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                {actions}
+              </div>
+            </Reveal>
+          ) : null}
+
+          {children}
+        </div>
       </div>
     </section>
   );

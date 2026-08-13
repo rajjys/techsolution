@@ -43,9 +43,30 @@ export default async function ReferencesPage({
           </>
         }
         lead={`${projects.length} installations en service pour ${clients.length} organisations — ONG internationales, banques, programmes d'État, médias et entreprises.`}
+        image={{
+          src: "/gallery-web/hotel-bambou-kisangani.webp",
+          alt: "Centrale solaire en toiture de l'hôtel Bambou, sur le fleuve à Kisangani",
+          position: "70% 55%",
+        }}
+        actions={
+          <>
+            <Button variant="neutral" asChild>
+              <a href={site.fardeUrl} download>
+                <Download className="size-4 text-brand-600" />
+                Télécharger la farde (PDF)
+              </a>
+            </Button>
+            <Button variant="outline-ember" className="group" asChild>
+              <Link href="#realisations">
+                Voir le relevé complet
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </>
+        }
       >
-        <Reveal mode="mount" delay={0.15}>
-          <div className="mt-8 flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+        <Reveal mode="mount" delay={0.2}>
+          <div className="mt-9">
             {/* Grille de trois : à 360 px les colonnes tiennent, les filets
                 séparent sans qu'aucun libellé n'aille à la ligne de trop. */}
             <dl className="grid grid-cols-3 divide-x divide-brand-200">
@@ -76,14 +97,6 @@ export default async function ReferencesPage({
                 </div>
               ))}
             </dl>
-
-            {/* Le catalogue s'emporte : rien à demander, rien à attendre */}
-            <Button variant="neutral" className="shrink-0" asChild>
-              <a href={site.fardeUrl} download>
-                <Download className="size-4 text-brand-600" />
-                Télécharger la farde (PDF)
-              </a>
-            </Button>
           </div>
         </Reveal>
       </PageHero>
