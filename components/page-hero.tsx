@@ -72,14 +72,19 @@ export function PageHero({
         <>
           {/*
             Sous lg la photo occupe tout le cadre ; à partir de lg elle part du
-            quart gauche. Dans les deux cas le masque la fait naître en fondu.
+            cinquième gauche. Dans les deux cas le masque la fait naître en
+            fondu — c'est lui qui supprime l'arête.
+            ⚠️ Les pourcentages du masque sont relatifs à ce bloc, pas à
+            l'écran : à `left-[20%]`, `black 26%` tombe à 20 + 0,26 × 80 = 41 %
+            de l'écran. Le voile doit devenir transparent APRÈS ce point, sans
+            quoi la photo est atténuée deux fois et vire au fantôme.
           */}
           <div
-            className="absolute inset-0 -z-10 lg:left-[24%]
-            [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_34%)]
-            [mask-image:linear-gradient(to_bottom,transparent_0%,black_34%)]
-            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_46%)]
-            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_46%)]"
+            className="absolute inset-0 -z-10 lg:left-[20%]
+            [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_30%)]
+            [mask-image:linear-gradient(to_bottom,transparent_0%,black_30%)]
+            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_26%)]
+            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_26%)]"
             aria-hidden="true"
           >
             <Image
@@ -94,13 +99,17 @@ export function PageHero({
           </div>
 
           {/*
-            Voile uniforme sous lg — la lisibilité ne doit pas dépendre de
-            l'endroit où tombe la ligne. Il redevient directionnel à partir de
-            lg, où le texte est cantonné à la moitié gauche.
+            Voile de contraste. Sous lg il est constant sur toute la zone de
+            texte puis s'allège en dessous : un dégradé sur la zone de texte
+            ferait varier la lisibilité d'une ligne à l'autre, et c'est
+            toujours le chapô qui passe sous le seuil.
+            À partir de lg il devient directionnel et libère complètement le
+            tiers droit, où la photo doit se lire pour ce qu'elle est.
           */}
           <div
-            className="absolute inset-0 -z-10 bg-brand-50/90
-            lg:bg-gradient-to-r lg:from-brand-50 lg:from-24% lg:via-brand-50/75 lg:via-46% lg:to-transparent lg:to-72%"
+            className="absolute inset-0 -z-10
+            bg-[linear-gradient(to_bottom,rgb(242_242_253/0.93)_0%,rgb(242_242_253/0.93)_60%,rgb(242_242_253/0.45)_100%)]
+            lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.55)_50%,rgb(242_242_253/0)_64%)]"
             aria-hidden="true"
           />
         </>
@@ -146,9 +155,15 @@ export function PageHero({
         ) : null}
 
         <div className={cn(image && "flex flex-1 flex-col justify-center")}>
+          {/*
+            Avec une photo, tout le contenu tient dans la colonne gauche —
+            texte, actions et chiffres compris. Un tableau de chiffres qui
+            déborde sur la moitié droite finit sous la partie dégagée du
+            voile, donc illisible.
+          */}
           <Reveal
             mode="mount"
-            className={cn(image ? "max-w-xl" : "max-w-3xl")}
+            className={cn(image ? "max-w-lg xl:max-w-xl" : "max-w-3xl")}
           >
             <Eyebrow>{eyebrow}</Eyebrow>
             <h1
@@ -176,14 +191,18 @@ export function PageHero({
           </Reveal>
 
           {actions ? (
-            <Reveal mode="mount" delay={0.12}>
+            <Reveal
+              mode="mount"
+              delay={0.12}
+              className={cn(image && "max-w-lg xl:max-w-xl")}
+            >
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 {actions}
               </div>
             </Reveal>
           ) : null}
 
-          {children}
+          <div className={cn(image && "max-w-lg xl:max-w-xl")}>{children}</div>
         </div>
       </div>
     </section>
