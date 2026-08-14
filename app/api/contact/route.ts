@@ -206,6 +206,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, delivered: false });
   }
 
+  /*
+   * Piège classique : le domaine est vérifié dans Resend, mais l'expéditeur
+   * est resté sur le bac à sable partagé. Resend refuse alors tout
+   * destinataire autre que le propriétaire du compte — avec un message qui
+   * parle de vérifier le domaine, déjà fait. On le dit clairement ici.
+   */
+  if (from.includes("@resend.dev") && !to.endsWith("@resend.dev")) {
+    console.warn(
+      `[contact] CONTACT_FROM_EMAIL utilise le bac à sable Resend (${from}). ` +
+        `Tant qu'il n'expédie pas depuis un domaine vérifié, seul le ` +
+        `propriétaire du compte peut recevoir — l'envoi vers ${to} échouera.`,
+    );
+  }
+
   const { object } = summarize(data);
 
   try {
