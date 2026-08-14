@@ -28,7 +28,12 @@ export type KitLoad = {
 };
 
 export type Kit = {
-  id: string;
+  /**
+   * Identifiant d'URL — lisible et indexable. Il voyage dans
+   * `/contact?kit=<slug>` : c'est lui, et non le nom du produit, qui doit
+   * apparaître dans la barre d'adresse.
+   */
+  slug: string;
   name: string;
   power: string;
   phase: "Monophasé" | "Triphasé";
@@ -94,7 +99,7 @@ export const kitSegments: {
  */
 export const kits: Kit[] = [
   {
-    id: "kit-650va",
+    slug: "kit-solaire-hybride-650-va",
     name: "Kit Solaire Hybride 650 Va",
     power: "650 Va",
     phase: "Monophasé",
@@ -114,7 +119,7 @@ export const kits: Kit[] = [
     usage: 'TV 32", laptop, 8 lampes, fer à repasser 400 W, décodeur, téléphone.',
   },
   {
-    id: "kit-1-5kva",
+    slug: "kit-solaire-hybride-1-5-kva",
     name: "Kit Solaire Hybride 1,5 kVA",
     power: "1,5 kVA",
     phase: "Monophasé",
@@ -135,7 +140,7 @@ export const kits: Kit[] = [
     showcase: true,
   },
   {
-    id: "kit-3kva",
+    slug: "kit-solaire-hybride-3-kva",
     name: "Kit Solaire Hybride 3 kVA",
     power: "3 kVA",
     phase: "Monophasé",
@@ -155,7 +160,7 @@ export const kits: Kit[] = [
     usage: 'Congélateur, frigo, TV 55", laptop, 30 lampes, fer à repasser, décodeur.',
   },
   {
-    id: "kit-5kva",
+    slug: "kit-solaire-hybride-5-kva",
     name: "Kit Solaire Hybride 5 kVA",
     power: "5 kVA",
     phase: "Monophasé",
@@ -177,7 +182,7 @@ export const kits: Kit[] = [
     showcase: true,
   },
   {
-    id: "kit-8kva",
+    slug: "kit-solaire-8-kva",
     name: "Kit Solaire 8 kVA",
     power: "8 kVA",
     phase: "Monophasé",
@@ -197,7 +202,7 @@ export const kits: Kit[] = [
     usage: 'Fer à repasser, congélateur, frigo, TV 100", bouilloire, éclairage.',
   },
   {
-    id: "kit-10kva",
+    slug: "kit-solaire-hybride-10-kva",
     name: "Kit Solaire Hybride 10 kVA",
     power: "10 kVA",
     phase: "Monophasé",
@@ -219,7 +224,7 @@ export const kits: Kit[] = [
     showcase: true,
   },
   {
-    id: "kit-12kva",
+    slug: "kit-solaire-12-kva",
     name: "Kit Solaire 12 kVA",
     power: "12 kVA",
     phase: "Monophasé",
@@ -239,7 +244,7 @@ export const kits: Kit[] = [
     usage: "Appartement, école, ferme, auberge, université.",
   },
   {
-    id: "kit-20kva",
+    slug: "kit-solaire-20-kva",
     name: "Kit Solaire 20 kVA",
     power: "20 kVA",
     phase: "Monophasé",
@@ -259,7 +264,7 @@ export const kits: Kit[] = [
     usage: "Centre de santé, appartement, école, hôtel, université.",
   },
   {
-    id: "kit-30kva",
+    slug: "kit-solaire-semi-industriel-30-kva",
     name: "Kit Solaire Semi-Industriel 30 kVA",
     power: "30 kVA",
     phase: "Triphasé",

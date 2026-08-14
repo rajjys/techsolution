@@ -75,7 +75,7 @@ export function KitsTable({
                 const isActive = index === activeIndex;
                 return (
                 <tr
-                  key={kit.id}
+                  key={kit.slug}
                   onClick={() => onSelect(index)}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
@@ -120,7 +120,7 @@ export function KitsTable({
                   </td>
                   <td className="py-4 align-top text-right">
                     <Link
-                      href={`/contact?produit=${encodeURIComponent(kit.name)}`}
+                      href={`/contact?kit=${kit.slug}`}
                       className="inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                     >
                       Devis

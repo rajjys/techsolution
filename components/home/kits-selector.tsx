@@ -19,7 +19,7 @@ const kits = showcaseKits;
  * qui l'est dans son segment — le 5 kVA. Le catalogue, lui, étoile le plus
  * demandé de chacun des trois segments.
  */
-const highlighted = kits.find((kit) => kit.featured)?.id;
+const highlighted = kits.find((kit) => kit.featured)?.slug;
 
 const specRows = [
   { key: "inverter" as const, icon: Zap, label: "Onduleur" },
@@ -28,7 +28,7 @@ const specRows = [
 ];
 
 function KitCard({ kit }: { kit: Kit }) {
-  const highlight = kit.id === highlighted;
+  const highlight = kit.slug === highlighted;
   return (
     <article
       className={cn(
@@ -108,7 +108,7 @@ function KitCard({ kit }: { kit: Kit }) {
 
         <div className="mt-auto pt-6">
           <Link
-            href={`/contact?produit=${kit.id}`}
+            href={`/contact?kit=${kit.slug}`}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               highlight
@@ -173,7 +173,7 @@ export function KitsSelector() {
         <div className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:-mx-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
           {kits.map((kit, index) => (
             <Reveal
-              key={kit.id}
+              key={kit.slug}
               delay={index * 0.07}
               y={18}
               className="w-[80vw] max-w-[19rem] shrink-0 snap-start sm:w-[19rem] lg:w-auto lg:max-w-none lg:shrink"

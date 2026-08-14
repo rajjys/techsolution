@@ -79,8 +79,8 @@ export default function ProduitsPage() {
         actions={
           <>
             <Button className="group" asChild>
-              <Link href="#echelle-title">
-                Trouver mon palier
+              <Link href="/contact">
+                Demander un devis
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Button>

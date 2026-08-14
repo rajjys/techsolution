@@ -120,7 +120,7 @@ export default async function CaseStudyPage({
                 </p>
                 <Button block className="mt-4" asChild>
                   <Link
-                    href={`/contact?produit=${study.slug}`}
+                    href="/contact"
                   >
                     Demander une étude
                     <ArrowRight />

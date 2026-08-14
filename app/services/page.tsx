@@ -203,7 +203,7 @@ export default function ServicesPage() {
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Button>
-            <Button variant="neutral" className="group" asChild>
+            <Button variant="outline-ember" className="group" asChild>
               <Link href="#energie-solaire">
                 Voir les six domaines
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

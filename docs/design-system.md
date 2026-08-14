@@ -103,7 +103,7 @@ la surface et le voisinage. Voir `components/ui/button.tsx`.
 | `outline-light` | Secondaire sur surface sombre — s'inverse au survol |
 | `nav` | Chrome de navigation (header, menu) — `brand-700`, jamais `ember` |
 | `card` / `card-outline` | Action à l'intérieur d'une carte ou d'un panneau produit — `brand` |
-| `neutral` | Secondaire neutre : blanc bordé, la couleur reste au picto |
+| `neutral` | **Téléchargement**, et rien d'autre : blanc bordé, la couleur reste au picto. Un secondaire ordinaire prend `outline-ember` — sinon le blanc cesse de signaler « vous repartez avec un fichier » |
 | `whatsapp` | Canal WhatsApp en plein vert — réservé aux endroits où c'est *le* canal proposé |
 
 `ember` reste l'action du **contenu éditorial** (une page qui pousse vers le

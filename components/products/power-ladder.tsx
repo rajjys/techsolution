@@ -173,13 +173,13 @@ export function PowerLadder({
               const isPassed = i < index;
               return (
                 <button
-                  key={kit.id}
+                  key={kit.slug}
                   ref={(node) => {
                     stopRefs.current[i] = node;
                   }}
                   type="button"
                   role="tab"
-                  id={`palier-${kit.id}`}
+                  id={`palier-${kit.slug}`}
                   aria-selected={isActive}
                   aria-controls="palier-detail"
                   tabIndex={isActive ? 0 : -1}
@@ -237,13 +237,13 @@ export function PowerLadder({
       <div
         id="palier-detail"
         role="tabpanel"
-        aria-labelledby={`palier-${active.id}`}
+        aria-labelledby={`palier-${active.slug}`}
         tabIndex={0}
         className="relative mt-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
       >
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={active.id}
+            key={active.slug}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
@@ -299,7 +299,7 @@ export function PowerLadder({
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Button variant="card" className="group" asChild>
                   <Link
-                    href={`/contact?produit=${encodeURIComponent(active.name)}`}
+                    href={`/contact?kit=${active.slug}`}
                   >
                     Demander ce kit
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

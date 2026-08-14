@@ -1,198 +1,319 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { BatteryCharging, Clock, Mail, MapPin, Phone, SunMedium, Zap } from "lucide-react";
 
-import { ContactForm } from "@/components/contact/contact-form";
-import { DrcMap } from "@/components/drc-map";
+import { ContactFunnel } from "@/components/contact/contact-funnel";
+import { Glow } from "@/components/glow";
 import { WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
-import { Section } from "@/components/section";
+import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { kits } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { offices, site } from "@/lib/site";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { buildProductWhatsAppLink, buildWhatsAppLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contact & Devis gratuit",
-  description: `Contactez ${site.name} : étude gratuite, devis sous 24 h, téléphone ${site.phoneDisplay}`,
+  description:
+    "Décrivez votre site en trois étapes : un ingénieur vous rappelle sous 24 h ouvrées. Audit et devis gratuits, partout en RDC.",
   alternates: { canonical: "/contact" },
 };
+
+const SPEC_ROWS = [
+  { key: "inverter", icon: Zap, label: "Onduleur" },
+  { key: "battery", icon: BatteryCharging, label: "Batterie lithium" },
+  { key: "panels", icon: SunMedium, label: "Panneaux" },
+] as const;
 
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ produit?: string; service?: string }>;
+  searchParams: Promise<{ kit?: string; service?: string }>;
 }) {
-  const { produit, service } = await searchParams;
+  const { kit: kitSlug, service: serviceSlug } = await searchParams;
 
-  /* `?service=` vient des CTA de /services : l'objet et le message sont
-     préremplis pour que le visiteur n'ait plus qu'à décrire son site. */
-  const requestedService = services.find((item) => item.slug === service);
-
-  const defaultSubject = produit
-    ? "Catalogue produits"
-    : requestedService?.contactSubject;
-
-  const defaultMessage = produit
-    ? `Bonjour ${site.name},\n\nJe souhaite obtenir un devis pour « ${produit} ».\n\nSite à équiper (ville/province) : \nBesoins estimés : `
-    : requestedService
-      ? `Bonjour ${site.name},\n\nJe souhaite une étude pour un projet — ${requestedService.shortTitle}.\n\nSite à équiper (ville/province) : \nBesoins estimés : `
-      : undefined;
+  const kit = kits.find((item) => item.slug === kitSlug);
+  const service = services.find((item) => item.slug === serviceSlug);
 
   return (
     <>
       <PageHero
+        compact
         breadcrumb={[{ label: "Contact" }]}
-        eyebrow="Contact"
+        eyebrow={kit ? "Demande de devis" : "Contact"}
         title={
-          <>
-            Parlons de votre{" "}
-            <span className="text-brand-600">
-              projet énergétique
-            </span>
-          </>
+          kit ? (
+            <>
+              Votre {kit.power},{" "}
+              <span className="text-brand-600">dimensionné pour vous.</span>
+            </>
+          ) : (
+            <>
+              Trois questions,{" "}
+              <span className="text-brand-600">et on vous rappelle.</span>
+            </>
+          )
         }
-        lead="Étude gratuite, dimensionnement précis, devis transparent : notre équipe technique vous répond sous 24 h ouvrées — par email, téléphone ou WhatsApp."
+        lead={
+          kit
+            ? `Le ${kit.name} est un point de départ : sa composition exacte est arrêtée après l'audit de votre site. Dites-nous où et pour quoi faire.`
+            : "Plus vous nous en dites, plus le premier appel est utile. Comptez moins d'une minute — vous ne tapez que vos coordonnées."
+        }
       />
 
-      <Section className="bg-slate-50">
-        <div className="container grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-          {/* Coordonnées */}
-          <div className="space-y-5">
-            <Reveal>
-              <a
-                href={`tel:${site.phone}`}
-                className="group flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-soft"
-              >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950 transition-colors group-hover:bg-brand-800">
-                  <Phone className="size-6 text-solar-500" />
-                </span>
-                <span>
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Téléphone
-                  </span>
-                  <span className="mt-1 block font-display text-lg font-bold text-slate-900">
-                    {site.phoneDisplay}
-                  </span>
-                </span>
-              </a>
-            </Reveal>
+      {/* L'entonnoir — le cœur de la page */}
+      <Section className="relative isolate bg-surface-cool">
+        <Glow variant="cool" corner="bottom-right" />
+        <div className="container relative grid items-start gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:gap-12">
+          <ContactFunnel initialKit={kit?.slug} initialService={service?.slug} />
 
-            <Reveal delay={0.06}>
-              <a
-                href={`mailto:${site.email}`}
-                className="group flex items-center gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-soft"
-              >
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950 transition-colors group-hover:bg-brand-800">
-                  <Mail className="size-6 text-solar-500" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Email professionnel
-                  </span>
-                  <span className="mt-1 block truncate font-display text-lg font-bold text-slate-900">
-                    {site.email}
-                  </span>
-                </span>
-              </a>
-            </Reveal>
+          {/* Rail — ce qui rassure, et la porte de sortie immédiate */}
+          <Reveal delay={0.1} className="lg:sticky lg:top-28">
+            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card sm:p-7">
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                Ce que vous obtenez
+              </p>
+              <ul className="mt-4 space-y-4">
+                {[
+                  {
+                    title: "Un rappel sous 24 h ouvrées",
+                    text: "Par un ingénieur, pas par un standard.",
+                  },
+                  {
+                    title: "Une visite et un audit gratuits",
+                    text: "Mesure de vos charges réelles, sans engagement.",
+                  },
+                  {
+                    title: "Un devis chiffré et détaillé",
+                    text: "Composants, puissance, autonomie : tout est écrit.",
+                  },
+                ].map((item) => (
+                  <li key={item.title} className="flex gap-3">
+                    <span
+                      className="mt-1.5 size-1.5 shrink-0 rounded-full bg-solar-500"
+                      aria-hidden="true"
+                    />
+                    <span>
+                      <span className="block text-sm font-bold text-slate-900">
+                        {item.title}
+                      </span>
+                      <span className="mt-0.5 block text-sm leading-relaxed text-slate-600">
+                        {item.text}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
 
-            <Reveal delay={0.12}>
-              <div className="rounded-2xl border border-[#25D366]/30 bg-[#25D366]/5 p-6 shadow-card">
-                <div className="flex items-center gap-5">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#25D366]">
-                    <WhatsAppIcon className="size-6 text-white" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      WhatsApp Business
-                    </p>
-                    <p className="mt-1 font-display text-lg font-bold text-slate-900">
-                      Réponse la plus rapide
-                    </p>
-                  </div>
-                </div>
-                <Button variant="whatsapp" className="mt-5 w-full" asChild>
-                  <a
-                    href={buildWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <WhatsAppIcon className="size-4" />
-                    Démarrer la conversation
-                  </a>
-                </Button>
-                <p className="mt-3 text-center text-xs text-slate-500">
-                  Message pré-rempli — décrivez ensuite votre projet.
+              <div className="mt-6 border-t border-slate-100 pt-6">
+                <p className="text-sm leading-relaxed text-slate-600">
+                  Vous préférez parler tout de suite ?
                 </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.18}>
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
-                <div className="flex items-start gap-5">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-950">
-                    <MapPin className="size-6 text-solar-500" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      Nos bureaux
-                    </p>
-                    <ul className="mt-3 space-y-3">
-                      {offices.map((office) => (
-                        <li key={office.city}>
-                          <p className="font-display text-base font-bold text-slate-900">
-                            {office.city}
-                            <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                              {office.role}
-                            </span>
-                          </p>
-                          <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                            {office.street}
-                          </p>
-                          <p className="text-xs text-slate-500">{office.region}</p>
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-4 flex items-center gap-1.5 text-xs text-slate-500">
-                      <Clock className="size-3.5 text-solar-600" />
-                      {site.hours}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-5 overflow-hidden rounded-xl border border-slate-100 bg-slate-50 p-4">
-                  <DrcMap showLegend={false} />
-                  <p className="mt-2 text-center text-[11px] font-medium text-slate-500">
-                    Interventions dans les 26 provinces — carte interactive
-                    détaillée sur demande
+                <div className="mt-4 space-y-3">
+                  <Button variant="neutral" block asChild>
+                    <a
+                      href={
+                        kit
+                          ? buildProductWhatsAppLink(kit.name)
+                          : buildWhatsAppLink()
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <WhatsAppIcon className="size-4 text-[#25D366]" />
+                      Écrire sur WhatsApp
+                    </a>
+                  </Button>
+                  <a
+                    href={`tel:${site.phone}`}
+                    className="flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display text-lg font-bold tracking-tight text-slate-900 transition-colors hover:text-brand-700"
+                  >
+                    <Phone
+                      className="size-4 shrink-0 text-solar-600"
+                      aria-hidden="true"
+                    />
+                    {site.phoneDisplay}
+                  </a>
+                  <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                    <Clock className="size-3.5" aria-hidden="true" />
+                    {site.hours}
                   </p>
                 </div>
               </div>
-            </Reveal>
-          </div>
-
-          {/* Formulaire */}
-          <Reveal delay={0.08} y={30}>
-            <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-soft sm:p-10">
-              <div className="mb-8">
-                <h2 className="font-display text-2xl font-bold text-slate-900">
-                  Demander une étude gratuite
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  Remplissez ce formulaire : un ingénieur vous recontacte pour
-                  planifier l&apos;audit de votre site,{" "}
-                  <span className="font-semibold text-slate-900">
-                    sans engagement
-                  </span>
-                  .
-                </p>
-              </div>
-              <ContactForm
-                defaultSubject={defaultSubject}
-                defaultMessage={defaultMessage}
-              />
             </div>
           </Reveal>
+        </div>
+      </Section>
+
+      {/*
+        Détail du kit demandé — volontairement APRÈS l'entonnoir : c'est un
+        complément pour qui hésite, pas l'interaction principale. Il tient lieu
+        de fiche produit, la page /produits faisant déjà le travail de
+        présentation.
+      */}
+      {kit ? (
+        <Section className="bg-white">
+          <div className="container">
+            <SectionHeading
+              rule
+              eyebrow="Le kit que vous demandez"
+              title={kit.name}
+              lead={kit.outcome}
+            />
+
+            <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-16">
+              <Reveal>
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                  Ce qu&apos;il fait tourner
+                </p>
+                <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {kit.runs.map((load) => (
+                    <li key={load.label} className="flex items-start gap-3">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-100/60">
+                        <load.icon
+                          className="size-4 text-brand-700"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="pt-1.5 text-[15px] leading-snug text-slate-700">
+                        {load.detail ?? load.label}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-5 border-t border-dashed border-slate-200 pt-4 text-[13px] leading-relaxed text-slate-500">
+                  Simultanément et en continu, réseau coupé.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                  Composition type
+                </p>
+                <dl className="mt-4 divide-y divide-slate-100 border-y border-slate-100">
+                  {SPEC_ROWS.map(({ key, icon: Icon, label }) => (
+                    <div
+                      key={key}
+                      className="flex flex-col gap-0.5 py-3 sm:flex-row sm:items-baseline sm:gap-3"
+                    >
+                      <dt className="inline-flex shrink-0 items-center gap-2 text-[13px] text-slate-500 sm:w-36">
+                        <Icon
+                          className="size-4 shrink-0 text-solar-600"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        />
+                        {label}
+                      </dt>
+                      <dd className="min-w-0 text-[14px] font-semibold text-slate-900">
+                        {kit[key]}
+                      </dd>
+                    </div>
+                  ))}
+                  <div className="flex flex-col gap-0.5 py-3 sm:flex-row sm:items-baseline sm:gap-3">
+                    <dt className="shrink-0 text-[13px] text-slate-500 sm:w-36 sm:pl-6">
+                      Puissance
+                    </dt>
+                    <dd className="text-[14px] font-semibold text-slate-900">
+                      {kit.power} · {kit.phase}
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-5 text-[13px] leading-relaxed text-slate-500">
+                  Cette composition est celle du catalogue. Elle est ajustée à
+                  vos charges réelles après l&apos;audit — c&apos;est
+                  précisément l&apos;objet du rappel.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </Section>
+      ) : null}
+
+      {/* Nous joindre autrement */}
+      <Section className="relative isolate bg-surface-cool-deep">
+        <Glow variant="cool-deep" corner="bottom-left" />
+        <div className="container relative">
+          <SectionHeading
+            align="center"
+            eyebrow="Autrement"
+            title="Ou joignez-nous directement."
+          />
+
+          <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-3">
+            {[
+              {
+                icon: Phone,
+                label: "Téléphone",
+                value: site.phoneDisplay,
+                href: `tel:${site.phone}`,
+              },
+              {
+                icon: WhatsAppIcon,
+                label: "WhatsApp",
+                value: "Réponse la plus rapide",
+                href: buildWhatsAppLink(),
+                external: true,
+              },
+              {
+                icon: Mail,
+                label: "Email",
+                value: site.email,
+                href: `mailto:${site.email}`,
+              },
+            ].map((channel) => (
+              <a
+                key={channel.label}
+                href={channel.href}
+                {...(channel.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 hover:ring-brand-100 hover:ring-offset-1"
+              >
+                <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-100/60">
+                  <channel.icon
+                    className="size-5 text-brand-700"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="mt-4 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                  {channel.label}
+                </span>
+                <span className="mt-1 font-display text-[15px] font-bold text-slate-900">
+                  {channel.value}
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
+            {offices.map((office) => (
+              <div
+                key={office.city}
+                className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white/70 p-5"
+              >
+                <MapPin
+                  className={`mt-0.5 size-4 shrink-0 ${
+                    office.headquarters ? "text-solar-600" : "text-slate-400"
+                  }`}
+                  aria-hidden="true"
+                />
+                <div>
+                  <p className="flex flex-wrap items-center gap-x-2 text-sm font-bold text-slate-900">
+                    {office.city}
+                    <span className="rounded-full border border-slate-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">
+                      {office.role}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                    {office.street}
+                  </p>
+                  <p className="text-xs text-slate-500">{office.region}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </Section>
     </>
