@@ -3,8 +3,10 @@ import { Resend } from "resend";
 import { z } from "zod";
 
 import {
-  intents,
+  KIT_NEED,
   labelOf,
+  needs,
+  needsSituation,
   siteTypes,
   situations,
   timings,
@@ -29,11 +31,14 @@ import { site } from "@/lib/site";
  * n'écrit pas. L'email ne sert qu'à transmettre le devis écrit.
  */
 const schema = z.object({
-  intent: z.enum(["kit", "etude", "depannage", "autre"]),
+  /** Catalogue, ou l'un des six domaines — cf. lib/data/contact.ts. */
+  need: z.enum(needs.map((option) => option.id) as [string, ...string[]]),
   kit: z.string().trim().max(80).optional().or(z.literal("")),
-  service: z.string().trim().max(80).optional().or(z.literal("")),
   siteType: z.enum(["maison", "bureau", "etablissement", "industriel"]),
-  situation: z.enum(["aucun-reseau", "instable", "groupe", "extension"]),
+  /** Absente quand le domaine ne la rend pas pertinente. */
+  situation: z
+    .enum(["aucun-reseau", "instable", "groupe", "extension"])
+    .optional(),
   timing: z.enum(["urgent", "trois-mois", "cette-annee", "etude"]),
   name: z.string().trim().min(2, "Nom trop court").max(120),
   phone: z
@@ -64,28 +69,31 @@ function escapeHtml(value: string): string {
  */
 function summarize(data: Payload) {
   const kit = kits.find((item) => item.slug === data.kit);
-  const service = services.find((item) => item.slug === data.service);
+  const service = services.find((item) => item.slug === data.need);
 
   const object =
-    kit?.name ??
-    service?.title ??
-    labelOf(intents, data.intent) ??
-    "Demande de devis";
+    kit?.name ?? service?.title ?? labelOf(needs, data.need) ?? "Demande";
 
   const rows: [string, string][] = [
-    ["Demande", labelOf(intents, data.intent) ?? "—"],
+    ["Demande", labelOf(needs, data.need) ?? "—"],
   ];
   if (kit) {
-    rows.push(["Kit visé", `${kit.name} — ${kit.power}, ${kit.phase}`]);
+    rows.push(["Palier visé", `${kit.name} — ${kit.power}, ${kit.phase}`]);
     rows.push([
-      "Composition",
+      "Composition catalogue",
       `${kit.inverter} · ${kit.battery} · ${kit.panels}`,
     ]);
+  } else if (data.need === KIT_NEED) {
+    rows.push(["Palier visé", "Non déterminé — à dimensionner"]);
   }
-  if (service) rows.push(["Domaine", service.title]);
+  rows.push(["Site", labelOf(siteTypes, data.siteType) ?? "—"]);
+  if (needsSituation(data.need)) {
+    rows.push([
+      "Situation actuelle",
+      labelOf(situations, data.situation) ?? "—",
+    ]);
+  }
   rows.push(
-    ["Site", labelOf(siteTypes, data.siteType) ?? "—"],
-    ["Situation actuelle", labelOf(situations, data.situation) ?? "—"],
     ["Échéance", labelOf(timings, data.timing) ?? "—"],
     ["Ville", data.city],
   );

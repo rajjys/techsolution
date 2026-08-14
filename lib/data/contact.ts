@@ -5,13 +5,13 @@ import {
   Fuel,
   Home,
   PlugZap,
-  Ruler,
   School,
   SunMedium,
-  Wrench,
   ZapOff,
   type LucideIcon,
 } from "lucide-react";
+
+import { services } from "@/lib/data/services";
 
 /**
  * Options de l'entonnoir de contact.
@@ -32,37 +32,49 @@ export type Option<T extends string> = {
   icon: LucideIcon;
 };
 
-export type Intent = "kit" | "etude" | "depannage" | "autre";
 export type SiteType = "maison" | "bureau" | "etablissement" | "industriel";
 export type Situation = "aucun-reseau" | "instable" | "groupe" | "extension";
 export type Timing = "urgent" | "trois-mois" | "cette-annee" | "etude";
 
-export const intents: Option<Intent>[] = [
+/** Identifiant du besoin : le catalogue, ou l'un des six domaines. */
+export const KIT_NEED = "kit";
+
+/**
+ * Première question — dérivée des domaines d'expertise, plus l'entrée
+ * « catalogue ». Une question vague (« autre chose ») ne mène nulle part et
+ * n'apprend rien au commercial : chaque réponse est désormais un domaine
+ * réel, qui pilote la suite du parcours et arrive nommé dans l'email.
+ */
+export const needs: Option<string>[] = [
   {
-    id: "kit",
+    id: KIT_NEED,
     label: "Un kit du catalogue",
-    detail: "Je sais à peu près quelle puissance il me faut.",
+    detail: "Une puissance clés en main, de 650 Va à 30 kVA.",
     icon: SunMedium,
   },
-  {
-    id: "etude",
-    label: "Une étude sur mesure",
-    detail: "Dimensionnez pour moi, à partir de mes besoins réels.",
-    icon: Ruler,
-  },
-  {
-    id: "depannage",
-    label: "Un dépannage, une maintenance",
-    detail: "Une installation existante à réparer ou à entretenir.",
-    icon: Wrench,
-  },
-  {
-    id: "autre",
-    label: "Autre chose",
-    detail: "Électricité, sécurité électronique, télécoms.",
-    icon: PlugZap,
-  },
+  ...services.map((service) => ({
+    id: service.slug,
+    label: service.shortTitle,
+    detail: service.delivery,
+    icon: service.icon,
+  })),
 ];
+
+/**
+ * Domaines pour lesquels l'état électrique actuel du site change le
+ * dimensionnement. Pour une mise en conformité ou une alarme, la question
+ * n'apprend rien : on ne la pose pas.
+ */
+const POWER_NEEDS = new Set([
+  KIT_NEED,
+  "energie-solaire",
+  "backup-stockage",
+  "telecom-medias",
+]);
+
+export function needsSituation(need: string | null): boolean {
+  return need !== null && POWER_NEEDS.has(need);
+}
 
 export const siteTypes: Option<SiteType>[] = [
   {
@@ -148,7 +160,7 @@ export const timings: Option<Timing>[] = [
 /** Retrouve le libellé d'une option à partir de son identifiant. */
 export function labelOf<T extends string>(
   options: Option<T>[],
-  id: string | undefined,
+  id: string | undefined | null,
 ): string | undefined {
   return options.find((option) => option.id === id)?.label;
 }

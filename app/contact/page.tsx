@@ -41,24 +41,31 @@ export default async function ContactPage({
       <PageHero
         compact
         breadcrumb={[{ label: "Contact" }]}
-        eyebrow={kit ? "Demande de devis" : "Contact"}
+        eyebrow={kit || service ? "Demande de devis" : "Contact"}
         title={
           kit ? (
             <>
               Votre {kit.power},{" "}
               <span className="text-brand-600">dimensionné pour vous.</span>
             </>
+          ) : service ? (
+            <>
+              {service.shortTitle} :{" "}
+              <span className="text-brand-600">parlons de votre site.</span>
+            </>
           ) : (
             <>
-              Trois questions,{" "}
+              Quelques questions,{" "}
               <span className="text-brand-600">et on vous rappelle.</span>
             </>
           )
         }
         lead={
           kit
-            ? `Le ${kit.name} est un point de départ : sa composition exacte est arrêtée après l'audit de votre site. Dites-nous où et pour quoi faire.`
-            : "Plus vous nous en dites, plus le premier appel est utile. Comptez moins d'une minute — vous ne tapez que vos coordonnées."
+            ? `Le ${kit.name} est un point de départ : sa composition exacte est arrêtée après l'audit. Dites-nous où et pour quoi faire.`
+            : service
+              ? `${service.delivery} Décrivez votre site en quelques clics — un ingénieur vous rappelle sous 24 h ouvrées.`
+              : "Plus vous nous en dites, plus le premier appel est utile. Comptez moins d'une minute — vous ne tapez que vos coordonnées."
         }
       />
 
@@ -66,7 +73,7 @@ export default async function ContactPage({
       <Section className="relative isolate bg-surface-cool">
         <Glow variant="cool" corner="bottom-right" />
         <div className="container relative grid items-start gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:gap-12">
-          <ContactFunnel initialKit={kit?.slug} initialService={service?.slug} />
+          <ContactFunnel initialKit={kit?.slug} initialNeed={service?.slug} />
 
           {/* Rail — ce qui rassure, et la porte de sortie immédiate */}
           <Reveal delay={0.1} className="lg:sticky lg:top-28">
