@@ -57,6 +57,13 @@ const commitments = [
   },
 ];
 
+/**
+ * Bornes de l'échelle, lues aux extrémités de `kits` — le tableau est ordonné
+ * par puissance croissante. Écrites en dur, elles auraient survécu à l'ajout
+ * d'un palier sans que personne ne s'en aperçoive.
+ */
+const powerRange = `de ${kits[0].power} à ${kits[kits.length - 1].power} ${kits[kits.length - 1].phase.toLowerCase()}`;
+
 export default function ProduitsPage() {
   return (
     <>
@@ -66,11 +73,11 @@ export default function ProduitsPage() {
         eyebrow="Kits solaires"
         title={
           <>
-            De la lampe qui reste allumée à{" "}
-            <span className="text-brand-600">l&apos;établissement entier.</span>
+            Kits solaires hybrides,{" "}
+            <span className="text-brand-600">du foyer à l&apos;usine.</span>
           </>
         }
-        lead={`${kits.length} kits hybrides clés en main, de 650 Va à 30 kVA triphasé. Situez-vous sur l'échelle : la composition suit.`}
+        lead={`Choisissez ce que vous devez alimenter — quelques lampes, une villa, une clinique, une usine. L'échelle vous place sur le bon kit, ${powerRange}, et en détaille la composition.`}
         image={{
           src: "/gallery-web/onduleurs-mur.jpg",
           alt: "Onduleurs hybrides Tech Solution installés et mis en service",
@@ -149,7 +156,7 @@ export default function ProduitsPage() {
                 <Button asChild>
                   <Link href="/contact">Planifier mon audit</Link>
                 </Button>
-                <Button variant="outline-ember" className="group" asChild>
+                <Button variant="outline-strong" className="group" asChild>
                   <Link href="/services#energie-solaire">
                     Notre expertise solaire
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

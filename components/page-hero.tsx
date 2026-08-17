@@ -29,8 +29,14 @@ export type HeroImage = {
  *    le bord franc. Un simple voile posé par-dessus laissait voir l'arête où
  *    la photo commençait, comme un mur derrière un nuage ;
  * 2. un **voile de la couleur du fond** pour le contraste du texte. Sur
- *    mobile il est uniforme : un dégradé y faisait varier la lisibilité d'une
- *    ligne à l'autre, et le chapô passait en dessous du seuil.
+ *    mobile il reste quasi opaque sur les deux tiers hauts — tout le bloc de
+ *    texte, actions comprises — puis s'ouvre franchement en bas. Il ne
+ *    s'allégeait autrefois qu'à partir de 60 %, et les boutons tombaient dans
+ *    la zone claire : le contour du secondaire se confondait avec la photo.
+ *
+ * Les deux dégradés sont écrits en **paliers rapprochés** plutôt qu'en trois
+ * arrêts. Une rampe d'alpha linéaire se voit : l'œil détecte la cassure de
+ * pente là où elle commence, et lit une arête que le code ne contient pas.
  *
  * @see docs/design-system.md — « Rythme des fonds »
  */
@@ -65,7 +71,7 @@ export function PageHero({
     <section
       className={cn(
         "relative isolate overflow-hidden bg-brand-50",
-        image && "min-h-[30rem] lg:min-h-[34rem]",
+        image && "min-h-[34rem] lg:min-h-[39rem]",
       )}
     >
       {image ? (
@@ -99,17 +105,16 @@ export function PageHero({
           </div>
 
           {/*
-            Voile de contraste. Sous lg il est constant sur toute la zone de
-            texte puis s'allège en dessous : un dégradé sur la zone de texte
-            ferait varier la lisibilité d'une ligne à l'autre, et c'est
-            toujours le chapô qui passe sous le seuil.
+            Voile de contraste. Sous lg il couvre tout le bloc de texte,
+            boutons compris, et ne s'ouvre que dans le dernier cinquième.
             À partir de lg il devient directionnel et libère complètement le
-            tiers droit, où la photo doit se lire pour ce qu'elle est.
+            tiers droit, où la photo doit se lire pour ce qu'elle est — la
+            bande franche commence toujours vers 67 %, comme avant.
           */}
           <div
             className="absolute inset-0 -z-10
-            bg-[linear-gradient(to_bottom,rgb(242_242_253/0.93)_0%,rgb(242_242_253/0.93)_60%,rgb(242_242_253/0.45)_100%)]
-            lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.55)_50%,rgb(242_242_253/0)_64%)]"
+            bg-[linear-gradient(to_bottom,rgb(242_242_253/0.98)_0%,rgb(242_242_253/0.97)_66%,rgb(242_242_253/0.86)_80%,rgb(242_242_253/0.55)_92%,rgb(242_242_253/0.34)_100%)]
+            lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.97)_39%,rgb(242_242_253/0.88)_44%,rgb(242_242_253/0.72)_49%,rgb(242_242_253/0.5)_54%,rgb(242_242_253/0.28)_59%,rgb(242_242_253/0.1)_63%,rgb(242_242_253/0)_67%)]"
             aria-hidden="true"
           />
         </>
@@ -119,9 +124,9 @@ export function PageHero({
 
       <div
         className={cn(
-          "container relative flex flex-col pt-8 sm:pt-10 lg:pt-14",
-          compact ? "pb-8 lg:pb-10" : "pb-10 sm:pb-14 lg:pb-20",
-          image && "min-h-[30rem] lg:min-h-[34rem]",
+          "container relative flex flex-col pt-10 sm:pt-12 lg:pt-16",
+          compact ? "pb-10 lg:pb-14" : "pb-12 sm:pb-16 lg:pb-24",
+          image && "min-h-[34rem] lg:min-h-[39rem]",
         )}
       >
         {/* Toujours en tête et aligné à gauche, comme sur toutes les pages */}

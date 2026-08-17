@@ -60,27 +60,14 @@ export function Header() {
         hidden && !mobileOpen ? "-translate-y-full" : "translate-y-0",
       )}
     >
-      {/* Barre utilitaire */}
-      <div className="hidden bg-brand-950 text-brand-100 lg:block">
-        <div className="container flex h-9 items-center justify-center text-xs xl:!max-w-[1304px]">
-          <div className="flex items-center gap-6">
-            <a
-              href={`tel:${site.phone}`}
-              className="flex items-center gap-1.5 transition-colors hover:text-solar-500"
-            >
-              <Phone className="size-3.5 text-solar-500" />
-              {site.phoneDisplay}
-            </a>
-            <a
-              href={`mailto:${site.email}`}
-              className="flex items-center gap-1.5 transition-colors hover:text-solar-500"
-            >
-              <Mail className="size-3.5 text-solar-500" />
-              {site.email}
-            </a>
-          </div>
-        </div>
-      </div>
+      {/*
+        Pas de barre utilitaire sombre au-dessus de l'en-tête : pleine largeur
+        et en quasi-noir, elle était l'élément le plus contrasté de la page et
+        captait donc la première fixation du regard — au profit d'un numéro de
+        téléphone, que personne n'appelle avant d'avoir lu le titre. Le
+        téléphone et l'e-mail vivent dans le pied de page, la page contact et
+        le menu mobile. La page commence à la navigation.
+      */}
 
       {/* Barre principale */}
       <div
@@ -100,130 +87,139 @@ export function Header() {
             <Logo />
           </Link>
 
-          <nav
-            aria-label="Navigation principale"
-            className="hidden items-center gap-1 lg:flex"
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                className={cn(
-                  "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
-                  isActive(link.href)
-                    ? "text-slate-900"
-                    : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
-                )}
-              >
-                {link.label}
-                {isActive(link.href) ? (
-                  <span className="absolute inset-x-4 -bottom-px h-[3px] rounded-full bg-brand-600" />
-                ) : null}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="hidden items-center gap-3 lg:flex">
-            <Button variant="nav" size="sm" className="py-3 text-base" asChild>
-              <Link href="/contact">Demander un devis</Link>
-            </Button>
-          </div>
-
-          {/* Menu mobile */}
-          <Sheet open={mobileOpen} onOpenChange={handleMenuOpenChange}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="lg:hidden"
-                aria-label="Ouvrir le menu de navigation"
-              >
-                <Menu className="!size-6 text-brand-800" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="flex flex-col p-0">
-              <div className="border-b border-slate-100 p-5">
-                <SheetTitle asChild>
-                  <Link href="/" onClick={() => setMobileOpen(false)}>
-                    <Logo />
-                  </Link>
-                </SheetTitle>
-                <SheetDescription className="sr-only">
-                  Menu de navigation {site.name}
-                </SheetDescription>
-              </div>
-
-              <nav
-                aria-label="Navigation mobile"
-                className="flex flex-1 flex-col gap-1 overflow-y-auto p-5"
-              >
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    aria-current={isActive(link.href) ? "page" : undefined}
-                    className={cn(
-                      "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
-                      isActive(link.href)
-                        ? "bg-brand-600 text-white"
-                        : "text-slate-700 hover:bg-brand-50",
-                    )}
-                  >
-                    {link.label}
-                    <ArrowRight
-                      className={cn(
-                        "size-4",
-                        isActive(link.href) ? "text-white" : "text-slate-300",
-                      )}
-                    />
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="space-y-3 border-t border-slate-100 p-5">
-                <Button variant="nav" block asChild>
-                  <Link href="/contact" onClick={() => setMobileOpen(false)}>
-                    Demander un devis gratuit
-                  </Link>
-                </Button>
-                <Button
-                  variant="card-outline"
-                  block
-                  className="border-[#25D366] bg-white text-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366] hover:ring-[#25D366]/25"
-                  asChild
+          {/*
+            Navigation et CTA forment un seul bloc à droite. Centrée, la
+            navigation créait un troisième point de fixation entre le logo et
+            le bouton — et tombait à l'aplomb du titre, avec lequel elle
+            rivalisait. Deux ancrages suffisent : la marque à gauche, l'action
+            à droite.
+          */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            <nav
+              aria-label="Navigation principale"
+              className="hidden items-center gap-1 lg:flex"
+            >
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={cn(
+                    "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
+                    isActive(link.href)
+                      ? "text-slate-900"
+                      : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
+                  )}
                 >
-                  <a
-                    href={buildWhatsAppLink()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <WhatsAppIcon className="size-4" />
-                    Contacter sur WhatsApp
-                  </a>
+                  {link.label}
+                  {isActive(link.href) ? (
+                    <span className="absolute inset-x-4 -bottom-px h-[3px] rounded-full bg-brand-600" />
+                  ) : null}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="hidden items-center lg:flex">
+              <Button variant="nav" size="sm" className="py-3 text-base" asChild>
+                <Link href="/contact">Demander un devis</Link>
+              </Button>
+            </div>
+
+            {/* Menu mobile */}
+            <Sheet open={mobileOpen} onOpenChange={handleMenuOpenChange}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                  aria-label="Ouvrir le menu de navigation"
+                >
+                  <Menu className="!size-6 text-brand-800" />
                 </Button>
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <a
-                    href={`tel:${site.phone}`}
-                    className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
-                    border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-900 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
-                  >
-                    <Phone className="size-4 text-brand-600" />
-                    {site.phoneDisplay}
-                  </a>
-                  <a
-                    href={`mailto:${site.email}`}
-                    className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
-                    border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
-                  >
-                    <Mail className="size-4 text-brand-600" />
-                    {site.email}
-                  </a>
+              </SheetTrigger>
+              <SheetContent side="right" className="flex flex-col p-0">
+                <div className="border-b border-slate-100 p-5">
+                  <SheetTitle asChild>
+                    <Link href="/" onClick={() => setMobileOpen(false)}>
+                      <Logo />
+                    </Link>
+                  </SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Menu de navigation {site.name}
+                  </SheetDescription>
                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+  
+                <nav
+                  aria-label="Navigation mobile"
+                  className="flex flex-1 flex-col gap-1 overflow-y-auto p-5"
+                >
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={isActive(link.href) ? "page" : undefined}
+                      className={cn(
+                        "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
+                        isActive(link.href)
+                          ? "bg-brand-600 text-white"
+                          : "text-slate-700 hover:bg-brand-50",
+                      )}
+                    >
+                      {link.label}
+                      <ArrowRight
+                        className={cn(
+                          "size-4",
+                          isActive(link.href) ? "text-white" : "text-slate-300",
+                        )}
+                      />
+                    </Link>
+                  ))}
+                </nav>
+  
+                <div className="space-y-3 border-t border-slate-100 p-5">
+                  <Button variant="nav" block asChild>
+                    <Link href="/contact" onClick={() => setMobileOpen(false)}>
+                      Demander un devis gratuit
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="card-outline"
+                    block
+                    className="border-[#25D366] bg-white text-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366] hover:ring-[#25D366]/25"
+                    asChild
+                  >
+                    <a
+                      href={buildWhatsAppLink()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <WhatsAppIcon className="size-4" />
+                      Contacter sur WhatsApp
+                    </a>
+                  </Button>
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    <a
+                      href={`tel:${site.phone}`}
+                      className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
+                      border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-900 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
+                    >
+                      <Phone className="size-4 text-brand-600" />
+                      {site.phoneDisplay}
+                    </a>
+                    <a
+                      href={`mailto:${site.email}`}
+                      className="flex-1 min-w-[140px] text-center flex items-center justify-center gap-2 rounded-xl 
+                      border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-brand-300 hover:bg-brand-50 whitespace-nowrap"
+                    >
+                      <Mail className="size-4 text-brand-600" />
+                      {site.email}
+                    </a>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>

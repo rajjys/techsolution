@@ -9,7 +9,7 @@ import { CaseStudyShowcase } from "@/components/references/case-study-showcase";
 import { RealisationsList } from "@/components/references/realisations-list";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
-import { presenceCities } from "@/lib/data/case-studies";
+import { caseStudies, presenceCities } from "@/lib/data/case-studies";
 import { clients, projects } from "@/lib/data/clients";
 import { provinces } from "@/lib/data/drc";
 import { site } from "@/lib/site";
@@ -55,12 +55,6 @@ export default async function ReferencesPage({
                 <Download className="size-4 text-brand-600" />
                 Télécharger la farde (PDF)
               </a>
-            </Button>
-            <Button variant="outline-ember" className="group" asChild>
-              <Link href="#realisations">
-                Voir le relevé complet
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
             </Button>
           </>
         }
@@ -109,11 +103,11 @@ export default async function ReferencesPage({
             rule
             onDark
             eyebrow="Projets phares"
-            title="Six chantiers, racontés de bout en bout."
+            title={`${caseStudies.length} chantiers, racontés de bout en bout.`}
             lead="Le contexte, la contrainte, la solution retenue et le résultat. Ouvrez celui qui ressemble le plus au vôtre."
           />
 
-          {/* Un projet à la fois, la carte à côté : six grandes cartes
+          {/* Un projet à la fois, la carte à côté : autant de grandes cartes
               image coûtaient un écran entier sur mobile. */}
           <div className="mt-12 lg:mt-14">
             <CaseStudyShowcase showMapOnMobile />

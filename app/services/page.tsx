@@ -157,7 +157,7 @@ function ExpertiseSection({
                     Étudier mon projet
                   </Link>
                 </Button>
-                <Button variant="outline-ember" className="group" asChild>
+                <Button variant="outline-strong" className="group" asChild>
                   <Link
                     href={`/references?domaine=${service.slug}#realisations`}
                   >
@@ -183,13 +183,18 @@ export default function ServicesPage() {
         eyebrow="Services & Expertise"
         title={
           <>
-            Six expertises, un seul objectif :{" "}
+            Énergie solaire et électricité :{" "}
+            {/*
+              Littéral gabarit et non du texte JSX : une expression suivie de
+              texte sur plusieurs lignes perd son espace de tête, JSX rognant
+              chaque ligne avant de les joindre. Rendu tel quel : « 6expertises ».
+            */}
             <span className="text-brand-600">
-              que votre site ne s&apos;arrête jamais.
+              {`${services.length} expertises pour que le courant ne s'arrête plus.`}
             </span>
           </>
         }
-        lead="Délestages, carburant, matériel grillé, sites isolés : nous traitons la cause — de l'audit de charge jusqu'au contrat d'entretien, partout en RDC."
+        lead={`Délestages, carburant, matériel grillé, sites isolés : nous traitons la cause, de l'audit de charge au contrat d'entretien. Pour les foyers, les entreprises et les sites industriels, partout en RDC.`}
         image={{
           src: "/gallery-web/technicien-toiture.jpg",
           alt: "Deux techniciens posant des panneaux solaires sur une toiture",
@@ -200,12 +205,6 @@ export default function ServicesPage() {
             <Button className="group" asChild>
               <Link href="/contact">
                 Demander une étude gratuite
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button variant="outline-ember" className="group" asChild>
-              <Link href="#energie-solaire">
-                Voir les six domaines
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </Button>
@@ -221,7 +220,7 @@ export default function ServicesPage() {
             align="center"
             eyebrow="Par où commencer"
             title="Identifiez la panne, nous avons le domaine."
-            lead="Six expertises, une seule équipe responsable de bout en bout. Choisissez la vôtre — le détail suit juste en dessous."
+            lead={`${services.length} expertises, une seule équipe responsable de bout en bout. Choisissez la vôtre — le détail suit juste en dessous.`}
           />
 
           <Stagger className="mt-12 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">

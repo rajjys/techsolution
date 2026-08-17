@@ -30,7 +30,7 @@ export default function NotFound() {
               Retour à l&apos;accueil
             </Link>
           </Button>
-          <Button variant="outline-ember" asChild>
+          <Button variant="outline-strong" asChild>
             <Link href="/contact">Nous contacter</Link>
           </Button>
         </div>

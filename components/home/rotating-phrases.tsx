@@ -3,16 +3,22 @@
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const PHRASES = [
-  "Éliminez les coupures",
-  "Réduisez vos factures",
-  "Gagnez en autonomie",
-] as const;
+/**
+ * La chute du titre, pas une seconde phrase.
+ *
+ * Ces groupes nominaux complètent « Fini les délestages pour… ». La rotation
+ * porte donc sur le complément — le lecteur s'y reconnaît — et la phrase
+ * reste grammaticalement entière à chaque instant. Les précédentes
+ * (« Éliminez les coupures », etc.) formaient une phrase autonome qui
+ * répétait la première ; l'orange y décorait au lieu de désigner.
+ */
+const PHRASES = ["vos entreprises", "vos foyers", "vos sites industriels"] as const;
 
-const INTERVAL_MS = 3500;
+/** 4,2 s : le temps de lire, sans que l'œil soit rappelé sans cesse vers le haut. */
+const INTERVAL_MS = 4200;
 
 /**
- * Rotation de la phrase dynamique du H1 (fondu + glissement).
+ * Rotation de la chute du H1 (fondu + glissement).
  * Hauteur minimale réservée pour éviter tout décalage de mise en page.
  */
 export function RotatingPhrases() {
@@ -29,7 +35,13 @@ export function RotatingPhrases() {
 
   return (
     <span
-      className="mt-2 block min-h-[2.2em] text-ember-700 sm:min-h-[1.15em] lg:mt-3"
+      /*
+        La réserve de hauteur bascule à 360 px et non à `sm` (640 px) : les
+        chutes tiennent sur une ligne dès 360 px, et réserver deux lignes
+        jusqu'à 640 px creusait un vide fantôme sous le titre sur tous les
+        téléphones.
+      */
+      className="block min-h-[2.2em] text-solar-700 min-[360px]:min-h-[1.15em]"
       aria-live="polite"
     >
       <AnimatePresence mode="wait" initial={false}>

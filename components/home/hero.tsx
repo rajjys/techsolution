@@ -4,6 +4,17 @@ import { ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { RotatingPhrases } from "@/components/home/rotating-phrases";
+import { Button } from "@/components/ui/button";
+import { offices } from "@/lib/site";
+
+/**
+ * « Bunia et Kinshasa » — dérivé de `offices`, qui reste la source unique des
+ * implantations (pied de page, page contact, JSON-LD). `Intl.ListFormat` pour
+ * que l'énumération reste correcte le jour où une troisième base s'ouvre.
+ */
+const baseCities = new Intl.ListFormat("fr", { type: "conjunction" }).format(
+  offices.map((office) => office.city),
+);
 
 /**
  * Hero pleine largeur (modèle BairesDev) : image de fond plein cadre sur
@@ -11,6 +22,16 @@ import { RotatingPhrases } from "@/components/home/rotating-phrases";
  * et sans image en dessous de lg.
  */
 export function Hero() {
+  /*
+   * Le hero est bleu très pâle, la section d'autorité est blanche : c'est ce
+   * qui rend la courbe lisible, y compris sur mobile où l'image est masquée
+   * et où le fond est alors la seule séparation.
+   *
+   * `brand-50` et non plus un crème : le fond, le mobilier et le logo sont
+   * désormais du même bleu, et le jaune reste seul à porter l'action. Un fond
+   * chaud sous un bouton jaune aurait remis deux teintes voisines en
+   * concurrence — le défaut même qu'on cherchait à sortir de la page.
+   */
   return (
     <section className="relative overflow-hidden bg-brand-50">
       {/* Image de fond — desktop uniquement */}
@@ -21,47 +42,124 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[70%_45%]"
+          className="object-cover object-[70%_45%] saturate-[0.85] brightness-[1.04]"
         />
-        {/* Voile : crème opaque à gauche → transparent à droite */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-50 from-10% via-ember-50/90 to-transparent" />
+        {/*
+          Voile : `brand-50` plein à gauche → transparent à droite, d'un seul
+          ton du fond de section jusqu'à l'image. Il a d'abord démarré à 10 %,
+          puis mêlé un tint froid et un tint chaud : les diagonales très
+          contrastées des panneaux transparaissaient derrière le chapô, et le
+          mélange donnait ce rendu trouble, « presque propre ».
+
+          Le voile s'éteint à 84 % et non au bord droit : au-delà, la photo
+          est nette. Un dégradé qui court jusqu'au bord ne laisse aucune zone
+          franche et donne cette impression de brume sur toute l'image.
+
+          Surtout : la colonne de texte et l'image ne se recouvrent jamais.
+          C'est la règle du modèle — chez BairesDev le texte s'arrête vers
+          49 % et l'image ne commence à paraître qu'à 52 %. Densifier le voile
+          ne suffisait pas : tant que le titre dépassait dans la zone de
+          fondu, il restait posé sur les diagonales des panneaux. C'est donc
+          le titre qui recule (`max-w`), pas le voile qui avance — sinon il ne
+          reste plus aucune bande d'image franche.
+
+          Le dégradé est écrit en toutes lettres, en paliers rapprochés, et
+          non avec les utilitaires `from`/`via`/`to`. Trois arrêts donnaient
+          une rampe d'alpha linéaire, dont l'œil repère la cassure de pente :
+          on lisait une arête franche entre la colonne de texte et la photo
+          alors que le code n'en contenait aucune. Neuf paliers approchent une
+          courbe et la couture disparaît.
+
+          Corollaire, appris à la dure : les positions littérales des
+          utilitaires Tailwind doivent s'écrire entre crochets. L'échelle
+          `gradientColorStopPositions` ne contient que des multiples de 5, et
+          `from-54%` ne produisait aucune règle — la variable retombait sur sa
+          valeur par défaut, le voile se dégradait depuis le bord gauche, et
+          la classe se lisait juste sans exister.
+        */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_46%,rgb(242_242_253/0.98)_53%,rgb(242_242_253/0.92)_59%,rgb(242_242_253/0.8)_65%,rgb(242_242_253/0.62)_71%,rgb(242_242_253/0.42)_77%,rgb(242_242_253/0.22)_83%,rgb(242_242_253/0.08)_89%,rgb(242_242_253/0)_95%)]" />
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-60 lg:pt-16 lg:text-left xl:-ml-8">
+        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-52 lg:pt-14 lg:text-left xl:-ml-8">
+          {/*
+            Une seule phrase, dont la rotation est la chute — comme le modèle,
+            où la couleur d'action tombe sur le groupe nominal qui achève le titre
+            (« …Vetted Nearshore *Full-Stack Engineers* »).
+
+            La version précédente refermait une phrase (« …24h/24. ») puis en
+            ouvrait une seconde, animée, qui redisait la première (« Fini les
+            délestages » ≈ « Éliminez les coupures »). La couleur y décorait au
+            lieu de désigner, et le mouvement, placé haut à gauche, ramenait
+            l'œil vers le titre toutes les 3,5 s — loin du bouton. Ici il se
+            produit sur la dernière ligne, juste au-dessus du CTA et dans sa
+            couleur : le regard descend de jaune en jaune.
+
+            « l'autonomie solaire » porte la catégorie, et c'est le titre qui
+            doit la porter. Sans elle — « Fini les délestages pour vos foyers »
+            — rien ne disait si l'on vendait des groupes électrogènes, si l'on
+            réparait des lignes ou si l'on installait des systèmes autonomes :
+            le chapô devait rattraper la première ligne. « Autonomie » dit le
+            stockage sans le jargon des batteries.
+          */}
           <Reveal mode="mount">
-            <h1 className="text-[30px] font-medium leading-[1.15] tracking-[-0.02em] text-slate-900 sm:text-[42px] sm:leading-[1.12] md:text-6xl lg:max-w-[800px] lg:text-[72px] lg:leading-[1.1]">
-              Fini les délestages. Une énergie stable pour vos activités, 24h/24.&nbsp;
+            <h1 className="text-[30px] font-semibold leading-[1.12] tracking-[-0.025em] text-slate-900 sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
+              Fini les délestages&nbsp;: l&apos;autonomie solaire pour{" "}
               <RotatingPhrases />
             </h1>
           </Reveal>
 
           <Reveal mode="mount" delay={0.1}>
+            {/*
+              Le chapô prend les créneaux que le titre ne peut pas porter : le
+              comment (étude, pose, entretien, batteries), la portée, et le
+              qui.
+
+              « haute fiabilité » a sauté. C'était un adjectif invérifiable,
+              que revendique aussi bien n'importe quel concurrent. Ce qui lève
+              vraiment l'objection sur ce marché n'est pas « est-ce que le
+              solaire fonctionne » mais « qui vient le réparer dans dix-huit
+              mois » : d'où « maintenance », et deux villes nommées plutôt
+              qu'une promesse.
+
+              Gras à l'intérieur du chapô : un point d'accroche pour le regard
+              qui balaie sans lire.
+            */}
             <p className="mx-auto mt-4 max-w-xl text-lg font-normal leading-relaxed text-[#52606D] sm:mt-6 lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
-              L&apos;installation solaire haute fiabilité pour vos domiciles,
-              entreprises et sites industriels partout en RDC.
+              Étude, installation et{" "}
+              <strong className="font-semibold text-slate-900">
+                maintenance
+              </strong>{" "}
+              de systèmes solaires avec batteries — partout en RDC, depuis nos
+              bases de {baseCities}.
             </p>
           </Reveal>
 
+          {/*
+            Un seul bouton. Le secondaire était un co-primaire déguisé : même
+            hauteur, même rayon, bordure de 2 px, fond teinté et couleur de
+            marque concurrente. Deux cibles de poids égal n'en font aucune de
+            dominante. Réduit à un lien texte, il reste accessible à qui le
+            cherche sans disputer la fixation au devis.
+          */}
           <Reveal mode="mount" delay={0.2}>
-            <div className="mx-auto mt-8 flex max-w-sm flex-col items-stretch gap-4 sm:mx-0 sm:mt-10 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-8 lg:mt-14 lg:justify-start">
-              <Link
-                href="/contact"
-                className="inline-flex w-full items-center justify-center rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-all duration-200 sm:w-auto
-                hover:scale-105 hover:ring-4 hover:ring-offset-1 hover:ring-ember-300
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2 sm:px-8 sm:py-4 sm:text-[18px]"
+            <div className="mx-auto mt-8 flex max-w-sm flex-col items-center gap-5 sm:mx-0 sm:mt-10 sm:max-w-none sm:flex-row sm:justify-center sm:gap-7 lg:mt-14 lg:justify-start">
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto"
+                asChild
               >
-                Obtenez un devis gratuit
-              </Link>
+                <Link href="/contact">Obtenez un devis gratuit</Link>
+              </Button>
               <Link
                 href="/references"
-                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-700/30 px-4 py-3 sm:w-auto
-                text-base font-medium text-brand-700 bg-brand-200/15 transition-all duration-200
-                hover:ring-4 hover:ring-offset-1 hover:ring-brand-200 
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 sm:py-[0.8rem] sm:text-lg"
+                className="group inline-flex items-center gap-2 whitespace-nowrap rounded-lg px-1 py-1 text-base font-semibold text-slate-600 underline-offset-4 transition-colors duration-200
+                hover:text-slate-900 hover:underline
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 sm:text-[17px]"
               >
                 Découvrir nos réalisations
-                <ArrowRight className="size-5 transition-transform duration-200 group-hover:translate-x-1" />
+                <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
           </Reveal>

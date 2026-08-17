@@ -3,8 +3,9 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
 
 import { Logo } from "@/components/logo";
-import { WhatsAppIcon } from "@/components/icons";
+import { BoltRule, WhatsAppIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/section";
+import { Button } from "@/components/ui/button";
 import { footerLinks, offices, site } from "@/lib/site";
 import { services } from "@/lib/data/services";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
@@ -20,17 +21,14 @@ const MARK_MASK = {
 } as const;
 
 /**
- * Intitulé de colonne — reprend l'`Eyebrow` des sections (filet solaire,
+ * Intitulé de colonne — reprend l'`Eyebrow` des sections (impulsion solaire,
  * capitales, interlettrage 0.18em) mais en `<h3>` : la rangée du bas porte
  * de vraies têtes de rubrique, pas des étiquettes décoratives.
  */
 function ColumnTitle({ children }: { children: React.ReactNode }) {
   return (
     <h3 className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-white lg:text-xs">
-      <span
-        className="h-[3px] w-6 shrink-0 rounded-full bg-solar-500"
-        aria-hidden="true"
-      />
+      <BoltRule className="h-2 w-[28px] shrink-0 text-solar-500" />
       {children}
     </h3>
   );
@@ -104,15 +102,16 @@ export function Footer() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <Link
-                href="/contact"
-                className="group inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-ember-600 px-7 py-3.5 text-base font-semibold text-white
-                transition-all duration-200 hover:scale-105 hover:ring-4 hover:ring-ember-500/40 hover:ring-offset-1 hover:ring-offset-brand-950
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-950 sm:w-auto"
+              <Button
+                variant="primary-dark"
+                className="group w-full sm:w-auto"
+                asChild
               >
-                Demander une étude gratuite
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
+                <Link href="/contact">
+                  Demander une étude gratuite
+                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </Button>
               <a
                 href={buildWhatsAppLink()}
                 target="_blank"

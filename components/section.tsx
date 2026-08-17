@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/motion";
+import { BoltRule } from "@/components/icons";
 
 /**
  * Rythme vertical standard d'une section. Les sections qui ouvrent ou
@@ -20,7 +21,7 @@ export function Section({
 }
 
 /**
- * Surtitre de section — filet solaire puis capitales espacées.
+ * Surtitre de section — impulsion solaire puis capitales espacées.
  * C'est le seul endroit où le solaire sert de repère structurel.
  */
 export function Eyebrow({
@@ -40,10 +41,7 @@ export function Eyebrow({
         className,
       )}
     >
-      <span
-        className="h-[3px] w-8 shrink-0 rounded-full bg-solar-500"
-        aria-hidden="true"
-      />
+      <BoltRule className="h-2.5 w-[35px] shrink-0 text-solar-500" />
       {children}
     </span>
   );

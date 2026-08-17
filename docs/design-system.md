@@ -78,14 +78,14 @@ jamais à côté.
 | Rampe | Rôle | Interdit |
 |-------|------|----------|
 | `brand` | Identité, surfaces, teintes de section, accent de titre | — |
-| `solar` | Surligneur **rare** : filet d'eyebrow, soulignement, pictos de specs, états actifs, accents sur fond sombre | Texte courant, grands aplats sur clair |
-| `ember` | **Action, exclusivement** | Tout usage décoratif |
+| `solar` | **Action, exclusivement** — plus le filet d'eyebrow et les pictos de specs | Texte courant ; tout souligné sur du non-cliquable |
+| `ember` | **Retiré de l'interface.** Ne subsiste qu'en couleur d'**état** (erreur de formulaire) et en teinte de catégorie « Électricité » | Toute action, tout décor |
 | `slate` | Texte neutre sur clair : `900` titres, `600` corps, `500` méta | — |
 | `navy` | **Déprécié.** Palette héritée, conservée le temps de la purge | Tout nouveau code |
 
 Sur fond sombre, le corps de texte est en `brand-200`, la méta en `brand-300`.
 
-Catégorisation (badges, étiquettes) : s'en tenir à `solar` / `brand` / `ember` /
+Catégorisation (badges, étiquettes) : s'en tenir à `solar` / `brand` /
 `slate`. Pas d'ambre, d'émeraude ni de ciel — ils n'appartiennent à aucune
 rampe du système.
 
@@ -96,18 +96,26 @@ la surface et le voisinage. Voir `components/ui/button.tsx`.
 
 | Variante | Contexte |
 |----------|----------|
-| `primary` | Action principale sur surface claire — `ember-700` |
-| `primary-dark` | La même sur surface sombre — `ember-600`, plus lumineux |
-| `outline-ember` | Secondaire adossé à un primaire |
+| `primary` | Action principale sur surface claire — `solar-500`, **texte `brand-950`** |
+| `primary-dark` | La même sur surface sombre — `solar-500` y tient tel quel |
+| `outline-strong` | Secondaire adossé à un primaire — contour `brand-950` |
 | `outline-brand` | Secondaire isolé, registre navigation |
 | `outline-light` | Secondaire sur surface sombre — s'inverse au survol |
-| `nav` | Chrome de navigation (header, menu) — `brand-700`, jamais `ember` |
+| `nav` | Chrome de navigation (header, menu) — `brand-950`, jamais la couleur d'action |
 | `card` / `card-outline` | Action à l'intérieur d'une carte ou d'un panneau produit — `brand` |
-| `neutral` | **Téléchargement**, et rien d'autre : blanc bordé, la couleur reste au picto. Un secondaire ordinaire prend `outline-ember` — sinon le blanc cesse de signaler « vous repartez avec un fichier » |
+| `neutral` | **Téléchargement**, et rien d'autre : blanc bordé, la couleur reste au picto. Un secondaire ordinaire prend `outline-strong` — sinon le blanc cesse de signaler « vous repartez avec un fichier » |
 | `whatsapp` | Canal WhatsApp en plein vert — réservé aux endroits où c'est *le* canal proposé |
 
-`ember` reste l'action du **contenu éditorial** (une page qui pousse vers le
-devis). À l'intérieur d'un objet — carte, panneau de produit — l'action est en
+`solar` est l'action du **contenu éditorial** (une page qui pousse vers le
+devis). Le jaune impose son sens de lecture : du blanc sur `solar-500` plafonne
+à 1,7:1 — le texte d'un bouton jaune est donc toujours sombre (`brand-950`,
+11:1). Sur fond blanc le jaune n'a qu'un contour mou : `primary` porte un
+`shadow-sm` pour lui rendre son arête, jamais une bordure — elle fausserait les
+hauteurs face aux variantes à bordure de 2 px.
+
+L'orange a été retiré parce qu'il n'appartenait pas à l'identité (bleu / jaune /
+blanc) : il portait toutes les actions sans figurer nulle part dans la marque.
+Le jaune, lui, y était déjà — et ne servait presque à rien dans l'interface. À l'intérieur d'un objet — carte, panneau de produit — l'action est en
 `brand` : elle appartient à l'objet, pas à la page. Deux boutons pleins et
 colorés côte à côte se disputent le regard : le second passe en `neutral`, et
 seul son picto garde sa couleur.
@@ -128,7 +136,7 @@ différentes dans une colonne se lisent comme une erreur.
 
 **La paire canonique.** Un bloc de contenu détaillé propose deux sorties et
 pas plus : *agir* (`primary` → `/contact`, préqualifié par un paramètre) et
-*se rassurer* (`outline-ember` → la preuve correspondante). Une page ne
+*se rassurer* (`outline-strong` → la preuve correspondante). Une page ne
 recopie pas la preuve : elle y renvoie. C'est ce que fait chaque expertise de
 /services, dont le second CTA pointe vers `/references?domaine=<slug>` — le
 lien entre un service et sa catégorie de réalisation est porté par la donnée

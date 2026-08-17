@@ -12,7 +12,6 @@ const badgeVariants = cva(
         solar: "border-transparent bg-solar-500 text-slate-900",
         "solar-soft": "border-solar-500/30 bg-solar-50 text-solar-800",
         brand: "border-brand-200 bg-brand-50 text-brand-800",
-        ember: "border-ember-200 bg-ember-50 text-ember-800",
         outline: "border-slate-200 bg-white text-slate-700",
         "outline-light": "border-white/25 bg-white/10 text-white backdrop-blur",
         muted: "border-slate-200 bg-slate-100 text-slate-700",

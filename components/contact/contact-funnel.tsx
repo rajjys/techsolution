@@ -255,7 +255,7 @@ export function ContactFunnel({
               Continuer sur WhatsApp
             </a>
           </Button>
-          <Button variant="outline-ember" className="group" asChild>
+          <Button variant="outline-strong" className="group" asChild>
             <Link href="/references">
               Voir nos réalisations
               <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />

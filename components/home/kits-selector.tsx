@@ -3,6 +3,7 @@ import { ArrowRight, BatteryCharging, SunMedium, Zap } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { Button } from "@/components/ui/button";
 import { showcaseKits, type Kit } from "@/lib/data/kits";
 import { cn } from "@/lib/utils";
 
@@ -196,21 +197,15 @@ export function KitsSelector() {
             </p>
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4 lg:shrink-0">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-colors duration-200 
-                hover:scale-105 transition-transform duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
-              >
-                Devis gratuit
-              </Link>
-              <Link
-                href="/produits"
-                className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold 
-                text-ember-700 transition-colors duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
-              >
-                Tout le catalogue
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
+              <Button variant="primary" asChild>
+                <Link href="/contact">Devis gratuit</Link>
+              </Button>
+              <Button variant="outline-strong" className="group" asChild>
+                <Link href="/produits">
+                  Tout le catalogue
+                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </Button>
             </div>
           </div>
         </Reveal>

@@ -27,9 +27,20 @@ function Slot({
  * la surface (claire ou sombre) et le voisinage (isolé, adossé à un primaire,
  * ou à l'intérieur d'une carte).
  *
+ * La couleur d'action est le **jaune de marque** (`solar-500`), et elle ne
+ * sert qu'à ça. C'est le seul aplat saturé d'un écran : le bleu tient le
+ * mobilier, le blanc le fond. L'orange `ember` a quitté les actions — il
+ * n'appartenait pas à l'identité (bleu / jaune / blanc) et ne subsiste que
+ * là où il porte un sens d'état, l'erreur de formulaire notamment.
+ *
+ * Le jaune impose son sens de lecture : du texte blanc sur `solar-500`
+ * plafonne à 1,7:1, illisible. C'est donc le texte qui devient sombre —
+ * `brand-950` sur `solar-500` monte à 11:1.
+ *
  *   primary        action principale sur surface claire
- *   primary-dark   la même sur surface sombre (ember-600 y est plus lumineux)
- *   outline-ember  secondaire adossé à un primaire
+ *   primary-dark   la même sur surface sombre
+ *   outline-strong secondaire adossé à un primaire
+ *   link           renvoi discret — un lien de section, pas une action
  *   outline-brand  secondaire isolé, registre navigation
  *   outline-light  secondaire sur surface sombre — s'inverse au survol
  *   card           action d'une carte mise en avant
@@ -48,22 +59,50 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        /*
+         * `shadow-sm` et non une bordure : sur fond blanc le jaune n'a que
+         * 1,7:1 de contraste de luminance, donc un contour mou. Une ombre
+         * lui rend son arête sans entrer dans le calcul des hauteurs — une
+         * bordure de 1 px sur le seul `primary` l'aurait désaligné des
+         * variantes à bordure de 2 px, déjà compensées plus bas.
+         */
         primary:
-          "bg-ember-700 text-white hover:scale-105 hover:ring-4 hover:ring-ember-200 hover:ring-offset-1 focus-visible:ring-ember-700",
+          "bg-solar-500 text-brand-950 shadow-sm hover:scale-105 hover:ring-4 hover:ring-solar-200 hover:ring-offset-1 focus-visible:ring-solar-600",
         "primary-dark":
-          "bg-ember-600 text-white hover:scale-105 hover:ring-4 hover:ring-ember-500/40 hover:ring-offset-1 hover:ring-offset-brand-950 focus-visible:ring-ember-500 focus-visible:ring-offset-brand-950",
-        "outline-ember":
-          "border-2 border-ember-700 text-ember-700 hover:ring-4 hover:ring-ember-200 hover:ring-offset-1 focus-visible:ring-ember-700",
+          "bg-solar-500 text-brand-950 hover:scale-105 hover:ring-4 hover:ring-solar-500/40 hover:ring-offset-1 hover:ring-offset-brand-950 focus-visible:ring-solar-400 focus-visible:ring-offset-brand-950",
+        /*
+         * Le secondaire ne peut pas être un contour jaune : sur blanc il
+         * disparaîtrait. Il passe donc en bleu-noir — le registre du
+         * mobilier, soit exactement ce qu'un secondaire doit être.
+         */
+        "outline-strong":
+          "border-2 border-brand-950 text-brand-950 hover:ring-4 hover:ring-brand-100 hover:ring-offset-1 focus-visible:ring-brand-950",
+        /*
+         * Un renvoi vers une section de la même page n'est pas une action :
+         * lui donner un cadre en fait un second bouton, et deux cibles de
+         * poids voisin n'en laissent aucune dominante. Même traitement que le
+         * secondaire du hero d'accueil — texte gris, souligné au survol.
+         */
+        link: "font-semibold text-slate-600 underline-offset-4 hover:text-slate-900 hover:underline focus-visible:ring-slate-400",
         "outline-brand":
           "border-2 border-brand-700/30 bg-brand-200/15 text-brand-700 hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-600",
         "outline-light":
           "border-2 border-white/25 text-white hover:border-white hover:bg-white hover:text-brand-950 hover:ring-4 hover:ring-white/25 hover:ring-offset-1 hover:ring-offset-brand-950 focus-visible:ring-solar-500 focus-visible:ring-offset-brand-950",
         /*
-         * Chrome de navigation (header, menu) : volontairement en `brand` et
-         * non en `ember`. L'orange reste réservé aux actions du contenu ; une
-         * barre orange permanente en haut de chaque page le banaliserait.
+         * Chrome de navigation (header, menu) : ni `ember`, ni `brand` saturé,
+         * mais le quasi-noir `brand-950`.
+         *
+         * La couleur d'action reste au contenu — une barre jaune permanente
+         * en haut de chaque page la banaliserait. Mais l'indigo `brand-700`
+         * posait le problème inverse : #232199 sur blanc atteint ~12:1 de
+         * contraste, quand le CTA du hero n'en faisait que 4,9:1 sur son
+         * fond teinté. Le bouton d'en-tête écrasait le bouton de conversion,
+         * deux fois et demie plus fort que lui.
+         *
+         * En quasi-noir il redevient ce qu'il est — du mobilier — et laisse
+         * une seule couleur saturée dans le premier écran : le jaune.
          */
-        nav: "bg-brand-700 text-white shadow-sm hover:-translate-y-0.5 hover:shadow-lg hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-600",
+        nav: "bg-brand-950 text-white shadow-sm hover:-translate-y-0.5 hover:shadow-lg hover:ring-4 hover:ring-brand-100 hover:ring-offset-1 focus-visible:ring-brand-950",
         card: "bg-brand-600 text-white hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-500",
         "card-outline":
           "border-2 border-brand-400 text-brand-600 hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:ring-brand-500",
@@ -98,10 +137,20 @@ const buttonVariants = cva(
       },
     },
     compoundVariants: [
+      /*
+       * `link` n'a pas de boîte : il annule le rembourrage de la taille, qui
+       * sinon lui donnerait l'encombrement d'un bouton plein sans en avoir
+       * l'apparence — et décalerait son texte par rapport à son voisin.
+       */
+      ...(["sm", "md", "lg"] as const).map((size) => ({
+        variant: "link" as const,
+        size,
+        class: "px-1 py-1",
+      })),
       // Compensation des 2 px de bordure, taille par taille.
       ...(
         [
-          "outline-ember",
+          "outline-strong",
           "outline-brand",
           "outline-light",
           "card-outline",

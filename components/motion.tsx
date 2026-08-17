@@ -85,11 +85,18 @@ export function Stagger({
   className,
   delay = 0,
   gap = 0.09,
+  mode = "view",
 }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   gap?: number;
+  /**
+   * `mount` pour les cascades situées au-dessus du pli : en `view` elles
+   * attendent un défilement qui n'arrive jamais si la section est déjà à
+   * l'écran au chargement, et le contenu reste invisible.
+   */
+  mode?: "view" | "mount";
 }) {
   const reduce = useReducedMotion();
 
@@ -108,8 +115,12 @@ export function Stagger({
       className={className}
       variants={container}
       initial={reduce ? "visible" : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, margin: "-70px" }}
+      {...(mode === "mount"
+        ? { animate: "visible" }
+        : {
+            whileInView: "visible",
+            viewport: { once: true, margin: "-70px" },
+          })}
     >
       {children}
     </motion.div>

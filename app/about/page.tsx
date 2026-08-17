@@ -9,7 +9,7 @@ import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { values } from "@/lib/data/clients";
-import { metrics, site } from "@/lib/site";
+import { metrics, offices, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "À propos",
@@ -21,6 +21,11 @@ export const metadata: Metadata = {
 /** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */
 const DAYLIGHT =
   "bg-[linear-gradient(184deg,#CE9A3A_0%,#C67C36_30%,#BB5F48_55%,#A15265_78%,#7E5382_100%)]";
+
+/** « Bunia et Kinshasa » — cf. le hero d'accueil : `offices` reste la source. */
+const baseCities = new Intl.ListFormat("fr", { type: "conjunction" }).format(
+  offices.map((office) => office.city),
+);
 
 export default function AboutPage() {
   return (
@@ -37,7 +42,7 @@ export default function AboutPage() {
             </span>
           </>
         }
-        lead={`${site.name} est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut.`}
+        lead={`${site.name} est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut. Nous installons et entretenons des systèmes solaires avec batteries pour les foyers, les entreprises et les institutions, depuis nos bases de ${baseCities}.`}
         image={{
           src: "/gallery-web/technicien-intervention.jpg",
           alt: `Technicien ${site.name} intervenant dans une armoire électrique`,
@@ -75,8 +80,9 @@ export default function AboutPage() {
               </p>
               <p className="mt-8 max-w-2xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg lg:mt-10">
                 Nous n&apos;avons pas monté cette entreprise pour vendre des
-                panneaux. Nous l&apos;avons montée parce que des bureaux, des
-                cliniques, des écoles et des stations de radio s&apos;arrêtent
+                panneaux. Nous l&apos;avons montée parce que des foyers, des
+                bureaux, des cliniques, des écoles et des stations de radio
+                s&apos;arrêtent
                 chaque jour faute d&apos;une installation dimensionnée
                 correctement — et parce que remplacer un groupe électrogène par
                 un autre groupe électrogène n&apos;a jamais réglé le problème.

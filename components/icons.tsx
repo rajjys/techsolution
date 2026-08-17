@@ -13,3 +13,34 @@ export function WhatsAppIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/**
+ * Filet des surtitres — une impulsion électrique plutôt qu'un tiret.
+ *
+ * Le trait plat « — MON SURTITRE » est devenu la signature visuelle par
+ * défaut de la moitié des sites générés ; il ne dit rien du métier. Le zigzag
+ * reprend l'angle de l'éclair du logo et se lit instantanément comme du
+ * courant, à l'encombrement près du filet qu'il remplace : le rythme des
+ * sections ne bouge pas.
+ *
+ * La marque complète (`logo-mark-blue.png`) a été écartée pour cet usage —
+ * éclair *dans* une goutte au tracé fin, elle tourne à la bouillie sous 20 px.
+ */
+export function BoltRule({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 35 10"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M1 5h8l4-4 4 8 4-8 4 4h9"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

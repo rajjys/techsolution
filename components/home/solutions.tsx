@@ -1,4 +1,6 @@
 import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 import { Eyebrow } from "@/components/section";
@@ -60,23 +62,15 @@ export function Solutions() {
 
               <Reveal delay={0.1}>
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:mt-10">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-ember-700 px-7 py-3.5 text-base font-semibold text-white transition-all duration-200 
-                    hover:scale-105 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
-                  >
-                    Obtenez un devis gratuit
-                  </Link>
-                  <Link
-                    href="/services"
-                    className="group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-ember-700 px-[26px] py-3 text-base font-semibold text-ember-700 
-                    transition-all duration-200 hover:ring-4 hover:ring-offset-1 hover:ring-ember-200 
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ember-700 focus-visible:ring-offset-2"
-                  >
-                    Tous nos services
-                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </Link>
+                  <Button variant="primary" asChild>
+                    <Link href="/contact">Obtenez un devis gratuit</Link>
+                  </Button>
+                  <Button variant="outline-strong" className="group" asChild>
+                    <Link href="/services">
+                      Tous nos services
+                      <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
                 </div>
               </Reveal>
             </div>
