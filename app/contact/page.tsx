@@ -13,11 +13,11 @@ import {
 
 import { ContactFunnel } from "@/components/contact/contact-funnel";
 import { Glow } from "@/components/glow";
-import { BoltRule, WhatsAppIcon } from "@/components/icons";
+import { WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
-import { KIT_NEED, needs } from "@/lib/data/contact";
+import { KIT_NEED, needs, resolveNeed } from "@/lib/data/contact";
 import { kits } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { offices, site } from "@/lib/site";
@@ -53,36 +53,6 @@ const PROMISES = [
   { icon: ReceiptText, label: "Rien à payer avant le devis" },
 ];
 
-/**
- * Le parcours après l'envoi — les mêmes engagements que `CostFrame`, remis
- * dans l'ordre où le visiteur va les vivre. La question qu'il se pose avant de
- * laisser son numéro n'est pas « que faites-vous ? » mais « qu'est-ce que je
- * déclenche ? ». Aucune de ces étapes n'est nouvelle : elles étaient
- * dispersées, jamais énoncées comme une suite.
- */
-const NEXT_STEPS = [
-  {
-    when: "Maintenant",
-    title: "Vous décrivez votre site",
-    detail: "Quelques clics, vos coordonnées. C'est la seule étape à votre charge.",
-  },
-  {
-    when: "Sous 24 h ouvrées",
-    title: "Un ingénieur vous rappelle",
-    detail: "Pour comprendre vos charges et convenir d'une date de visite.",
-  },
-  {
-    when: "À la visite",
-    title: "L'audit, gratuit et sur site",
-    detail: "Un technicien relève vos consommations réelles, sans engagement.",
-  },
-  {
-    when: "Après l'audit",
-    title: "Le devis, poste par poste",
-    detail: "Matériel, pose, mise en service, entretien. Vous décidez ensuite.",
-  },
-];
-
 export default async function ContactPage({
   searchParams,
 }: {
@@ -104,10 +74,10 @@ export default async function ContactPage({
    * savaient que le visiteur venait pour un kit, et arrivaient pourtant nus,
    * lui reposant une question dont son clic contenait déjà la réponse.
    */
-  const need = needSlug
-    ? needs.find((item) => item.id === needSlug)
-    : undefined;
-  const wantsKit = need?.id === KIT_NEED;
+  const needId = resolveNeed(needSlug);
+  const need = needs.find((item) => item.id === needId);
+  /* `?need=kit` vient de /produits : le catalogue, c'est du solaire. */
+  const wantsKit = needSlug === KIT_NEED;
   const initialNeed = service?.slug ?? need?.id;
 
   /*
@@ -372,70 +342,6 @@ export default async function ContactPage({
           </div>
         </Section>
       ) : null}
-
-      {/*
-        Ce qui se passe ensuite.
-
-        Une section « Ou joignez-nous directement » occupait cette place :
-        téléphone, WhatsApp et email, que le pied de page redonne trente
-        centimètres plus bas. Sur mobile, le numéro apparaissait quatre fois
-        sur la même page et les deux bureaux deux fois — alors que la règle est
-        écrite (design-system.md §9) : une seule conclusion par page, et c'est
-        le pied de page. Les adresses y sont désormais ouvrables dans une
-        carte, ce qui vaut pour tout le site.
-
-        À la place, la seule chose que la page ne disait nulle part : ce à quoi
-        le visiteur s'engage en laissant son numéro. C'est la question qui
-        précède le clic, et y répondre coûte moins cher que de la laisser
-        traîner.
-      */}
-      <Section className="relative isolate bg-surface-cool-deep !py-14 lg:!py-20">
-        <Glow variant="cool-deep" corner="bottom-left" />
-        <div className="container relative">
-          <div className="mx-auto max-w-[46rem]">
-            <h2 className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-solar-700">
-              <BoltRule className="h-2.5 w-[35px] shrink-0 text-solar-500" />
-              Ce qui se passe ensuite
-            </h2>
-            <p className="mt-4 text-balance font-display text-[22px] font-bold leading-snug text-slate-900 sm:text-[26px]">
-              Quatre étapes, et vous n&apos;en pilotez qu&apos;une&nbsp;: la
-              première.
-            </p>
-
-            <ol className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
-              {NEXT_STEPS.map((next, i) => (
-                <li key={next.title} className="bg-white p-5">
-                  <span className="flex items-center gap-2.5">
-                    <span
-                      className={
-                        i === 0
-                          ? "flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-[13px] font-bold text-white"
-                          : "flex size-7 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[13px] font-bold text-slate-500"
-                      }
-                    >
-                      {i + 1}
-                    </span>
-                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
-                      {next.when}
-                    </span>
-                  </span>
-                  <p className="mt-3 text-[15px] font-bold leading-snug text-slate-900">
-                    {next.title}
-                  </p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
-                    {next.detail}
-                  </p>
-                </li>
-              ))}
-            </ol>
-
-            <p className="mt-5 text-[13px] leading-relaxed text-slate-500">
-              Rien n&apos;est facturé avant que le devis soit entre vos mains.
-              Vous pouvez arrêter à n&apos;importe laquelle de ces étapes.
-            </p>
-          </div>
-        </div>
-      </Section>
 
     </>
   );

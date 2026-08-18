@@ -8,7 +8,7 @@ import {
   ArrowRight,
   Check,
   CheckCircle2,
-  HelpCircle,
+  Gauge,
   Loader2,
   Pencil,
   Send,
@@ -22,12 +22,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { track } from "@/lib/analytics";
 import {
-  KIT_NEED,
-  domainNeeds,
-  kitNeed,
+  SOLAR_NEED,
   labelOf,
   needs,
+  needsPowerTier,
   needsSituation,
+  siteQuestion,
   siteTypes,
   situations,
   timings,
@@ -52,33 +52,47 @@ type Status = "idle" | "loading" | "success" | "error";
  * Un entonnoir qui interroge sans se justifier se lit comme un péage. Chaque
  * indice répond à « en quoi ça vous regarde ? » — c'est ce qui fait la
  * différence entre remplir un formulaire et préparer un rendez-vous.
+ *
+ * L'écran « site » fait exception : son verbe suit le domaine choisi, et vient
+ * donc de `siteQuestion()`.
  */
-const QUESTIONS: Record<StepId, { title: string; hint?: string }> = {
+const QUESTIONS: Record<StepId, { title: string; hint: string }> = {
   besoin: {
-    title: "Qu'est-ce qui vous amène ?",
-    hint: "Une seule réponse — nous préciserons au téléphone.",
+    title: "De quoi avez-vous besoin ?",
+    hint: "Si plusieurs vous concernent, choisissez la principale.",
+  },
+  site: { title: "", hint: "" }, // dépend du domaine — cf. siteQuestion()
+  situation: {
+    title: "Comment est-ce alimenté aujourd'hui ?",
+    hint: "De toutes les questions, c'est celle qui change le plus le devis.",
   },
   palier: {
-    title: "Quelle puissance visez-vous ?",
-    hint: "Un ordre d'idée suffit : l'audit l'ajustera à vos charges réelles.",
-  },
-  site: {
-    title: "Qu'y a-t-il à alimenter ?",
-    hint: "C'est ce qui donne la taille de l'installation.",
-  },
-  situation: {
-    title: "Comment le site est-il alimenté aujourd'hui ?",
-    hint: "De toutes les questions, c'est celle qui change le plus le devis.",
+    title: "Quelle puissance vous faut-il ?",
+    hint: "Un ordre d'idée suffit. Si vous ne savez pas, dites-le — c'est l'audit qui tranche.",
   },
   quand: {
     title: "Dans quel délai ?",
-    hint: "« Je compare encore » est une réponse utile — elle change notre appel.",
+    hint: "« Je compare encore » est une réponse utile : elle change notre appel.",
   },
   contact: {
     title: "Où peut-on vous rappeler ?",
-    hint: "Trois champs, et c'est terminé. Un ingénieur vous rappelle sous 24 h ouvrées.",
+    hint: "Trois champs, et c'est terminé.",
   },
 };
+
+/**
+ * Ce que l'envoi déclenche — posé juste au-dessus du bouton.
+ *
+ * Ces trois lignes occupaient une section entière sous la page. Elles y
+ * arrivaient trop tard : la question « qu'est-ce que je déclenche ? » se pose
+ * au moment de taper son numéro, pas après. Elles remontent donc dans la carte,
+ * au dernier écran, à l'endroit exact où l'on hésite.
+ */
+const TRIGGERS = [
+  "L'appel d'un ingénieur, sous 24 h ouvrées.",
+  "L'audit sur votre site, gratuit et sans engagement.",
+  "Le devis, chiffré poste par poste.",
+];
 
 /**
  * Barre d'action collante — commune aux écrans de choix et au formulaire.
@@ -109,16 +123,18 @@ const EMPTY_VALUES: Record<ContactField, string> = {
 /**
  * Carte de choix — la brique de tout l'entonnoir.
  *
- * Trois états franchement distincts, et **aucun bleu au repos**. Chaque carte
- * portait auparavant une pastille `brand-100` : sept d'affilée, l'écran
- * devenait un aplat indigo où la sélection ne se voyait plus, faute de
- * contraste avec ce qui l'entoure. Le repos est donc neutre, le survol
- * emprunte l'anneau qui sert de signature au site, et le bleu est réservé au
- * seul état qui compte — celui que le visiteur vient de choisir.
+ * Trois états franchement distincts, et **aucun bleu**. Chaque carte portait
+ * une pastille `brand-100` : sept d'affilée, l'écran devenait un aplat indigo
+ * où la sélection ne se voyait plus, faute de contraste avec son voisinage.
  *
- * Densité volontairement plus forte sous `sm` : la première question compte
- * sept réponses, et le bouton « Continuer » se retrouvait à deux écrans de
- * défilement sur un téléphone.
+ * L'état choisi est en **solaire**, comme le bouton qui le valide. Choisir est
+ * l'action du visiteur, et la couleur d'action du site est le jaune : lui
+ * donner le bleu du mobilier revenait à peindre sa décision de la couleur des
+ * meubles. Le reste suit la règle — texte sombre sur jaune (`brand-950`, 11:1),
+ * la coche en quasi-noir pour qu'un seul jaune saturé porte la carte.
+ *
+ * Le repos est neutre et le survol emprunte l'anneau qui sert de signature au
+ * site. Densité plus forte sous `sm`.
  *
  * @see docs/design-system.md — « Cartes », « Rôles de couleur »
  */
@@ -151,7 +167,7 @@ function Choice({
          p-3.5 sm:gap-4 sm:p-4`,
         shortcut ? "border-dashed sm:col-span-2" : "",
         selected
-          ? "border-brand-600 bg-brand-50 ring-2 ring-brand-600"
+          ? "border-solar-500 bg-solar-50 ring-1 ring-solar-500"
           : `border-slate-200 bg-slate-50/70 hover:-translate-y-0.5 hover:border-brand-300
              hover:bg-white hover:shadow-card hover:ring-4 hover:ring-brand-100 hover:ring-offset-1`,
       )}
@@ -160,15 +176,12 @@ function Choice({
         className={cn(
           "flex size-9 shrink-0 items-center justify-center rounded-xl transition-colors sm:size-10",
           selected
-            ? "bg-brand-600"
+            ? "bg-solar-500 text-brand-950"
             : "bg-white text-slate-500 ring-1 ring-slate-200 group-hover:bg-brand-100 group-hover:text-brand-700 group-hover:ring-brand-200",
         )}
       >
         <Icon
-          className={cn(
-            "size-[18px] transition-colors sm:size-5",
-            selected ? "text-white" : "",
-          )}
+          className="size-[18px] sm:size-5"
           strokeWidth={1.9}
           aria-hidden="true"
         />
@@ -177,12 +190,17 @@ function Choice({
         <span
           className={cn(
             "block text-[15px] font-bold leading-snug sm:text-base",
-            selected ? "text-brand-900" : "text-slate-900",
+            selected ? "text-brand-950" : "text-slate-900",
           )}
         >
           {label}
         </span>
-        <span className="mt-0.5 block text-[13px] leading-snug text-slate-600 sm:text-[13.5px]">
+        <span
+          className={cn(
+            "mt-0.5 block text-[13px] leading-snug sm:text-[13.5px]",
+            selected ? "text-solar-900" : "text-slate-600",
+          )}
+        >
           {detail}
         </span>
       </span>
@@ -190,8 +208,8 @@ function Choice({
         className={cn(
           "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full transition-all",
           selected
-            ? "bg-brand-600 opacity-100"
-            : "border border-slate-300 opacity-70 group-hover:border-brand-400",
+            ? "bg-brand-950"
+            : "border border-slate-300 group-hover:border-brand-400",
         )}
         aria-hidden="true"
       >
@@ -287,6 +305,80 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 }
 
 /**
+ * Le chemin, déduit des réponses.
+ *
+ * L'ordre n'est pas arbitraire : on nomme le besoin, on situe le lieu, on
+ * décrit l'existant, **puis** on parle puissance. La question de puissance est
+ * la plus intimidante des cinq — neuf paliers à comparer — et la poser en
+ * quatrième position la fait tomber sur quelqu'un qui a déjà répondu trois
+ * fois. Elle n'est d'ailleurs posée que pour les domaines que le catalogue
+ * couvre vraiment.
+ *
+ * `skipTier` : une arrivée par `?kit=` a déjà désigné son palier ; on ne le lui
+ * redemande pas. Le drapeau ne se lève jamais en cours de route — il ne
+ * retombe que si le visiteur revient changer de domaine, à l'écran 0, d'où
+ * toute navigation avant efface l'historique suivant.
+ */
+function buildSteps(need: string | null, skipTier: boolean): StepId[] {
+  return [
+    "besoin",
+    "site",
+    ...(needsSituation(need) ? (["situation"] as StepId[]) : []),
+    ...(needsPowerTier(need) && !skipTier ? (["palier"] as StepId[]) : []),
+    "quand",
+    "contact",
+  ];
+}
+
+/**
+ * Récapitulatif éditable — ce qui remplace la pastille « changer ».
+ *
+ * Elle ne montrait que la préqualification d'entrée, et rien de ce que le
+ * visiteur venait de répondre. Au dernier écran il ne voyait donc plus ce
+ * qu'il s'apprêtait à envoyer et devait remonter le parcours pour le vérifier.
+ * Chaque réponse donnée devient une puce ; chaque puce rouvre son écran.
+ */
+function Recap({
+  entries,
+  onEdit,
+}: {
+  entries: { id: StepId; index: number; label: string; value: string }[];
+  onEdit: (index: number) => void;
+}) {
+  if (entries.length === 0) return null;
+  return (
+    <div className="mt-4">
+      {/* L'intitulé n'apparaît qu'à partir de deux puces : sur une seule, il
+          double l'étiquette d'étape juste au-dessus sans rien apprendre. */}
+      {entries.length > 1 ? (
+        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+          Votre demande
+        </p>
+      ) : null}
+      <div className="flex flex-wrap gap-1.5">
+        {entries.map((entry) => (
+          <button
+            key={entry.id}
+            type="button"
+            onClick={() => onEdit(entry.index)}
+            aria-label={`Modifier — ${entry.label} : ${entry.value}`}
+            className="group inline-flex max-w-full items-center gap-1.5 rounded-lg border border-slate-200 bg-white py-1.5 pl-2.5 pr-2 text-left transition-colors hover:border-brand-400 hover:bg-brand-50/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2"
+          >
+            <span className="truncate text-[13px] font-semibold text-slate-800 group-hover:text-brand-800">
+              {entry.value}
+            </span>
+            <Pencil
+              className="size-3 shrink-0 text-slate-400 transition-colors group-hover:text-brand-600"
+              aria-hidden="true"
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
  * Entonnoir de contact — une question par écran.
  *
  * Pas de route par étape : l'état tient en mémoire, les transitions sont
@@ -316,8 +408,10 @@ export function ContactFunnel({
 }) {
   const reduce = useReducedMotion();
   const presetKit = kits.find((item) => item.slug === initialKit);
+  /* Un kit est une installation solaire : l'arrivée par `?kit=` répond au
+     domaine autant qu'au palier. */
   const presetNeed = presetKit
-    ? KIT_NEED
+    ? SOLAR_NEED
     : needs.find((item) => item.id === initialNeed)?.id;
   /** D'où vient le visiteur — reporté sur chaque événement de mesure. */
   const source = presetKit ? "kit" : presetNeed ? "service" : "nu";
@@ -329,12 +423,12 @@ export function ContactFunnel({
   const [siteType, setSiteType] = React.useState<SiteType | null>(null);
   const [situation, setSituation] = React.useState<Situation | null>(null);
   const [timing, setTiming] = React.useState<Timing | null>(null);
-  /*
-   * Une arrivée qualifiée a déjà répondu aux premières questions : on les lui
-   * montre franchies plutôt que de les lui reposer — sans les lui interdire.
-   * Un lien `?kit=` en répond deux (le besoin et le palier), `?service=` une.
-   */
-  const [index, setIndex] = React.useState(presetKit ? 2 : presetNeed ? 1 : 0);
+  /* Une arrivée qualifiée a déjà répondu à la première question : on la lui
+     montre franchie plutôt que de la lui reposer — sans la lui interdire. */
+  const [index, setIndex] = React.useState(presetNeed ? 1 : 0);
+  /* `?kit=` désigne déjà un palier : l'écran des puissances est sauté, tant
+     que le visiteur ne revient pas changer de domaine. */
+  const [skipTier, setSkipTier] = React.useState(Boolean(presetKit));
   const [status, setStatus] = React.useState<Status>("idle");
   const [serverError, setServerError] = React.useState<string | null>(null);
 
@@ -351,31 +445,53 @@ export function ContactFunnel({
     Partial<Record<ContactField, HTMLInputElement | HTMLTextAreaElement | null>>
   >({});
 
-  /*
-   * Le chemin dépend des réponses : on le recalcule à chaque rendu. « besoin »
-   * y figure toujours, même préqualifié — c'est ce qui rend la pastille
-   * modifiable et le retour possible jusqu'à la première question.
-   */
-  const steps: StepId[] = [
-    "besoin",
-    /*
-     * Le palier appartient au chemin dès que le besoin est « un kit », y
-     * compris pour une arrivée `?kit=` qui l'a déjà franchi. Le retirer du
-     * tableau selon l'arrivée faisait glisser tous les rangs qui suivent :
-     * une même entrée d'historique désignait alors deux écrans différents, et
-     * le geste retour semblait ne rien faire.
-     */
-    ...(need === KIT_NEED ? (["palier"] as StepId[]) : []),
-    "site",
-    ...(needsSituation(need) ? (["situation"] as StepId[]) : []),
-    "quand",
-    "contact",
-  ];
+  const steps = buildSteps(need, skipTier);
   const step = steps[Math.min(index, steps.length - 1)];
   const kit = kits.find((item) => item.slug === kitSlug);
   const isLast = step === "contact";
   /* Le total ne bouge plus dès que « besoin » est derrière nous. */
   const pathResolved = index > 0;
+
+  const siteCopy = siteQuestion(need);
+  const question =
+    step === "site" ? siteCopy : QUESTIONS[step];
+
+  /* Chaque réponse déjà donnée, et l'écran qui permet de la reprendre. */
+  const recap: { id: StepId; index: number; label: string; value: string }[] =
+    [];
+  for (const [i, id] of steps.entries()) {
+    if (i >= index) break;
+    const value =
+      id === "besoin"
+        ? labelOf(needs, need)
+        : id === "site"
+          ? labelOf(siteTypes, siteType)
+          : id === "situation"
+            ? labelOf(situations, situation)
+            : id === "palier"
+              ? (kit?.power ?? "Puissance à définir")
+              : id === "quand"
+                ? labelOf(timings, timing)
+                : undefined;
+    if (value) {
+      recap.push({
+        id,
+        index: i,
+        label: id === "besoin" ? "votre besoin" : QUESTIONS[id].title || siteCopy.title,
+        value,
+      });
+    }
+  }
+  /* Une arrivée `?kit=` n'a pas traversé l'écran des puissances mais a bien
+     un palier : il doit rester révisable. */
+  if (skipTier && kit) {
+    recap.splice(1, 0, {
+      id: "palier",
+      index: -1,
+      label: "la puissance",
+      value: kit.power,
+    });
+  }
 
   const focusHeading = React.useCallback(() => {
     window.requestAnimationFrame(() => headingRef.current?.focus());
@@ -456,15 +572,28 @@ export function ContactFunnel({
    * la page — et on rouvre l'écran qui correspond à ce que la pastille
    * affiche : le palier pour un kit, la première question sinon.
    */
-  function editSelection() {
-    const target = kit ? 1 : 0; // « palier » suit « besoin » quand il existe
+  /**
+   * Rouvre l'écran d'une réponse déjà donnée, depuis le récapitulatif.
+   *
+   * Le lien pointait vers /produits : cliquer « changer » quittait l'entonnoir
+   * et effaçait tout. On reste dans la page. Un index de `-1` désigne le seul
+   * écran absent du chemin — les puissances, sautées par une arrivée `?kit=` :
+   * on le réintègre avant d'y aller.
+   */
+  function editStep(target: number) {
+    let destination = target;
+    if (target === -1) {
+      setSkipTier(false);
+      destination = buildSteps(need, false).indexOf("palier");
+    }
+    if (destination < 0) return;
     window.history.pushState(
-      { ...window.history.state, tsFunnelStep: target },
+      { ...window.history.state, tsFunnelStep: destination },
       "",
     );
-    setIndex(target);
+    setIndex(destination);
     focusHeading();
-    track("devis_selection_modifiee", { depuis: step, cible: kit ? "palier" : "besoin" });
+    track("devis_selection_modifiee", { depuis: step, cible: steps[destination] ?? "palier" });
   }
 
   function setField(field: ContactField, value: string) {
@@ -668,7 +797,7 @@ export function ContactFunnel({
               />
             ))}
           </div>
-          <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-700">
+          <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
             {`Étape ${index + 1} sur ${steps.length}`}
           </p>
         </>
@@ -678,31 +807,14 @@ export function ContactFunnel({
             <span className="h-1.5 w-10 rounded-full bg-brand-600" />
             <span className="h-1.5 flex-1 rounded-full bg-slate-200" />
           </div>
-          <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-700">
+          <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
             Première question
           </p>
         </>
       )}
 
-      {/* Ce qui est déjà acquis, et modifiable */}
-      {(need || kit) && !isLast && index > 0 ? (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={editSelection}
-            aria-label={`${kit ? kit.name : labelOf(needs, need)} — changer`}
-            className="inline-flex min-h-[36px] flex-wrap items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3.5 py-1.5 text-left text-sm text-brand-800 transition-colors hover:border-brand-400 hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
-          >
-            <span className="font-semibold">
-              {kit ? kit.name : labelOf(needs, need)}
-            </span>
-            <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 underline underline-offset-2">
-              <Pencil className="size-3" aria-hidden="true" />
-              changer
-            </span>
-          </button>
-        </div>
-      ) : null}
+      {/* Ce qui est déjà répondu, et révisable d'un clic */}
+      <Recap entries={recap} onEdit={editStep} />
 
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -722,16 +834,23 @@ export function ContactFunnel({
             tabIndex={-1}
             /* L'en-tête est collant : sans marge de défilement, un focus
                programmé posait la question juste dessous, hors de vue. */
-            className="scroll-mt-24 text-balance text-xl font-bold leading-snug text-slate-900 focus:outline-none sm:text-2xl"
+            /*
+             * La question est l'interaction principale de la page : elle porte
+             * l'échelle d'un titre de bloc (22 → 30 px, cf. design-system.md
+             * §4), pas celle d'une étiquette de champ. Alignée à gauche comme
+             * l'indice et les cartes — un titre centré au-dessus de réponses
+             * alignées à gauche fait repartir l'œil de deux endroits.
+             */
+            className="scroll-mt-24 text-balance font-display text-[24px] font-bold leading-[1.18] text-slate-900 focus:outline-none sm:text-[28px] lg:text-[30px]"
           >
-            {QUESTIONS[step].title}
+            {question.title}
           </h2>
-          {QUESTIONS[step].hint ? (
+          {question.hint ? (
             <p
               id="entonnoir-indice"
-              className="mt-2 text-sm leading-relaxed text-slate-600"
+              className="mt-2.5 text-[15px] leading-relaxed text-slate-600"
             >
-              {QUESTIONS[step].hint}
+              {question.hint}
             </p>
           ) : null}
 
@@ -743,15 +862,8 @@ export function ContactFunnel({
              * ils répondaient. Cf. docs/design-system.md §6.
              */}
             {step === "besoin" ? (
-              /*
-               * Le catalogue ne répond pas à la même question que les six
-               * domaines — « voilà mon problème » d'un côté, « je sais déjà ce
-               * qu'il me faut » de l'autre. Le poser en septième carte
-               * identique brouillait les deux : il devient un raccourci, en
-               * trait discontinu, sous les autres.
-               */
               <ChoiceGroup describedBy="entonnoir-indice">
-                {domainNeeds.map((option) => (
+                {needs.map((option) => (
                   <Choice
                     key={option.id}
                     icon={option.icon}
@@ -760,19 +872,15 @@ export function ContactFunnel({
                     selected={need === option.id}
                     onSelect={() => {
                       setNeed(option.id);
-                      setKitSlug(null);
+                      /* Changer de domaine annule le kit venu de l'URL, et
+                         rend son écran au parcours. */
+                      if (option.id !== SOLAR_NEED) {
+                        setKitSlug(null);
+                        setSkipTier(false);
+                      }
                     }}
                   />
                 ))}
-                <Choice
-                  key={kitNeed.id}
-                  icon={kitNeed.icon}
-                  label={kitNeed.label}
-                  detail={kitNeed.detail}
-                  selected={need === kitNeed.id}
-                  shortcut
-                  onSelect={() => setNeed(kitNeed.id)}
-                />
               </ChoiceGroup>
             ) : null}
 
@@ -789,7 +897,7 @@ export function ContactFunnel({
                   />
                 ))}
                 <Choice
-                  icon={HelpCircle}
+                  icon={Gauge}
                   label="Je ne sais pas encore"
                   detail="Dimensionnez pour moi à partir de mes charges réelles."
                   selected={kitSlug === null}
@@ -1011,7 +1119,36 @@ export function ContactFunnel({
                   </p>
                 ) : null}
 
-                <p className="mt-6 border-t border-slate-100 pt-5 text-xs leading-relaxed text-slate-500">
+                {/*
+                 * Ce que l'envoi déclenche, juste au-dessus du bouton. Ces
+                 * lignes occupaient une section entière sous la page, où elles
+                 * arrivaient trop tard : on se demande « qu'est-ce que je
+                 * déclenche ? » en tapant son numéro, pas après l'avoir envoyé.
+                 */}
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                    En envoyant, vous déclenchez
+                  </p>
+                  <ol className="mt-3 space-y-2">
+                    {TRIGGERS.map((line, i) => (
+                      <li
+                        key={line}
+                        className="flex items-start gap-2.5 text-[13.5px] leading-snug text-slate-700"
+                      >
+                        <span className="mt-px flex size-[18px] shrink-0 items-center justify-center rounded-full border border-slate-300 text-[10px] font-bold text-slate-500">
+                          {i + 1}
+                        </span>
+                        {line}
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="mt-3 border-t border-dashed border-slate-200 pt-3 text-[13px] leading-relaxed text-slate-500">
+                    Rien n&apos;est facturé avant que le devis soit entre vos
+                    mains. Vous pouvez arrêter à n&apos;importe quelle étape.
+                  </p>
+                </div>
+
+                <p className="mt-5 text-xs leading-relaxed text-slate-500">
                   Réponse sous 24 h ouvrées. Vos informations servent uniquement
                   à traiter cette demande&nbsp;: elles ne sont ni revendues ni
                   transmises à un tiers.{" "}

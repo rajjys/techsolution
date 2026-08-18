@@ -3,14 +3,14 @@ import {
   Building2,
   CalendarClock,
   CalendarRange,
+  Cctv,
   Factory,
   Fuel,
   Home,
   PlugZap,
   Radio,
-  School,
   Scale,
-  ShieldCheck,
+  School,
   Sun,
   SunMedium,
   Wrench,
@@ -44,83 +44,91 @@ export type SiteType = "maison" | "bureau" | "etablissement" | "industriel";
 export type Situation = "aucun-reseau" | "instable" | "groupe" | "extension";
 export type Timing = "urgent" | "trois-mois" | "cette-annee" | "etude";
 
-/** Identifiant du besoin : le catalogue, ou l'un des six domaines. */
+/**
+ * Identifiant historique du raccourci « catalogue ».
+ *
+ * Il n'est plus une réponse possible à la première question : un kit **est**
+ * une installation solaire, pas une catégorie parallèle — le proposer à côté
+ * des six domaines revenait à mettre l'enfant à côté du parent, et le visiteur
+ * devait trancher entre « je veux du solaire » et « je veux un kit », ce qui
+ * n'est pas un choix. La puissance est désormais demandée plus loin dans le
+ * parcours solaire, une fois qu'on sait ce qu'il y a à alimenter.
+ *
+ * L'identifiant survit pour les liens `?need=kit` déjà en place sur /produits :
+ * ils sont réécrits vers le solaire à l'entrée.
+ */
 export const KIT_NEED = "kit";
 
 /**
- * Première question — les six domaines d'expertise, formulés en résultats.
+ * Première question — les six domaines, nommés par ce qu'on installe.
  *
- * L'entonnoir affichait jusqu'ici `shortTitle` et `delivery` : « Backup &
- * stockage », « Télécoms & médias ». C'est notre organigramme, pas le
- * problème du visiteur — et docs/design-system.md §9 est explicite là-dessus.
- * Les libellés ci-dessous disent ce qu'il vient chercher ; le vocabulaire de
- * métier redescend dans le détail, où il sert de preuve sans occuper la place
- * du message.
- *
- * Ils sont plus courts que le champ `outcome` de `lib/data/services.ts`, qui
- * est une phrase de titre de section : une carte de choix se lit d'un coup
- * d'œil, dans une colonne de 250 px. Même intention, autre registre.
+ * Deux formulations ont été essayées et écartées. « Backup & stockage » :
+ * notre organigramme, pas le besoin du visiteur. Puis « Ne plus subir les
+ * coupures » : un argument de vente, alors qu'à ce stade la vente est faite —
+ * on a lu le site, on vient passer commande, pas se faire convaincre une fois
+ * de plus. Il reste ce qu'on livre, dit en groupe nominal simple, complétant
+ * la question sans effort de lecture. Le vocabulaire technique tient dans le
+ * détail, où il sert de preuve.
  *
  * L'identifiant reste le slug du service : c'est lui qui relie la demande au
  * domaine dans l'email, et il ne doit jamais diverger.
  */
-const NEED_COPY: Record<string, { label: string; detail: string; icon: LucideIcon }> = {
+const NEED_COPY: Record<
+  string,
+  { label: string; detail: string; icon: LucideIcon }
+> = {
   "energie-solaire": {
-    label: "Ne plus subir les coupures",
-    detail: "Une centrale solaire dimensionnée sur vos consommations réelles.",
+    label: "Une installation solaire",
+    detail: "Panneaux, onduleur et batteries, dimensionnés sur mesure.",
     icon: Sun,
   },
   "backup-stockage": {
-    label: "Garder l'essentiel allumé",
-    detail: "Onduleurs et batteries qui prennent le relais, 24 h/24.",
+    label: "Un système de secours",
+    detail: "Onduleurs et batteries qui prennent le relais dès la coupure.",
     icon: BatteryCharging,
   },
   "infrastructure-electrique": {
-    label: "Sécuriser mon installation",
-    detail: "Tableaux, distribution électrique, protection foudre, conformité.",
+    label: "Une installation électrique",
+    detail: "Tableaux, câblage, mise à la terre, protection foudre.",
     icon: Zap,
   },
   "telecom-medias": {
-    label: "Alimenter un site isolé",
-    detail: "Station radio, antenne, serveur : énergie autonome hors réseau.",
+    label: "L'alimentation d'un site isolé",
+    detail: "Antenne, station radio, serveur : de l'énergie sans réseau.",
     icon: Radio,
   },
   "securite-electronique": {
-    label: "Protéger mes locaux",
-    detail: "Caméras, alarme et contrôle d'accès sur alimentation secourue.",
-    icon: ShieldCheck,
+    label: "Des caméras, une alarme",
+    detail: "Vidéosurveillance, contrôle d'accès, alimentation secourue.",
+    icon: Cctv,
   },
   "maintenance-froid": {
-    label: "Entretenir mon installation",
-    detail: "Contrat préventif, dépannage rapide, entretien des climatisations.",
+    label: "Un entretien ou un dépannage",
+    detail: "Contrat préventif, réparation, entretien des climatisations.",
     icon: Wrench,
   },
 };
 
-/**
- * Les six domaines. L'entrée « catalogue » n'en fait pas partie : elle ne
- * répond pas à la même question — « voilà mon problème » d'un côté, « je sais
- * déjà ce qu'il me faut » de l'autre. Elle est posée à part dans le
- * formulaire, sous la forme d'un raccourci, et non comme une septième option
- * de même poids.
- */
-export const domainNeeds: Option<string>[] = services.map((service) => ({
+/** Les six domaines — la totalité des réponses à la première question. */
+export const needs: Option<string>[] = services.map((service) => ({
   id: service.slug,
   label: NEED_COPY[service.slug]?.label ?? service.shortTitle,
   detail: NEED_COPY[service.slug]?.detail ?? service.delivery,
   icon: NEED_COPY[service.slug]?.icon ?? service.icon,
 }));
 
-/** Le raccourci catalogue, seul de son espèce. */
-export const kitNeed: Option<string> = {
-  id: KIT_NEED,
-  label: "Je connais déjà ma puissance",
-  detail: "Choisir directement dans le catalogue, de 650 Va à 30 kVA.",
-  icon: SunMedium,
-};
+/** Le domaine que sert le catalogue de kits — cible de `?need=kit`. */
+export const SOLAR_NEED = "energie-solaire";
 
-/** Tous les besoins confondus — pour retrouver un libellé depuis un identifiant. */
-export const needs: Option<string>[] = [kitNeed, ...domainNeeds];
+/**
+ * Normalise un besoin reçu par l'URL. `?need=kit` vient des appels posés sur
+ * /produits : ils désignent le catalogue, donc le solaire.
+ */
+export function resolveNeed(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  if (raw === KIT_NEED) return SOLAR_NEED;
+  return needs.find((option) => option.id === raw)?.id;
+}
 
 /**
  * Domaines pour lesquels l'état électrique actuel du site change le
@@ -128,7 +136,6 @@ export const needs: Option<string>[] = [kitNeed, ...domainNeeds];
  * n'apprend rien : on ne la pose pas.
  */
 const POWER_NEEDS = new Set([
-  KIT_NEED,
   "energie-solaire",
   "backup-stockage",
   "telecom-medias",
@@ -136,6 +143,46 @@ const POWER_NEEDS = new Set([
 
 export function needsSituation(need: string | null): boolean {
   return need !== null && POWER_NEEDS.has(need);
+}
+
+/**
+ * Domaines que le catalogue couvre réellement — les kits sont des ensembles
+ * solaires hybrides (onduleur + batteries + panneaux). Un site télécom ou une
+ * mise en conformité se chiffrent sur mesure : leur poser l'échelle de
+ * puissance du catalogue n'aurait pas de sens.
+ */
+const CATALOGUE_NEEDS = new Set(["energie-solaire", "backup-stockage"]);
+
+export function needsPowerTier(need: string | null): boolean {
+  return need !== null && CATALOGUE_NEEDS.has(need);
+}
+
+/**
+ * « Qu'y a-t-il à … ? » — le verbe suit le domaine choisi.
+ *
+ * Demander ce qu'il y a « à alimenter » à quelqu'un venu pour un contrat
+ * d'entretien sonnait faux : il ne vient rien alimenter.
+ */
+export function siteQuestion(need: string | null): {
+  title: string;
+  hint: string;
+} {
+  if (need === "maintenance-froid") {
+    return {
+      title: "Qu'y a-t-il à entretenir ?",
+      hint: "C'est ce qui donne l'étendue du contrat.",
+    };
+  }
+  if (need === "securite-electronique") {
+    return {
+      title: "Qu'y a-t-il à protéger ?",
+      hint: "C'est ce qui donne le nombre de points à couvrir.",
+    };
+  }
+  return {
+    title: "Qu'y a-t-il à alimenter ?",
+    hint: "C'est ce qui donne la taille de l'installation.",
+  };
 }
 
 export const siteTypes: Option<SiteType>[] = [
