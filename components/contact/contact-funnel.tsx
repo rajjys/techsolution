@@ -94,9 +94,9 @@ const QUESTIONS: Record<StepId, { title: string; hint?: string }> = {
  */
 const BAR_CLASSES =
   `sticky bottom-0 z-10 -mx-5 -mb-5 mt-8 flex items-center gap-3 rounded-b-3xl
-   border-t border-slate-200 bg-white px-5 py-4
+   border-t border-slate-200 bg-white px-4 py-3.5
    shadow-[0_-10px_24px_-16px_rgba(15,23,42,0.25)]
-   sm:-mx-8 sm:-mb-8 sm:gap-4 sm:px-8 lg:-mx-10 lg:-mb-10 lg:px-10`;
+   sm:-mx-8 sm:-mb-8 sm:gap-4 sm:px-8 sm:py-4 lg:-mx-10 lg:-mb-10 lg:px-10`;
 
 const EMPTY_VALUES: Record<ContactField, string> = {
   name: "",
@@ -1029,15 +1029,20 @@ export function ContactFunnel({
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="min-h-[44px]"
+                    className="min-h-[44px] shrink-0 px-3 sm:px-5"
                     onClick={goBack}
                   >
                     <ArrowLeft className="size-4" />
                     Retour
                   </Button>
+                  {/*
+                   * `flex-1` sous sm : « Envoyer ma demande » à sa largeur
+                   * naturelle plus « Retour » dépassaient la carte à 390 px, et
+                   * le bouton sortait par la droite. Il prend ce qui reste.
+                   */}
                   <Button
                     type="submit"
-                    className="group ml-auto"
+                    className="group ml-auto flex-1 px-4 text-[15px] sm:flex-none sm:px-7 sm:text-base"
                     disabled={status === "loading"}
                     aria-busy={status === "loading"}
                   >
@@ -1049,7 +1054,16 @@ export function ContactFunnel({
                     ) : (
                       <>
                         <Send className="size-4" />
-                        Envoyer ma demande
+                        {/*
+                         * Libellé raccourci sous 380 px : « Retour » et
+                         * « Envoyer ma demande » ne tiennent pas côte à côte
+                         * sur un Galaxy A16, et `flex-1` ne peut pas descendre
+                         * sous la largeur minimale d'un texte insécable.
+                         */}
+                        <span className="min-[380px]:hidden">Envoyer</span>
+                        <span className="hidden min-[380px]:inline">
+                          Envoyer ma demande
+                        </span>
                       </>
                     )}
                   </Button>
