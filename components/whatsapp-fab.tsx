@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { usePathname } from "next/navigation";
 
 import { WhatsAppIcon } from "@/components/icons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
@@ -10,8 +11,15 @@ import { cn } from "@/lib/utils";
  * Bouton flottant WhatsApp — pastille au repos, libellé déplié au survol.
  *
  * Le libellé s'ouvre vers la gauche : le bord droit étant ancré, la pastille
- * ne bouge pas sous le curseur. Masqué sous lg, où l'accès WhatsApp vit déjà
- * dans le menu.
+ * ne bouge pas sous le curseur.
+ *
+ * **Visible aussi sur mobile.** Il en était masqué au motif que l'accès
+ * WhatsApp vivait dans le menu — mais un canal rangé derrière un hamburger
+ * n'est pas un canal offert, et le mobile est le terrain réel en RDC. Il
+ * disparaît en revanche sur /contact : la page y propose déjà WhatsApp sous
+ * l'entonnoir, et la barre d'action du formulaire occupe le bas de l'écran.
+ * Deux pastilles dans le même coin, dont l'une couvre « Continuer », c'est un
+ * chemin de conversion qui en bloque un autre.
  *
  * Il n'apparaît qu'une fois le premier écran dépassé. Le vert #25D366 est une
  * couleur saturée de plus dans un hero qui doit n'en compter qu'une, et c'est
@@ -21,6 +29,7 @@ import { cn } from "@/lib/utils";
  * convertit. Il ne disparaît donc pas : il attend son tour.
  */
 export function WhatsAppFab() {
+  const pathname = usePathname();
   const [visible, setVisible] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,6 +38,8 @@ export function WhatsAppFab() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  if (pathname === "/contact") return null;
 
   return (
     <a
@@ -42,7 +53,7 @@ export function WhatsAppFab() {
        * tabulation du hero alors qu'il n'y est pas visible.
        */
       className={cn(
-        "group fixed bottom-6 right-6 z-40 hidden items-center rounded-full bg-[#25D366] shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 lg:inline-flex",
+        "group fixed bottom-5 right-5 z-40 inline-flex items-center rounded-full bg-[#25D366] shadow-lift transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2 sm:bottom-6 sm:right-6",
         visible
           ? "translate-y-0 opacity-100"
           : "invisible translate-y-4 opacity-0",
@@ -54,8 +65,8 @@ export function WhatsAppFab() {
       >
         <span className="block pl-5">Nous contacter sur WhatsApp</span>
       </span>
-      <span className="grid size-14 shrink-0 place-items-center">
-        <WhatsAppIcon className="size-7 text-white" />
+      <span className="grid size-[3.25rem] shrink-0 place-items-center sm:size-14">
+        <WhatsAppIcon className="size-6 text-white sm:size-7" />
       </span>
     </a>
   );

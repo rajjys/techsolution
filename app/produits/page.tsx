@@ -86,7 +86,7 @@ export default function ProduitsPage() {
         actions={
           <>
             <Button className="group" asChild>
-              <Link href="/contact">
+              <Link href="/contact?need=kit">
                 Demander un devis
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
@@ -154,7 +154,7 @@ export default function ProduitsPage() {
 
               <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:shrink-0">
                 <Button asChild>
-                  <Link href="/contact">Planifier mon audit</Link>
+                  <Link href="/contact?need=kit">Planifier mon audit</Link>
                 </Button>
                 <Button variant="outline-strong" className="group" asChild>
                   <Link href="/services#energie-solaire">
@@ -180,7 +180,7 @@ export default function ProduitsPage() {
             />
             <Reveal delay={0.15}>
               <Button className="group mt-8" asChild>
-                <Link href="/contact">
+                <Link href="/contact?need=kit">
                   Poser ma question
                   <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>

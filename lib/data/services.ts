@@ -279,3 +279,17 @@ export const faqs = [
       "Nous répondons sous 24 h ouvrées à toute demande via le formulaire de contact ou WhatsApp. Pour les projets complexes, le devis détaillé est remis après la visite technique du site.",
   },
 ] as const;
+
+/**
+ * Le domaine correspondant à une catégorie de réalisation.
+ *
+ * Le lien entre un service et sa catégorie de projet est déjà porté par la
+ * donnée (`Service.projectCategory`) : on le remonte plutôt que d'écrire une
+ * table de correspondance parallèle, qui divergerait au premier ajout.
+ * Sert à préqualifier /contact depuis une fiche d'étude de cas.
+ */
+export function serviceForCategory(
+  category: Project["category"],
+): Service | undefined {
+  return services.find((service) => service.projectCategory === category);
+}

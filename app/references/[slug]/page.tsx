@@ -9,6 +9,7 @@ import { Reveal } from "@/components/motion";
 import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { caseStudies } from "@/lib/data/case-studies";
+import { serviceForCategory } from "@/lib/data/services";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -37,6 +38,9 @@ export default async function CaseStudyPage({
   const { slug } = await params;
   const study = caseStudies.find((c) => c.slug === slug);
   if (!study) notFound();
+
+  /* Le domaine dont relève cette réalisation — sert à préqualifier /contact. */
+  const relatedService = serviceForCategory(study.category);
 
   return (
     <>
@@ -118,9 +122,19 @@ export default async function CaseStudyPage({
                 <p className="text-sm text-slate-600">
                   Un projet similaire en vue ?
                 </p>
+                {/*
+                  Préqualifié par la catégorie de la réalisation : la fiche
+                  d'une centrale solaire ouvre l'entonnoir sur le solaire.
+                  Le lien est porté par la donnée (Service.projectCategory),
+                  pas par une table de correspondance parallèle.
+                */}
                 <Button block className="mt-4" asChild>
                   <Link
-                    href="/contact"
+                    href={
+                      relatedService
+                        ? `/contact?service=${relatedService.slug}`
+                        : "/contact"
+                    }
                   >
                     Demander une étude
                     <ArrowRight />

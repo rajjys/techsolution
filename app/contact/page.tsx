@@ -17,6 +17,7 @@ import { BoltRule, WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { KIT_NEED, needs } from "@/lib/data/contact";
 import { kits } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { offices, site } from "@/lib/site";
@@ -85,12 +86,29 @@ const NEXT_STEPS = [
 export default async function ContactPage({
   searchParams,
 }: {
-  searchParams: Promise<{ kit?: string; service?: string }>;
+  searchParams: Promise<{ kit?: string; service?: string; need?: string }>;
 }) {
-  const { kit: kitSlug, service: serviceSlug } = await searchParams;
+  const {
+    kit: kitSlug,
+    service: serviceSlug,
+    need: needSlug,
+  } = await searchParams;
 
   const kit = kits.find((item) => item.slug === kitSlug);
   const service = services.find((item) => item.slug === serviceSlug);
+
+  /*
+   * `?need=` complète `?kit=` et `?service=` : il porte une réponse à la
+   * première question sans désigner de produit ni de domaine précis. C'est ce
+   * qui manquait aux appels posés depuis /produits ou depuis les kits — ils
+   * savaient que le visiteur venait pour un kit, et arrivaient pourtant nus,
+   * lui reposant une question dont son clic contenait déjà la réponse.
+   */
+  const need = needSlug
+    ? needs.find((item) => item.id === needSlug)
+    : undefined;
+  const wantsKit = need?.id === KIT_NEED;
+  const initialNeed = service?.slug ?? need?.id;
 
   /*
    * Deux fiches d'établissement, avec horaires et téléphone. Le balisage
@@ -189,6 +207,18 @@ export default async function ContactPage({
                   {service.shortTitle} :{" "}
                   <span className="text-brand-600">parlons de votre site.</span>
                 </>
+              ) : wantsKit ? (
+                <>
+                  Le bon kit,{" "}
+                  <span className="text-brand-600">
+                    c&apos;est celui qui tient vos charges.
+                  </span>
+                </>
+              ) : need ? (
+                <>
+                  {need.label} :{" "}
+                  <span className="text-brand-600">parlons-en.</span>
+                </>
               ) : (
                 <>
                   Quelques questions,{" "}
@@ -215,10 +245,7 @@ export default async function ContactPage({
             </ul>
 
             <div className="mt-7 sm:mt-8">
-              <ContactFunnel
-                initialKit={kit?.slug}
-                initialNeed={service?.slug}
-              />
+              <ContactFunnel initialKit={kit?.slug} initialNeed={initialNeed} />
             </div>
 
             {/*

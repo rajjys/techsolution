@@ -210,7 +210,7 @@ export function KitsSelector() {
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4 lg:shrink-0">
               <Button variant="primary" asChild>
-                <Link href="/contact">Devis gratuit</Link>
+                <Link href="/contact?need=kit">Devis gratuit</Link>
               </Button>
               <Button variant="outline-strong" className="group" asChild>
                 <Link href="/produits">
