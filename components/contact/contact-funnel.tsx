@@ -23,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { track } from "@/lib/analytics";
 import {
   SOLAR_NEED,
+  isFreeform,
   labelOf,
   needs,
   needsPowerTier,
@@ -320,6 +321,9 @@ function FieldError({ id, message }: { id: string; message?: string }) {
  * toute navigation avant efface l'historique suivant.
  */
 function buildSteps(need: string | null, skipTier: boolean): StepId[] {
+  /* Une demande libre saute la qualification : elle n'apprendrait rien sur
+     quelque chose qui, par définition, sort du cadre. */
+  if (isFreeform(need)) return ["besoin", "contact"];
   return [
     "besoin",
     "site",
@@ -452,9 +456,20 @@ export function ContactFunnel({
   /* Le total ne bouge plus dès que « besoin » est derrière nous. */
   const pathResolved = index > 0;
 
+  /* Sur une demande libre, le message porte toute la demande : il cesse d'être
+     facultatif, sans quoi l'équipe reçoit un nom, un numéro et rien d'autre. */
+  const messageRequired = isFreeform(need);
   const siteCopy = siteQuestion(need);
   const question =
-    step === "site" ? siteCopy : QUESTIONS[step];
+    step === "site"
+      ? siteCopy
+      : step === "contact" && messageRequired
+        ? {
+            title: QUESTIONS.contact.title,
+            /* « Trois champs » serait faux ici : le message s'ajoute. */
+            hint: "Votre message et vos coordonnées, et c'est terminé.",
+          }
+        : QUESTIONS[step];
 
   /* Chaque réponse déjà donnée, et l'écran qui permet de la reprendre. */
   const recap: { id: StepId; index: number; label: string; value: string }[] =
@@ -600,7 +615,7 @@ export function ContactFunnel({
     setValues((current) => ({ ...current, [field]: value }));
     /* On efface l'erreur dès qu'elle est réparée, jamais on n'en ajoute ici. */
     setErrors((current) =>
-      current[field] && !validateField(field, value)
+      current[field] && !validateField(field, value, { messageRequired })
         ? { ...current, [field]: undefined }
         : current,
     );
@@ -610,7 +625,7 @@ export function ContactFunnel({
     /* Un champ vide qu'on n'a pas encore tenté d'envoyer ne mérite pas
        de reproche : on ne valide au flou qu'une saisie commencée. */
     if (!attempted && values[field].trim().length === 0) return;
-    const message = validateField(field, values[field]);
+    const message = validateField(field, values[field], { messageRequired });
     setErrors((current) => ({ ...current, [field]: message }));
   }
 
@@ -625,7 +640,7 @@ export function ContactFunnel({
      * correcteur orthographique : un aller-retour par faute de frappe, sur un
      * réseau congolais, c'est un abandon.
      */
-    const found = validateContact(values);
+    const found = validateContact(values, { messageRequired });
     const invalid = Object.keys(found) as ContactField[];
     if (invalid.length > 0) {
       setErrors(found);
@@ -644,9 +659,9 @@ export function ContactFunnel({
     const payload = {
       need,
       kit: kitSlug ?? "",
-      siteType,
-      situation: needsSituation(need) ? situation : undefined,
-      timing,
+      siteType: siteType ?? undefined,
+      situation: needsSituation(need) ? (situation ?? undefined) : undefined,
+      timing: timing ?? undefined,
       name: values.name,
       phone: values.phone,
       city: values.city,
@@ -702,6 +717,47 @@ export function ContactFunnel({
       track("devis_erreur", { raison: "reseau" });
     }
   }
+
+  /*
+   * Le bloc message, défini une fois et posé à deux endroits : devant les
+   * coordonnées quand il porte la demande, derrière quand il n'est qu'un
+   * complément.
+   */
+  const messageField = (
+    <div className={messageRequired ? "" : "mt-5"}>
+      <Label htmlFor="message">
+        {messageRequired ? (
+          "Que pouvons-nous faire pour vous ?"
+        ) : (
+          <>
+            À ajouter ?{" "}
+            <span className="font-normal text-slate-400">(facultatif)</span>
+          </>
+        )}
+      </Label>
+      <Textarea
+        id="message"
+        name="message"
+        ref={(node) => {
+          fieldRefs.current.message = node;
+        }}
+        value={values.message}
+        onChange={(event) => setField("message", event.target.value)}
+        onBlur={() => blurField("message")}
+        rows={messageRequired ? 5 : 3}
+        required={messageRequired}
+        aria-invalid={errors.message ? true : undefined}
+        aria-describedby={errors.message ? "message-error" : undefined}
+        placeholder={
+          messageRequired
+            ? "Décrivez votre demande en quelques lignes."
+            : "Appareils à alimenter, autonomie souhaitée, contraintes du site…"
+        }
+        className="mt-2"
+      />
+      <FieldError id="message-error" message={errors.message} />
+    </div>
+  );
 
   /* ── Confirmation ─────────────────────────────────────────────── */
   if (status === "success") {
@@ -869,6 +925,9 @@ export function ContactFunnel({
                     icon={option.icon}
                     label={option.label}
                     detail={option.detail}
+                    /* « Autre chose » n'est pas un domaine de plus : elle sort
+                       du lot, comme « je ne sais pas » sur les puissances. */
+                    shortcut={isFreeform(option.id)}
                     selected={need === option.id}
                     onSelect={() => {
                       setNeed(option.id);
@@ -886,6 +945,21 @@ export function ContactFunnel({
 
             {step === "palier" ? (
               <ChoiceGroup describedBy="entonnoir-indice">
+                {/*
+                  En tête, et non en pied : c'est la réponse **présélectionnée**,
+                  et de loin la plus fréquente — on arrive rarement en sachant
+                  qu'il faut 12 kVA. La reléguer sous neuf paliers obligeait à
+                  faire défiler tout l'écran pour découvrir qu'on avait déjà
+                  répondu.
+                */}
+                <Choice
+                  icon={Gauge}
+                  label="Je ne sais pas encore"
+                  detail="Dimensionnez pour moi à partir de mes charges réelles."
+                  selected={kitSlug === null}
+                  shortcut
+                  onSelect={() => setKitSlug(null)}
+                />
                 {kits.map((item) => (
                   <Choice
                     key={item.slug}
@@ -896,14 +970,6 @@ export function ContactFunnel({
                     onSelect={() => setKitSlug(item.slug)}
                   />
                 ))}
-                <Choice
-                  icon={Gauge}
-                  label="Je ne sais pas encore"
-                  detail="Dimensionnez pour moi à partir de mes charges réelles."
-                  selected={kitSlug === null}
-                  shortcut
-                  onSelect={() => setKitSlug(null)}
-                />
               </ChoiceGroup>
             ) : null}
 
@@ -962,7 +1028,11 @@ export function ContactFunnel({
                * aller-retour vers l'écran précédent, qui la vidait.
                */
               <form onSubmit={onSubmit} autoComplete="on" noValidate>
-                <div className="grid gap-5 sm:grid-cols-2">
+                {/* Sur une demande libre, le message est la demande : il passe
+                    devant les coordonnées, qui n'en sont que le moyen. */}
+                {messageRequired ? messageField : null}
+
+                <div className={cn("grid gap-5 sm:grid-cols-2", messageRequired && "mt-5")}>
                   <div>
                     <Label htmlFor="name">Nom complet</Label>
                     <Input
@@ -1067,34 +1137,7 @@ export function ContactFunnel({
                   </div>
                 </div>
 
-                <div className="mt-5">
-                  <Label htmlFor="message">
-                    À ajouter ?{" "}
-                    <span className="font-normal text-slate-400">
-                      (facultatif)
-                    </span>
-                  </Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    ref={(node) => {
-                      fieldRefs.current.message = node;
-                    }}
-                    value={values.message}
-                    onChange={(event) =>
-                      setField("message", event.target.value)
-                    }
-                    onBlur={() => blurField("message")}
-                    rows={3}
-                    aria-invalid={errors.message ? true : undefined}
-                    aria-describedby={
-                      errors.message ? "message-error" : undefined
-                    }
-                    placeholder="Appareils à alimenter, autonomie souhaitée, contraintes du site…"
-                    className="mt-2"
-                  />
-                  <FieldError id="message-error" message={errors.message} />
-                </div>
+                {messageRequired ? null : messageField}
 
                 {/* Piège à robots — les humains ne le voient pas */}
                 <input

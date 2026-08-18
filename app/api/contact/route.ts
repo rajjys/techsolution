@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import {
   KIT_NEED,
+  isFreeform,
   labelOf,
   needs,
   needsSituation,
@@ -45,16 +46,19 @@ function refine(field: ContactField) {
   };
 }
 
-const schema = z.object({
+const baseSchema = z.object({
   /** Catalogue, ou l'un des six domaines — cf. lib/data/contact.ts. */
   need: z.enum(needs.map((option) => option.id) as [string, ...string[]]),
   kit: z.string().trim().max(80).optional().or(z.literal("")),
-  siteType: z.enum(["maison", "bureau", "etablissement", "industriel"]),
+  /* Absents sur une demande libre — cf. le superRefine plus bas. */
+  siteType: z
+    .enum(["maison", "bureau", "etablissement", "industriel"])
+    .nullish(),
   /** Absente quand le domaine ne la rend pas pertinente. */
   situation: z
     .enum(["aucun-reseau", "instable", "groupe", "extension"])
-    .optional(),
-  timing: z.enum(["urgent", "trois-mois", "cette-annee", "etude"]),
+    .nullish(),
+  timing: z.enum(["urgent", "trois-mois", "cette-annee", "etude"]).nullish(),
   /*
    * Les quatre champs saisis réutilisent `validateField` — la même fonction
    * que le formulaire applique avant l'envoi. Une règle, un message, deux
@@ -86,6 +90,38 @@ const schema = z.object({
   source: z.enum(["kit", "service", "nu"]).optional(),
   referrer: z.string().max(500).optional().default(""),
   landing: z.string().max(500).optional().default(""),
+});
+
+/**
+ * Ce que le formulaire garantit, le serveur le revérifie — y compris le
+ * caractère conditionnel des champs. Une demande libre saute la qualification
+ * mais doit porter un message ; toutes les autres doivent porter leur
+ * qualification et peuvent se passer de message.
+ */
+const payloadSchema = baseSchema.superRefine((data, ctx) => {
+  if (isFreeform(data.need)) {
+    const message = validateField("message", data.message ?? "", {
+      messageRequired: true,
+    });
+    if (message) {
+      ctx.addIssue({ code: "custom", path: ["message"], message });
+    }
+    return;
+  }
+  if (!data.siteType) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["siteType"],
+      message: "Réponse manquante.",
+    });
+  }
+  if (!data.timing) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["timing"],
+      message: "Réponse manquante.",
+    });
+  }
 });
 
 /* ── Limitation de débit ──────────────────────────────────────────────────
@@ -128,7 +164,7 @@ function clientIp(request: Request): string {
   );
 }
 
-type Payload = z.infer<typeof schema>;
+type Payload = z.infer<typeof payloadSchema>;
 
 function escapeHtml(value: string): string {
   return value
@@ -175,8 +211,10 @@ function summarize(data: Payload) {
   const kit = kits.find((item) => item.slug === data.kit);
   const service = services.find((item) => item.slug === data.need);
 
-  const object =
-    kit?.name ?? service?.title ?? labelOf(needs, data.need) ?? "Demande";
+  /* Une demande libre n'a pas d'objet commercial : le sujet le dit. */
+  const object = isFreeform(data.need)
+    ? "Demande libre"
+    : (kit?.name ?? service?.title ?? labelOf(needs, data.need) ?? "Demande");
 
   const rows: [string, string][] = [
     ["Demande", labelOf(needs, data.need) ?? "—"],
@@ -190,17 +228,15 @@ function summarize(data: Payload) {
   } else if (data.need === KIT_NEED) {
     rows.push(["Palier visé", "Non déterminé — à dimensionner"]);
   }
-  rows.push(["Site", labelOf(siteTypes, data.siteType) ?? "—"]);
+  const siteLabel = labelOf(siteTypes, data.siteType);
+  if (siteLabel) rows.push(["Site", siteLabel]);
   if (needsSituation(data.need)) {
-    rows.push([
-      "Situation actuelle",
-      labelOf(situations, data.situation) ?? "—",
-    ]);
+    const situationLabel = labelOf(situations, data.situation);
+    if (situationLabel) rows.push(["Situation actuelle", situationLabel]);
   }
-  rows.push(
-    ["Échéance", labelOf(timings, data.timing) ?? "—"],
-    ["Ville", data.city],
-  );
+  const timingLabel = labelOf(timings, data.timing);
+  if (timingLabel) rows.push(["Échéance", timingLabel]);
+  rows.push(["Ville", data.city]);
 
   /* Par où la demande est arrivée — pour savoir quoi renforcer sur le site. */
   const origin =
@@ -318,7 +354,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const parsed = schema.safeParse(body);
+  const parsed = payloadSchema.safeParse(body);
   if (!parsed.success) {
     /*
      * Toutes les erreurs, indexées par champ — et non la première seule sous
@@ -423,7 +459,9 @@ export async function POST(request: Request) {
       to: [to],
       /* Sans email fourni, un Reply-To vide ferait échouer l'envoi. */
       ...(data.email ? { replyTo: data.email } : {}),
-      subject: `[Devis] ${object} — ${data.name}, ${data.city}`,
+      /* Le préfixe trie la boîte : un devis n'appelle pas la même personne
+         qu'une demande hors catalogue. */
+      subject: `${isFreeform(data.need) ? "[Message]" : "[Devis]"} ${object} — ${data.name}, ${data.city}`,
       html: buildHtml(data),
       text: buildText(data),
     });

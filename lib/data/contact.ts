@@ -7,6 +7,7 @@ import {
   Factory,
   Fuel,
   Home,
+  MessageSquare,
   PlugZap,
   Radio,
   Scale,
@@ -109,13 +110,43 @@ const NEED_COPY: Record<
   },
 };
 
-/** Les six domaines — la totalité des réponses à la première question. */
-export const needs: Option<string>[] = services.map((service) => ({
+/** Les six domaines. */
+export const domainNeeds: Option<string>[] = services.map((service) => ({
   id: service.slug,
   label: NEED_COPY[service.slug]?.label ?? service.shortTitle,
   detail: NEED_COPY[service.slug]?.detail ?? service.delivery,
   icon: NEED_COPY[service.slug]?.icon ?? service.icon,
 }));
+
+/**
+ * La sortie de secours du premier écran.
+ *
+ * Six domaines couvrent ce que l'entreprise vend, pas tout ce qu'on peut avoir
+ * à lui écrire — un fournisseur, une candidature, une question qui n'entre dans
+ * aucune case. Sans cette porte, ces gens-là repartent ou forcent une réponse
+ * fausse, ce qui est pire : le commercial rappelle avec le mauvais dossier.
+ *
+ * Elle mène **directement aux coordonnées** : les quatre questions de
+ * qualification n'apprendraient rien sur une demande qui, par définition, sort
+ * du cadre. En contrepartie le message cesse d'être facultatif — sans lui,
+ * l'équipe reçoit un nom, un numéro, et aucune idée de ce qu'on lui veut.
+ */
+export const OTHER_NEED = "autre";
+
+export const otherNeed: Option<string> = {
+  id: OTHER_NEED,
+  label: "Autre chose",
+  detail: "Une demande qui n'entre dans aucune case — écrivez-nous.",
+  icon: MessageSquare,
+};
+
+/** Toutes les réponses à la première question. */
+export const needs: Option<string>[] = [...domainNeeds, otherNeed];
+
+/** Une demande libre saute la qualification et exige un message. */
+export function isFreeform(need: string | null | undefined): boolean {
+  return need === OTHER_NEED;
+}
 
 /** Le domaine que sert le catalogue de kits — cible de `?need=kit`. */
 export const SOLAR_NEED = "energie-solaire";
@@ -309,6 +340,8 @@ export const FIELD_LABELS: Record<ContactField, string> = {
 export function validateField(
   field: ContactField,
   raw: string,
+  /** Le message devient obligatoire sur une demande libre — cf. `otherNeed`. */
+  options: { messageRequired?: boolean } = {},
 ): string | undefined {
   const value = raw.trim();
   switch (field) {
@@ -334,6 +367,11 @@ export function validateField(
         return "Cette adresse email semble incomplète.";
       return undefined;
     case "message":
+      if (options.messageRequired) {
+        if (value.length === 0) return "Dites-nous ce dont il s'agit.";
+        if (value.length < 10)
+          return "Quelques mots de plus nous aideraient à préparer l'appel.";
+      }
       if (value.length > 5000) return "Message trop long (5 000 caractères).";
       return undefined;
   }
@@ -342,10 +380,11 @@ export function validateField(
 /** Valide tout le bloc de coordonnées d'un coup. */
 export function validateContact(
   values: Record<ContactField, string>,
+  options: { messageRequired?: boolean } = {},
 ): Partial<Record<ContactField, string>> {
   const errors: Partial<Record<ContactField, string>> = {};
   for (const field of Object.keys(FIELD_LABELS) as ContactField[]) {
-    const error = validateField(field, values[field] ?? "");
+    const error = validateField(field, values[field] ?? "", options);
     if (error) errors[field] = error;
   }
   return errors;
