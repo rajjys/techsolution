@@ -179,66 +179,79 @@ en bas) ; sa preuve chiffrée a été fondue dans la raison d'être de /about.
 - **Témoignages clients** — jamais fabriqués. Placement retenu : entre
   `CaseStudiesReach` et `Maintenance`.
 
-**`/contact` — diagnostic complet mené, premier lot livré (P0 + P1).**
+**`/contact` — refonte complète menée. La page est close, sauf mention ci-dessous.**
 
-Fait :
+Diagnostic hiérarchisé mené sur neuf axes, puis reconstruction. Ce qui est fait :
+
+*Fiabilité et mesure*
 - L'API **échoue franchement en production** quand l'envoi est impossible
   (`RESEND_API_KEY` absente, ou expéditeur resté sur le bac à sable Resend).
   Elle répondait `ok: true` : une variable oubliée sur Vercel avalait
-  silencieusement 100 % des demandes. Le mode « consigné » ne vit plus qu'en
-  développement.
-- **Mesure de l'entonnoir** (`lib/analytics.ts`, événements `devis_*` déposés
-  dans `dataLayer`, pas via `window.gtag` — il se charge trop tard pour
+  silencieusement 100 % des demandes. Mode « consigné » réservé au développement.
+- **Débit plafonné** à 5 demandes / IP / 10 min (en mémoire, donc par instance —
+  BotID ou le WAF si l'abus devient réel).
+- **Mesure de l'entonnoir** — `lib/analytics.ts`, événements `devis_*` déposés
+  dans `dataLayer` (et non via `window.gtag`, qui se charge trop tard pour
   l'événement d'ouverture) : `devis_ouvert`, `devis_etape`, `devis_retour`,
   `devis_selection_modifiee`, `devis_champs_invalides`, `devis_soumis`,
-  `devis_succes`, `devis_erreur`, `devis_whatsapp`. Chacun porte `source`
-  (`kit` / `service` / `nu`). **Les convertir en conversions dans GA4.**
-- **Validation côté client**, toutes les erreurs d'un coup, sous leur champ,
-  en français. Règles partagées avec l'API (`validateField` dans
-  `lib/data/contact.ts`) : une règle, un message, deux barrières. L'API
-  renvoyait `Champ « name » : Nom trop court`, une erreur à la fois, après un
-  aller-retour réseau.
-- **Zoom iOS supprimé** : `Input`/`Textarea` passent à 16 px sous `sm`.
-- **Le geste « retour » recule d'un écran** au lieu de quitter la page :
-  `history.pushState` sur la même URL, un état par écran.
-- **Le besoin préqualifié redevient modifiable** (pastille cliquable) ; le
-  lien « changer » restait dans l'entonnoir au lieu d'éjecter vers /produits.
-- **Barre de progression honnête** : le total n'apparaît qu'une fois le chemin
-  déterminé (« Première question », puis « Étape N sur T » stable). Il passait
-  de 4 à 6 quand on répondait.
-- Champs contrôlés : la saisie survit à un aller-retour entre écrans.
-- Groupes de choix en `radiogroup` / `radio` + `aria-checked`.
+  `devis_succes`, `devis_erreur`, `devis_whatsapp`. Tous portent `source`
+  (`kit` / `service` / `nu`). **À marquer comme conversions dans GA4.**
 
-Reste à faire, par ordre d'impact (le diagnostic complet est dans l'historique
-de conversation) :
-- **P2 — promesses.** Décidé : ajouter « Rien n'est facturé avant le devis » au
-  rail « Ce que vous obtenez », et remonter le rail **au-dessus** de
-  l'entonnoir sur mobile (il est sous lui, donc hors écran au moment de
-  cliquer). Le délai de ROI reste sur `CostFrame` uniquement — décision prise.
-- **P1-4 partiel.** L'écran 1 est passé de 1712 px à **1463 px** avant
-  « Continuer » (viewport 844). Encore 1,7 écran. Les deux leviers restants
-  sont des choix de contenu : réduire les 7 options, ou poser « Qu'y a-t-il à
-  alimenter ? » (4 options) en première question.
-- **P3.** Navigation aux flèches dans les `radiogroup` + tabindex mouvant
-  (cf. design-system.md §6) ; cibles tactiles du pied de page.
-- **P4.** Aucune limitation de débit sur `/api/contact` — et les 422 indiquent
-  quel champ corriger, ce qui en fait un oracle pour un robot. L'email reçu ne
-  dit pas **d'où vient le lead** ni ne propose de lien `wa.me` vers le
-  prospect. Aucune page de confidentialité sur le site.
-- **P5.** « Ou joignez-nous directement » redit le pied de page juste au-dessus
-  (numéro 4×, WhatsApp 4×, bureaux 2× sur la page). Adresses non cliquables,
-  pas de JSON-LD `LocalBusiness`.
-- **Le FAB WhatsApp est `hidden lg:inline-flex`** : absent du mobile, c'est-à-dire
-  du terrain réel et du pays où le canal convertit.
-- Vérifier que les techniciens produisent bien le **délai de retour sur
-  investissement** : `CostFrame` et le hero l'engagent publiquement.
+*Structure*
+- **Plus de `PageHero`** : l'entonnoir est la page, en colonne unique. Voir
+  design-system.md §6 bis, qui décrit le motif « page-outil ».
+- **Barre d'action collante** : « Continuer » est visible sans défiler à tous
+  les points de rupture (360 → 1440).
+- **« Ou joignez-nous directement » supprimée** — elle redisait le pied de page
+  trente centimètres plus haut (numéro 4×, bureaux 2× sur la même page).
+  Remplacée par « Ce qui se passe ensuite », la seule chose que la page ne
+  disait nulle part.
+- Le pied de page **ne renvoie plus vers /contact depuis /contact**
+  (`components/layout/footer-cta.tsx`, seul morceau client du pied de page).
+- Adresses **ouvrables dans une carte** sur tout le site ; balisage
+  `LocalBusiness` des deux implantations sur /contact, horaires compris.
+
+*Parcours*
+- Questions et options **formulées en résultats**, plus en intitulés de métier.
+  Le catalogue devient un raccourci, sorti du lot des six domaines.
+- **Validation côté client**, toutes les erreurs d'un coup, sous leur champ,
+  en français. Règles partagées avec l'API (`validateField`).
+- **Zoom iOS supprimé** (champs à 16 px sous `sm`).
+- **Le geste « retour » recule d'un écran** (`history.pushState`, même URL).
+- **Préqualification modifiable** : la pastille ouvre l'écran correspondant.
+- **Barre de progression honnête** : le total n'apparaît qu'une fois le chemin
+  déterminé.
+- **`?need=`** complète `?kit=` et `?service=` ; les quatre appels posés en
+  contexte de catalogue et le CTA des études de cas (via `serviceForCategory`)
+  préqualifient désormais.
+- Confirmation : le **numéro composé est relu** au visiteur, avec les trois
+  temps qui suivent.
+- Email reçu : **origine du lead**, page d'arrivée, provenance, et un **lien
+  WhatsApp vers le prospect** à côté du lien d'appel.
+- `radiogroup` complet : tabindex mouvant, flèches, Origine/Fin. Parcours
+  vérifié **au clavier seul**, de la première question au formulaire.
+- Nouvelle page **`/confidentialite`**, écrite depuis le code.
+
+**Ce qui reste ouvert sur /contact**
+- Le **délai de retour sur investissement** n'est pas repris sur la page —
+  décision du propriétaire, il reste sur `CostFrame`. À rouvrir s'il veut le
+  répéter au point de décision.
+- La **durée de conservation** (3 ans) de /confidentialite est une décision
+  d'entreprise à confirmer, et aucun texte de loi n'est cité faute de pouvoir
+  le vérifier.
+- Pas de **persistance de secours** : si Resend tombe, le visiteur voit une
+  erreur honnête mais la demande n'existe nulle part. Un Blob ou un KV écrit
+  avant l'envoi serait le filet.
+- Pas d'**accusé de réception** au visiteur qui a laissé un email.
+
+**Ailleurs, non traité :**
 - Passe section par section sur /services, /produits, /references (seuls les
   en-têtes et la copie ont été repris).
 - Sur /about, le manifeste en dégradé (52 px) dépasse le H1 (48 px) — conflit
   de hiérarchie hérité de l'accueil.
 - Trop de dispositifs visuels cumulés (courbe, sticky, halos, filets pointillés,
   rail, carte à points, cascades). Choisir deux ou trois signatures.
-- Vidéo drone, FAQ, blog.
+- Vidéo drone, blog.
 - Déploiement : `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`.
 
 ## 9. Quick file map

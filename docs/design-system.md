@@ -203,6 +203,46 @@ Origine/Fin, un seul élément dans l'ordre de tabulation (tabindex mouvant), et
 le panneau lié par `aria-controls` / `aria-labelledby`. Sans cela, le motif est
 une jolie souricière au clavier.
 
+## 6 bis. Pages-outils
+
+Une page dont l'objet **est** un formulaire ne se compose pas comme une page
+éditoriale. /contact en donne la forme de référence.
+
+**Pas de `PageHero`.** Il posait 570 px de préambule au-dessus de la première
+question : sur un téléphone, l'outil vers lequel converge tout le site
+commençait sous la ligne de flottaison. Le fil d'Ariane, le `h1`, la promesse
+et le formulaire tiennent dans une seule colonne bornée à `46rem`, et cette
+colonne est la page. La surface reste claire (`brand-50`), comme toute page
+intérieure.
+
+**Colonne unique, jamais de rail.** Un rail latéral se replie *sous* le contenu
+dès qu'on passe sous `lg` — il s'efface donc exactement là où il servirait le
+plus. Ce qu'il porterait remonte au-dessus (les engagements, au point de
+décision) ou descend juste dessous (les canaux de secours).
+
+**Les engagements en une ligne, pas en grille.** Trois items sur une ligne qui
+se replie (`flex flex-wrap`) se lisent comme une politique ; en tuiles, comme
+un argumentaire. Ils appartiennent au dessus du formulaire, là où l'on décide.
+
+**Barre d'action collante.** Sur un écran de choix un peu long, la réponse est
+donnée bien avant que le bouton n'entre dans le champ. La barre se colle au bas
+de la fenêtre et se pose d'elle-même au bas de la carte quand celle-ci y tient.
+Elle doit **affleurer les trois bords** de la carte — marges négatives accordées
+à chaque rembourrage (`-mx-5 -mb-5 sm:-mx-8 sm:-mb-8 lg:-mx-10 lg:-mb-10`) —
+faute de quoi le contenu continue de défiler dans l'interstice qui reste
+dessous. Fond **opaque** : `backdrop-filter` n'est garanti nulle part.
+
+**Une carte de choix a trois états, et aucun n'est bleu au repos.** Une pastille
+`brand-100` par option devient un aplat indigo dès la cinquième, où la sélection
+ne se voit plus faute de contraste avec son voisinage. Repos neutre
+(`bg-slate-50/70`, pictogramme `slate-500` sur blanc cerclé), survol sur
+l'anneau qui sert de signature au site, `brand` réservé au seul état choisi.
+Une réponse d'une autre nature — un raccourci, un « je ne sais pas » — prend le
+trait discontinu et traverse la grille, au lieu de se déguiser en pair.
+
+**Chaque question dit pourquoi elle est posée.** Un entonnoir qui interroge sans
+se justifier se lit comme un péage.
+
 ## 7. Mouvement
 
 `Reveal` / `Stagger` / `StaggerItem`. Décalage vertical de 14 à 30 px, retards
