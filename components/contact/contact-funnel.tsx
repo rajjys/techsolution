@@ -80,6 +80,24 @@ const QUESTIONS: Record<StepId, { title: string; hint?: string }> = {
   },
 };
 
+/**
+ * Barre d'action collante — commune aux écrans de choix et au formulaire.
+ *
+ * Elle affleure les trois bords de la carte : posée en retrait, le contenu
+ * continuait de défiler dans l'interstice qui restait en dessous, et la barre
+ * paraissait flotter par-dessus un texte coupé. D'où les marges négatives,
+ * accordées aux trois rembourrages de la carte (`p-5 sm:p-8 lg:p-10`).
+ *
+ * Fond **opaque** et non voilé : `backdrop-filter` n'est garanti ni sur les
+ * navigateurs Android anciens ni au rendu hors écran, et le texte défilant
+ * dessous restait alors lisible au travers.
+ */
+const BAR_CLASSES =
+  `sticky bottom-0 z-10 -mx-5 -mb-5 mt-8 flex items-center gap-3 rounded-b-3xl
+   border-t border-slate-200 bg-white px-5 py-4
+   shadow-[0_-10px_24px_-16px_rgba(15,23,42,0.25)]
+   sm:-mx-8 sm:-mb-8 sm:gap-4 sm:px-8 lg:-mx-10 lg:-mb-10 lg:px-10`;
+
 const EMPTY_VALUES: Record<ContactField, string> = {
   name: "",
   phone: "",
@@ -951,7 +969,13 @@ export function ContactFunnel({
                   </p>
                 ) : null}
 
-                <div className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-6 sm:flex-row sm:items-center sm:gap-4">
+                <p className="mt-6 border-t border-slate-100 pt-5 text-xs leading-relaxed text-slate-500">
+                  Réponse sous 24 h ouvrées. Vos informations servent
+                  uniquement à traiter cette demande, et ne sont ni revendues
+                  ni transmises à un tiers.
+                </p>
+
+                <div className={cn(BAR_CLASSES)}>
                   <Button
                     type="button"
                     variant="ghost"
@@ -964,7 +988,7 @@ export function ContactFunnel({
                   </Button>
                   <Button
                     type="submit"
-                    className="group sm:ml-auto"
+                    className="group ml-auto"
                     disabled={status === "loading"}
                     aria-busy={status === "loading"}
                   >
@@ -981,11 +1005,6 @@ export function ContactFunnel({
                     )}
                   </Button>
                 </div>
-
-                <p className="mt-4 text-xs leading-relaxed text-slate-500">
-                  Réponse sous 24 h ouvrées. Vos informations servent
-                  uniquement à traiter cette demande.
-                </p>
               </form>
             ) : null}
           </div>
@@ -993,7 +1012,14 @@ export function ContactFunnel({
       </AnimatePresence>
 
       {!isLast ? (
-        <div className="mt-8 flex items-center gap-4 border-t border-slate-100 pt-6">
+        /*
+         * Barre d'action **collante**. La première question compte sept
+         * réponses : « Continuer » se trouvait à près de deux écrans de
+         * défilement sur un téléphone, alors que la réponse, elle, était déjà
+         * donnée. La barre suit le regard et se pose d'elle-même au bas de la
+         * carte quand celle-ci tient à l'écran.
+         */
+        <div className={cn(BAR_CLASSES)}>
           {index > 0 ? (
             <Button
               variant="ghost"

@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { BatteryCharging, Clock, Mail, MapPin, Phone, SunMedium, Zap } from "lucide-react";
+import Link from "next/link";
+import {
+  BatteryCharging,
+  ChevronRight,
+  ClipboardCheck,
+  Clock,
+  Phone,
+  ReceiptText,
+  SunMedium,
+  Zap,
+} from "lucide-react";
 
 import { ContactFunnel } from "@/components/contact/contact-funnel";
 import { Glow } from "@/components/glow";
-import { WhatsAppIcon } from "@/components/icons";
+import { BoltRule, WhatsAppIcon } from "@/components/icons";
 import { Reveal } from "@/components/motion";
-import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { kits } from "@/lib/data/kits";
@@ -16,7 +25,7 @@ import { buildProductWhatsAppLink, buildWhatsAppLink } from "@/lib/whatsapp";
 export const metadata: Metadata = {
   title: "Contact & Devis gratuit",
   description:
-    "Décrivez votre site en trois étapes : un ingénieur vous rappelle sous 24 h ouvrées. Audit et devis gratuits, partout en RDC.",
+    "Décrivez votre site en quelques clics : un ingénieur vous rappelle sous 24 h ouvrées. Audit sur site et devis gratuits, partout en RDC.",
   alternates: { canonical: "/contact" },
 };
 
@@ -25,6 +34,53 @@ const SPEC_ROWS = [
   { key: "battery", icon: BatteryCharging, label: "Batterie lithium" },
   { key: "panels", icon: SunMedium, label: "Panneaux" },
 ] as const;
+
+/**
+ * Les engagements publics de l'entreprise, repris **au point de décision**.
+ *
+ * Ils vivaient dans un rail de droite, donc sous l'entonnoir une fois la
+ * grille repliée sur mobile : au moment du premier clic, ils étaient hors
+ * écran. Ils sont désormais entre le titre et la première question, sur une
+ * seule ligne qui se replie — une politique, pas une grille d'arguments.
+ *
+ * Ce sont mot pour mot ceux de `CostFrame` sur l'accueil. Le délai de retour
+ * sur investissement, lui, reste là-bas : décision du propriétaire.
+ */
+const PROMISES = [
+  { icon: ClipboardCheck, label: "Audit gratuit sur site" },
+  { icon: Clock, label: "Réponse sous 24 h ouvrées" },
+  { icon: ReceiptText, label: "Rien à payer avant le devis" },
+];
+
+/**
+ * Le parcours après l'envoi — les mêmes engagements que `CostFrame`, remis
+ * dans l'ordre où le visiteur va les vivre. La question qu'il se pose avant de
+ * laisser son numéro n'est pas « que faites-vous ? » mais « qu'est-ce que je
+ * déclenche ? ». Aucune de ces étapes n'est nouvelle : elles étaient
+ * dispersées, jamais énoncées comme une suite.
+ */
+const NEXT_STEPS = [
+  {
+    when: "Maintenant",
+    title: "Vous décrivez votre site",
+    detail: "Quelques clics, vos coordonnées. C'est la seule étape à votre charge.",
+  },
+  {
+    when: "Sous 24 h ouvrées",
+    title: "Un ingénieur vous rappelle",
+    detail: "Pour comprendre vos charges et convenir d'une date de visite.",
+  },
+  {
+    when: "À la visite",
+    title: "L'audit, gratuit et sur site",
+    detail: "Un technicien relève vos consommations réelles, sans engagement.",
+  },
+  {
+    when: "Après l'audit",
+    title: "Le devis, poste par poste",
+    detail: "Matériel, pose, mise en service, entretien. Vous décidez ensuite.",
+  },
+];
 
 export default async function ContactPage({
   searchParams,
@@ -36,120 +92,172 @@ export default async function ContactPage({
   const kit = kits.find((item) => item.slug === kitSlug);
   const service = services.find((item) => item.slug === serviceSlug);
 
+  /*
+   * Deux fiches d'établissement, avec horaires et téléphone. Le balisage
+   * `Organization` global ne portait ni les heures d'ouverture ni les
+   * implantations comme des lieux — pour une entreprise à deux bases
+   * physiques, c'est précisément ce qu'une recherche locale cherche.
+   */
+  const officesJsonLd = offices.map((office) => ({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${site.url}/contact#${office.city.toLowerCase()}`,
+    name: `${site.legalName} — ${office.city}`,
+    parentOrganization: { "@type": "Organization", name: site.legalName },
+    url: `${site.url}/contact`,
+    telephone: site.phone,
+    email: site.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: office.street,
+      addressLocality: office.city,
+      addressRegion: office.region,
+      addressCountry: "CD",
+    },
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "08:00",
+      closes: "17:00",
+    },
+  }));
+
+  const whatsappLink = kit
+    ? buildProductWhatsAppLink(kit.name)
+    : buildWhatsAppLink();
+
   return (
     <>
-      <PageHero
-        compact
-        breadcrumb={[{ label: "Contact" }]}
-        eyebrow={kit || service ? "Demande de devis" : "Contact"}
-        title={
-          kit ? (
-            <>
-              Votre {kit.power},{" "}
-              <span className="text-brand-600">dimensionné pour vous.</span>
-            </>
-          ) : service ? (
-            <>
-              {service.shortTitle} :{" "}
-              <span className="text-brand-600">parlons de votre site.</span>
-            </>
-          ) : (
-            <>
-              Quelques questions,{" "}
-              <span className="text-brand-600">et on vous rappelle.</span>
-            </>
-          )
-        }
-        lead={
-          kit
-            ? `Le ${kit.name} est un point de départ : sa composition exacte est arrêtée après l'audit. Dites-nous où et pour quoi faire.`
-            : service
-              ? `${service.delivery} Décrivez votre site en quelques clics — un ingénieur vous rappelle sous 24 h ouvrées.`
-              : "Plus vous nous en dites, plus le premier appel est utile. Comptez moins d'une minute — vous ne tapez que vos coordonnées."
-        }
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(officesJsonLd) }}
       />
 
-      {/* L'entonnoir — le cœur de la page */}
-      <Section className="relative isolate bg-surface-cool">
+      {/*
+        L'entonnoir occupe la page — il n'y a pas d'en-tête à traverser avant
+        lui. Un `PageHero` posait 570 px de préambule au-dessus de la première
+        question : sur un téléphone, l'outil vers lequel converge tout le site
+        commençait sous la ligne de flottaison. Le titre, la promesse et le
+        formulaire tiennent maintenant dans une seule colonne, et cette colonne
+        est la page.
+
+        Colonne unique, et non deux : un rail latéral disparaît sous
+        l'entonnoir dès qu'on replie la grille, c'est-à-dire là où il servirait
+        le plus. Ce qu'il portait est remonté au-dessus (les engagements) ou
+        descendu juste dessous (la sortie de secours).
+      */}
+      <Section className="relative isolate bg-brand-50 !pt-8 !pb-14 sm:!pt-10 lg:!pt-12 lg:!pb-20">
         <Glow variant="cool" corner="bottom-right" />
-        <div className="container relative grid items-start gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:gap-12">
-          <ContactFunnel initialKit={kit?.slug} initialNeed={service?.slug} />
 
-          {/* Rail — ce qui rassure, et la porte de sortie immédiate */}
-          <Reveal delay={0.1} className="lg:sticky lg:top-28">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card sm:p-7">
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                Ce que vous obtenez
-              </p>
-              <ul className="mt-4 space-y-4">
-                {[
-                  {
-                    title: "Un rappel sous 24 h ouvrées",
-                    text: "Par un ingénieur, pas par un standard.",
-                  },
-                  {
-                    title: "Une visite et un audit gratuits",
-                    text: "Mesure de vos charges réelles, sans engagement.",
-                  },
-                  {
-                    title: "Un devis chiffré et détaillé",
-                    text: "Composants, puissance, autonomie : tout est écrit.",
-                  },
-                ].map((item) => (
-                  <li key={item.title} className="flex gap-3">
-                    <span
-                      className="mt-1.5 size-1.5 shrink-0 rounded-full bg-solar-500"
-                      aria-hidden="true"
-                    />
-                    <span>
-                      <span className="block text-sm font-bold text-slate-900">
-                        {item.title}
-                      </span>
-                      <span className="mt-0.5 block text-sm leading-relaxed text-slate-600">
-                        {item.text}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 border-t border-slate-100 pt-6">
-                <p className="text-sm leading-relaxed text-slate-600">
-                  Vous préférez parler tout de suite ?
-                </p>
-                <div className="mt-4 space-y-3">
-                  <Button variant="neutral" block asChild>
-                    <a
-                      href={
-                        kit
-                          ? buildProductWhatsAppLink(kit.name)
-                          : buildWhatsAppLink()
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <WhatsAppIcon className="size-4 text-[#25D366]" />
-                      Écrire sur WhatsApp
-                    </a>
-                  </Button>
-                  <a
-                    href={`tel:${site.phone}`}
-                    className="flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-display text-lg font-bold tracking-tight text-slate-900 transition-colors hover:text-brand-700"
+        <div className="container relative">
+          <div className="mx-auto max-w-[46rem]">
+            <nav aria-label="Fil d'Ariane" className="mb-6">
+              <ol className="flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500">
+                <li>
+                  <Link
+                    href="/"
+                    className="rounded transition-colors hover:text-brand-700"
                   >
-                    <Phone
-                      className="size-4 shrink-0 text-solar-600"
-                      aria-hidden="true"
-                    />
-                    {site.phoneDisplay}
+                    Accueil
+                  </Link>
+                </li>
+                <li className="flex items-center gap-1">
+                  <ChevronRight
+                    className="size-3.5 shrink-0 text-slate-400"
+                    aria-hidden="true"
+                  />
+                  <span className="font-semibold text-slate-700">Contact</span>
+                </li>
+              </ol>
+            </nav>
+
+            <h1 className="text-balance font-display text-[30px] font-bold leading-[1.1] tracking-[-0.01em] text-slate-900 sm:text-4xl md:text-[44px]">
+              {kit ? (
+                <>
+                  Votre {kit.power},{" "}
+                  <span className="text-brand-600">dimensionné pour vous.</span>
+                </>
+              ) : service ? (
+                <>
+                  {service.shortTitle} :{" "}
+                  <span className="text-brand-600">parlons de votre site.</span>
+                </>
+              ) : (
+                <>
+                  Quelques questions,{" "}
+                  <span className="text-brand-600">et on vous rappelle.</span>
+                </>
+              )}
+            </h1>
+
+            {/* La promesse, en une ligne qui se replie plutôt qu'en grille. */}
+            <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+              {PROMISES.map((promise) => (
+                <li
+                  key={promise.label}
+                  className="inline-flex items-center gap-2 text-[13px] font-semibold text-slate-700 sm:text-sm"
+                >
+                  <promise.icon
+                    className="size-4 shrink-0 text-brand-600"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  {promise.label}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-7 sm:mt-8">
+              <ContactFunnel
+                initialKit={kit?.slug}
+                initialNeed={service?.slug}
+              />
+            </div>
+
+            {/*
+              La sortie de secours, sous l'entonnoir et non à côté : en RDC
+              WhatsApp convertit, mais il ne doit pas concurrencer le
+              formulaire au moment où on s'y engage. Il le rattrape.
+            */}
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4 sm:p-5">
+              <p className="text-sm font-semibold text-slate-800">
+                Vous préférez parler tout de suite&nbsp;?
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-3 sm:mt-0">
+                <Button variant="neutral" size="sm" asChild>
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <WhatsAppIcon className="size-4 text-[#25D366]" />
+                    WhatsApp
                   </a>
-                  <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-                    <Clock className="size-3.5" aria-hidden="true" />
-                    {site.hours}
-                  </p>
-                </div>
+                </Button>
+                <a
+                  href={`tel:${site.phone}`}
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-2 font-display text-[17px] font-bold tracking-tight text-slate-900 transition-colors hover:text-brand-700"
+                >
+                  <Phone
+                    className="size-4 shrink-0 text-solar-600"
+                    aria-hidden="true"
+                  />
+                  {site.phoneDisplay}
+                </a>
               </div>
             </div>
-          </Reveal>
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-500 sm:justify-start">
+              <Clock className="size-3.5 shrink-0" aria-hidden="true" />
+              {site.hours}
+            </p>
+          </div>
         </div>
       </Section>
 
@@ -238,91 +346,70 @@ export default async function ContactPage({
         </Section>
       ) : null}
 
-      {/* Nous joindre autrement */}
-      <Section className="relative isolate bg-surface-cool-deep">
+      {/*
+        Ce qui se passe ensuite.
+
+        Une section « Ou joignez-nous directement » occupait cette place :
+        téléphone, WhatsApp et email, que le pied de page redonne trente
+        centimètres plus bas. Sur mobile, le numéro apparaissait quatre fois
+        sur la même page et les deux bureaux deux fois — alors que la règle est
+        écrite (design-system.md §9) : une seule conclusion par page, et c'est
+        le pied de page. Les adresses y sont désormais ouvrables dans une
+        carte, ce qui vaut pour tout le site.
+
+        À la place, la seule chose que la page ne disait nulle part : ce à quoi
+        le visiteur s'engage en laissant son numéro. C'est la question qui
+        précède le clic, et y répondre coûte moins cher que de la laisser
+        traîner.
+      */}
+      <Section className="relative isolate bg-surface-cool-deep !py-14 lg:!py-20">
         <Glow variant="cool-deep" corner="bottom-left" />
         <div className="container relative">
-          <SectionHeading
-            align="center"
-            eyebrow="Autrement"
-            title="Ou joignez-nous directement."
-          />
+          <div className="mx-auto max-w-[46rem]">
+            <h2 className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.18em] text-solar-700">
+              <BoltRule className="h-2.5 w-[35px] shrink-0 text-solar-500" />
+              Ce qui se passe ensuite
+            </h2>
+            <p className="mt-4 text-balance font-display text-[22px] font-bold leading-snug text-slate-900 sm:text-[26px]">
+              Quatre étapes, et vous n&apos;en pilotez qu&apos;une&nbsp;: la
+              première.
+            </p>
 
-          <div className="mx-auto mt-12 grid max-w-4xl gap-4 sm:grid-cols-3">
-            {[
-              {
-                icon: Phone,
-                label: "Téléphone",
-                value: site.phoneDisplay,
-                href: `tel:${site.phone}`,
-              },
-              {
-                icon: WhatsAppIcon,
-                label: "WhatsApp",
-                value: "Réponse la plus rapide",
-                href: buildWhatsAppLink(),
-                external: true,
-              },
-              {
-                icon: Mail,
-                label: "Email",
-                value: site.email,
-                href: `mailto:${site.email}`,
-              },
-            ].map((channel) => (
-              <a
-                key={channel.label}
-                href={channel.href}
-                {...(channel.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="group flex flex-col items-center rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 hover:ring-brand-100 hover:ring-offset-1"
-              >
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-100/60">
-                  <channel.icon
-                    className="size-5 text-brand-700"
-                    aria-hidden="true"
-                  />
-                </span>
-                <span className="mt-4 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
-                  {channel.label}
-                </span>
-                <span className="mt-1 font-display text-[15px] font-bold text-slate-900">
-                  {channel.value}
-                </span>
-              </a>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
-            {offices.map((office) => (
-              <div
-                key={office.city}
-                className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-white/70 p-5"
-              >
-                <MapPin
-                  className={`mt-0.5 size-4 shrink-0 ${
-                    office.headquarters ? "text-solar-600" : "text-slate-400"
-                  }`}
-                  aria-hidden="true"
-                />
-                <div>
-                  <p className="flex flex-wrap items-center gap-x-2 text-sm font-bold text-slate-900">
-                    {office.city}
-                    <span className="rounded-full border border-slate-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">
-                      {office.role}
+            <ol className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
+              {NEXT_STEPS.map((next, i) => (
+                <li key={next.title} className="bg-white p-5">
+                  <span className="flex items-center gap-2.5">
+                    <span
+                      className={
+                        i === 0
+                          ? "flex size-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-[13px] font-bold text-white"
+                          : "flex size-7 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[13px] font-bold text-slate-500"
+                      }
+                    >
+                      {i + 1}
                     </span>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                      {next.when}
+                    </span>
+                  </span>
+                  <p className="mt-3 text-[15px] font-bold leading-snug text-slate-900">
+                    {next.title}
                   </p>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                    {office.street}
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-slate-600">
+                    {next.detail}
                   </p>
-                  <p className="text-xs text-slate-500">{office.region}</p>
-                </div>
-              </div>
-            ))}
+                </li>
+              ))}
+            </ol>
+
+            <p className="mt-5 text-[13px] leading-relaxed text-slate-500">
+              Rien n&apos;est facturé avant que le devis soit entre vos mains.
+              Vous pouvez arrêter à n&apos;importe laquelle de ces étapes.
+            </p>
           </div>
         </div>
       </Section>
+
     </>
   );
 }

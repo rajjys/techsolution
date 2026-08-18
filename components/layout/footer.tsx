@@ -1,14 +1,13 @@
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
 
+import { FooterCta, FooterLead } from "@/components/layout/footer-cta";
 import { Logo } from "@/components/logo";
-import { BoltRule, WhatsAppIcon } from "@/components/icons";
+import { BoltRule } from "@/components/icons";
 import { Eyebrow } from "@/components/section";
-import { Button } from "@/components/ui/button";
-import { footerLinks, offices, site } from "@/lib/site";
+import { footerLinks, formatOfficeAddress, offices, site } from "@/lib/site";
 import { services } from "@/lib/data/services";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 /** Masque du filigrane — le glyphe seul, en tracé, sans le wordmark. */
 const MARK_MASK = {
@@ -96,34 +95,8 @@ export function Footer() {
               Le soleil se couche.{" "}
               <span className="text-solar-400">Vos lumières, non.</span>
             </h2>
-            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-brand-200 sm:text-base">
-              Audit, dimensionnement et devis gratuits — réponse sous 24 h
-              ouvrées, partout en RDC.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <Button
-                variant="primary-dark"
-                className="group w-full sm:w-auto"
-                asChild
-              >
-                <Link href="/contact">
-                  Demander une étude gratuite
-                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <a
-                href={buildWhatsAppLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-white/25 px-6 py-[0.8rem] text-base font-semibold text-white transition-all duration-200
-                hover:border-white hover:bg-white hover:text-brand-950 hover:ring-4 hover:ring-white/25 hover:ring-offset-1 hover:ring-offset-brand-950
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-950 sm:w-auto"
-              >
-                <WhatsAppIcon className="size-5" />
-                WhatsApp
-              </a>
-            </div>
+            <FooterLead />
+            <FooterCta />
 
             {/* Coordonnées sur une seule ligne — se replie proprement */}
             <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
@@ -217,30 +190,48 @@ export function Footer() {
             <ColumnTitle>Nos bureaux</ColumnTitle>
             <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
               {offices.map((office) => (
-                <li
-                  key={office.city}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20 hover:bg-white/[0.055]"
-                >
-                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <MapPin
-                      className={`size-4 shrink-0 ${
-                        office.headquarters ? "text-solar-400" : "text-brand-300"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    <span className="font-semibold text-white lg:text-[15px]">
-                      {office.city}
+                <li key={office.city}>
+                  {/*
+                    Ouvrable dans une carte. « près du Rond-Point Zéro » est
+                    exactement ce qu'on cherche à pointer depuis un téléphone,
+                    et l'adresse restait un texte mort sur toutes les pages.
+                    C'est une recherche, pas une épingle inventée.
+                  */}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      formatOfficeAddress(office),
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block rounded-xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+                  >
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <MapPin
+                        className={`size-4 shrink-0 ${
+                          office.headquarters
+                            ? "text-solar-400"
+                            : "text-brand-300"
+                        }`}
+                        aria-hidden="true"
+                      />
+                      <span className="font-semibold text-white lg:text-[15px]">
+                        {office.city}
+                      </span>
+                      <span className="rounded-full border border-white/15 px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[0.12em] text-brand-200">
+                        {office.role}
+                      </span>
                     </span>
-                    <span className="rounded-full border border-white/15 px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[0.12em] text-brand-200">
-                      {office.role}
+                    <span className="mt-2 block text-sm leading-relaxed text-brand-200">
+                      {office.street}
                     </span>
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-200">
-                    {office.street}
-                  </p>
-                  <p className="mt-0.5 text-xs text-brand-300">
-                    {office.region}
-                  </p>
+                    <span className="mt-0.5 block text-xs text-brand-300">
+                      {office.region}
+                    </span>
+                    <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-solar-400 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                      Ouvrir dans Maps
+                      <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                    </span>
+                  </a>
                 </li>
               ))}
             </ul>
