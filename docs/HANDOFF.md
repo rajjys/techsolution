@@ -220,6 +220,12 @@ Diagnostic hiérarchisé mené sur neuf axes, puis reconstruction. Ce qui est fa
   besoin, le lieu et l'existant. `?need=kit` est réécrit vers le solaire.
 - Le verbe de l'écran « site » suit le domaine : à alimenter / à entretenir /
   à protéger.
+- **« Autre chose »** ferme la première question et mène directement aux
+  coordonnées. Le message y devient obligatoire (règle portée par
+  `validateField`, donc appliquée client **et** serveur) et l'email arrive
+  préfixé `[Message]` au lieu de `[Devis]`.
+- Sur l'écran des puissances, « Je ne sais pas encore » est **en tête** : c'est
+  la réponse présélectionnée et la plus fréquente.
 - **Récapitulatif éditable** : chaque réponse devient une puce qui rouvre son
   écran, et tient lieu de relecture au dernier écran.
 - **Sélection en `solar`**, comme le bouton qui la valide (cf. design-system.md
@@ -254,6 +260,13 @@ Diagnostic hiérarchisé mené sur neuf axes, puis reconstruction. Ce qui est fa
   erreur honnête mais la demande n'existe nulle part. Un Blob ou un KV écrit
   avant l'envoi serait le filet.
 - Pas d'**accusé de réception** au visiteur qui a laissé un email.
+
+**Prochain chantier — SEO.** Brief complet et état relevé page par page dans
+`docs/SEO-BRIEF.md`. En deux mots : les métadonnées de base sont saines
+(titres, descriptions, canoniques, un h1 par page), mais il manque tout le
+balisage structuré au-delà d'`Organization` et `LocalBusiness`, les images de
+partage sont uniques pour tout le site, et aucune page ne cible une requête
+locale alors que six réalisations sont documentées ville par ville.
 
 **Ailleurs, non traité :**
 - Passe section par section sur /services, /produits, /references (seuls les
