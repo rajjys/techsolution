@@ -212,8 +212,19 @@ Diagnostic hiérarchisé mené sur neuf axes, puis reconstruction. Ce qui est fa
   `LocalBusiness` des deux implantations sur /contact, horaires compris.
 
 *Parcours*
-- Questions et options **formulées en résultats**, plus en intitulés de métier.
-  Le catalogue devient un raccourci, sorti du lot des six domaines.
+- Options **nommées par ce qu'on livre** (« Une installation solaire »), ni par
+  l'organigramme (« Backup & stockage »), ni par un argument de vente (« Ne plus
+  subir les coupures ») : arrivé ici, le visiteur passe commande.
+- **Le catalogue n'est plus une réponse à la première question** — un kit est
+  une installation solaire. La puissance est demandée en 4ᵉ position, après le
+  besoin, le lieu et l'existant. `?need=kit` est réécrit vers le solaire.
+- Le verbe de l'écran « site » suit le domaine : à alimenter / à entretenir /
+  à protéger.
+- **Récapitulatif éditable** : chaque réponse devient une puce qui rouvre son
+  écran, et tient lieu de relecture au dernier écran.
+- **Sélection en `solar`**, comme le bouton qui la valide (cf. design-system.md
+  §2 et §6 bis — seule extension assumée de « un seul aplat saturé par écran »).
+- « Ce qui se passe ensuite » est dans la carte, au-dessus du bouton d'envoi.
 - **Validation côté client**, toutes les erreurs d'un coup, sous leur champ,
   en français. Règles partagées avec l'API (`validateField`).
 - **Zoom iOS supprimé** (champs à 16 px sous `sm`).

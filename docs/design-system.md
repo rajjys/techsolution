@@ -78,7 +78,7 @@ jamais à côté.
 | Rampe | Rôle | Interdit |
 |-------|------|----------|
 | `brand` | Identité, surfaces, teintes de section, accent de titre | — |
-| `solar` | **Action, exclusivement** — plus le filet d'eyebrow et les pictos de specs | Texte courant ; tout souligné sur du non-cliquable |
+| `solar` | **Action, exclusivement** — y compris la **réponse choisie** dans un formulaire, plus le filet d'eyebrow et les pictos de specs | Texte courant ; tout souligné sur du non-cliquable |
 | `ember` | **Retiré de l'interface.** Ne subsiste qu'en couleur d'**état** (erreur de formulaire) et en teinte de catégorie « Électricité » | Toute action, tout décor |
 | `slate` | Texte neutre sur clair : `900` titres, `600` corps, `500` méta | — |
 | `navy` | **Déprécié.** Palette héritée, conservée le temps de la purge | Tout nouveau code |
@@ -232,16 +232,40 @@ Elle doit **affleurer les trois bords** de la carte — marges négatives accord
 faute de quoi le contenu continue de défiler dans l'interstice qui reste
 dessous. Fond **opaque** : `backdrop-filter` n'est garanti nulle part.
 
-**Une carte de choix a trois états, et aucun n'est bleu au repos.** Une pastille
+**Une carte de choix a trois états, et aucun n'est bleu.** Une pastille
 `brand-100` par option devient un aplat indigo dès la cinquième, où la sélection
 ne se voit plus faute de contraste avec son voisinage. Repos neutre
 (`bg-slate-50/70`, pictogramme `slate-500` sur blanc cerclé), survol sur
-l'anneau qui sert de signature au site, `brand` réservé au seul état choisi.
+l'anneau qui sert de signature au site.
+
+**La réponse choisie est en `solar`** — comme le bouton qui la valide. C'est la
+seule extension de la règle « un seul aplat saturé par écran », et elle est
+volontaire : choisir *est* l'action du visiteur, et lui donner le bleu du
+mobilier revenait à peindre sa décision de la couleur des meubles. Le reste
+suit la règle du jaune — texte `brand-950` (11:1), coche en quasi-noir pour
+qu'un seul jaune saturé porte la carte. Le bouton d'action et la carte choisie
+forment alors une paire lisible : votre choix, votre validation.
+
 Une réponse d'une autre nature — un raccourci, un « je ne sais pas » — prend le
 trait discontinu et traverse la grille, au lieu de se déguiser en pair.
 
+**La question est l'interaction principale**, pas une étiquette de champ : elle
+prend l'échelle d'un titre de bloc (24 → 30 px) et reste alignée à gauche, comme
+l'indice et les cartes. Un titre centré au-dessus de réponses alignées à gauche
+fait repartir l'œil de deux endroits.
+
 **Chaque question dit pourquoi elle est posée.** Un entonnoir qui interroge sans
 se justifier se lit comme un péage.
+
+**Les réponses données restent visibles et révisables.** Chacune devient une
+puce sous l'étiquette d'étape, et chaque puce rouvre son écran. Au dernier
+écran, l'ensemble tient lieu de relecture — sans quoi il faut remonter le
+parcours pour vérifier ce qu'on s'apprête à envoyer.
+
+**Un entonnoir nomme ce qu'il livre, il ne le vend pas.** Le visiteur arrivé
+jusqu'au formulaire a lu le site : le pitch est derrière lui. « Une installation
+solaire » plutôt que « Ne plus subir les coupures » — la règle du §9 (énoncer un
+résultat client) vaut pour les titres éditoriaux, pas pour un bon de commande.
 
 ## 7. Mouvement
 
