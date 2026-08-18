@@ -99,6 +99,7 @@ la surface et le voisinage. Voir `components/ui/button.tsx`.
 | `primary` | Action principale sur surface claire — `solar-500`, **texte `brand-950`** |
 | `primary-dark` | La même sur surface sombre — `solar-500` y tient tel quel |
 | `outline-strong` | Secondaire adossé à un primaire — contour `brand-950` |
+| `link` | **Renvoi vers une section de la même page.** Texte gris souligné au survol, sans boîte |
 | `outline-brand` | Secondaire isolé, registre navigation |
 | `outline-light` | Secondaire sur surface sombre — s'inverse au survol |
 | `nav` | Chrome de navigation (header, menu) — `brand-950`, jamais la couleur d'action |
@@ -133,6 +134,12 @@ déclencherait aussi sur les icônes de tête.
 
 Sur mobile, des boutons empilés sont `w-full` (`block`) : deux largeurs
 différentes dans une colonne se lisent comme une erreur.
+
+**Un renvoi n'est pas une action.** Un lien d'ancre (« Voir les six domaines »,
+« Voir le relevé complet ») prend `link`, jamais un contour. Encadré, il devient
+un second bouton, et deux cibles de poids voisin n'en laissent aucune dominante
+— c'est ce qui faisait que les en-têtes de /services et /references semblaient
+proposer trois actions concurrentes.
 
 **La paire canonique.** Un bloc de contenu détaillé propose deux sorties et
 pas plus : *agir* (`primary` → `/contact`, préqualifié par un paramètre) et
@@ -233,3 +240,32 @@ Points de rupture à vérifier : **360 / 640 / 768 / 1024 / 1280**.
   officielle porte un commentaire `⚠️ À SOURCER` dans le code.
 - Une seule conclusion par page : le pied de page. Pas de second appel à
   l'action juste au-dessus.
+
+## 10. Deux pièges qui ne préviennent pas
+
+Tous deux compilent, passent le typage et le lint, et se voient uniquement à
+l'écran. Ils ont chacun coûté une itération.
+
+**Les positions de dégradé s'écrivent entre crochets.** L'échelle
+`gradientColorStopPositions` de Tailwind ne contient que des multiples de 5 :
+`from-54%` ou `to-84%` ne produisent *aucune règle*, les variables retombent
+sur leurs valeurs par défaut (0 % et 100 %) et le dégradé se comporte tout
+autrement. Écrire `from-[54%]`, toujours.
+
+Corollaire de mise en page : un dégradé à trois arrêts est une rampe d'alpha
+linéaire, dont l'œil repère la cassure de pente et lit une arête franche.
+Au-delà d'un simple voile, écrire le `linear-gradient()` en toutes lettres avec
+huit ou neuf paliers.
+
+**Le texte JSX perd son espace de tête après une expression.** JSX rogne chaque
+ligne d'un nœud de texte avant de les joindre : `{services.length} expertises`
+réparti sur deux lignes rend « 6expertises ». Pour toute phrase mêlant
+expression et texte, utiliser un littéral gabarit —
+`` {`${services.length} expertises…`} `` — plutôt que du texte JSX.
+
+**Un rail horizontal rogne aussi en hauteur.** `overflow-x: auto` force
+`overflow-y` à `auto` : le conteneur coupe les angles arrondis, les ombres
+portées et les survols qui soulèvent. Il lui faut un `pt-*`. Et l'accroche de
+défilement aligne sur la boîte de padding, donc `snap-start` colle la première
+carte au bord de l'écran malgré le `px-*` : c'est `scroll-pl-*` qui le corrige,
+pas plus de padding.

@@ -2,6 +2,7 @@ import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { CaseStudyShowcase } from "@/components/references/case-study-showcase";
 import { Eyebrow } from "@/components/section";
+import { projects } from "@/lib/data/clients";
 import { site } from "@/lib/site";
 
 /**
@@ -15,18 +16,31 @@ export function CaseStudiesReach() {
       <div className="container relative">
         {/* En-tête centré — même grammaire que les autres sections */}
         <Reveal className="text-center">
+          {/*
+            Le surtitre disait « Nos réalisations » et le titre le répétait mot
+            pour mot : deux lignes pour une seule information. Le surtitre
+            change donc de registre, et le titre porte enfin ce que la page
+            d'accueil gardait pour /references — la nature des clients. Des
+            agences onusiennes, des ONG internationales et des banques : c'est
+            l'argument le plus fort du site, et il était absent de la page la
+            plus visitée.
+          */}
           <Eyebrow onDark className="justify-center">
-            Nos réalisations
+            Preuves sur le terrain
           </Eyebrow>
           <h2 className="mx-auto mt-6 text-balance text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[46px] lg:leading-[1.08]">
-            Nos réalisations, d&apos;un bout à l&apos;autre de la RDC.
+            Des ONG, des banques et des programmes d&apos;État nous confient
+            leur courant.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-200 sm:text-base md:text-lg">
-            Des installations livrées dans{" "}
+            <span className="font-semibold text-solar-400">
+              {projects.length} installations
+            </span>{" "}
+            en service dans{" "}
             <span className="font-semibold text-solar-400">
               {site.provincesDelivered} provinces
             </span>{" "}
-            — parcourez nos projets.
+            — trouvez celle qui ressemble le plus à votre situation.
           </p>
         </Reveal>
 

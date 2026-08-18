@@ -164,14 +164,26 @@ export function KitsSelector() {
             <span className="text-brand-600">Nous ajustons le reste.</span>
           </h2>
           <p className="mt-5 text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-            Quatre configurations clés en main, du foyer à
-            l&apos;établissement — redimensionnées sur votre site après un
-            audit gratuit.
+            {`${kits.length} configurations clés en main, du foyer à l'établissement — redimensionnées sur votre site après un audit gratuit.`}
           </p>
         </Reveal>
 
-        {/* Rail sous lg, grille de quatre à partir de lg */}
-        <div className="no-scrollbar -mx-5 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain px-5 pb-2 sm:-mx-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
+        {/*
+          Rail sous lg, grille de quatre à partir de lg.
+
+          `scroll-pl-*` n'est pas décoratif : l'accroche de défilement aligne
+          le bord de la carte sur le bord du *scrollport*, qui est la boîte de
+          padding. Sans lui, `snap-start` ramène la première carte par-dessus
+          le `px-5` et la colle au bord de l'écran — le rembourrage existe, le
+          défilement passe simplement au travers.
+
+          `pt-*` non plus : `overflow-x-auto` force `overflow-y` à `auto`
+          (une seule des deux valeurs ne peut pas rester `visible`). Le rail
+          rogne donc aussi en hauteur, et sans marge haute il tranchait les
+          angles arrondis des cartes et leur ombre portée, d'autant plus que
+          celles-ci se soulèvent de 4 px au survol.
+        */}
+        <div className="no-scrollbar -mx-5 mt-8 flex snap-x snap-mandatory scroll-pl-5 gap-4 overflow-x-auto overscroll-x-contain px-5 pb-4 pt-3 sm:-mx-6 sm:scroll-pl-6 sm:gap-5 sm:px-6 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:scroll-pl-0 lg:px-0 lg:pb-0 lg:pt-0">
           {kits.map((kit, index) => (
             <Reveal
               key={kit.slug}

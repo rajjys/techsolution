@@ -10,6 +10,8 @@ import {
   siteTypes,
   situations,
   timings,
+  validateField,
+  type ContactField,
 } from "@/lib/data/contact";
 import { kits } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
@@ -23,13 +25,26 @@ import { site } from "@/lib/site";
  *  - CONTACT_TO_EMAIL    boîte de réception de l'équipe commerciale
  *  - CONTACT_FROM_EMAIL  expéditeur vérifié dans Resend
  *
- * Sans clé (développement), la demande est consignée côté serveur et l'API
- * répond succès : le parcours visiteur n'est jamais bloqué par la
- * configuration.
+ * **En production, une configuration absente est une erreur, pas un succès.**
+ * Le mode « consigné dans les logs » n'existe plus qu'en développement : il
+ * répondait `ok: true` sans rien expédier, si bien qu'une variable oubliée sur
+ * Vercel avalait silencieusement la totalité des demandes — le visiteur lisait
+ * « Demande reçue » et personne ne recevait rien.
  *
  * Le **téléphone est requis, l'email facultatif** : en RDC on rappelle, on
  * n'écrit pas. L'email ne sert qu'à transmettre le devis écrit.
  */
+
+const trim = (value: string) => value.trim();
+
+/** Applique au serveur la règle exacte que le formulaire applique au client. */
+function refine(field: ContactField) {
+  return (value: string, ctx: z.RefinementCtx) => {
+    const message = validateField(field, value ?? "");
+    if (message) ctx.addIssue({ code: "custom", message, path: [] });
+  };
+}
+
 const schema = z.object({
   /** Catalogue, ou l'un des six domaines — cf. lib/data/contact.ts. */
   need: z.enum(needs.map((option) => option.id) as [string, ...string[]]),
@@ -40,14 +55,27 @@ const schema = z.object({
     .enum(["aucun-reseau", "instable", "groupe", "extension"])
     .optional(),
   timing: z.enum(["urgent", "trois-mois", "cette-annee", "etude"]),
-  name: z.string().trim().min(2, "Nom trop court").max(120),
-  phone: z
+  /*
+   * Les quatre champs saisis réutilisent `validateField` — la même fonction
+   * que le formulaire applique avant l'envoi. Une règle, un message, deux
+   * barrières : l'API ne peut plus refuser ce que le client a accepté, ni
+   * répondre dans une autre langue que lui.
+   */
+  name: z.string().superRefine(refine("name")).transform(trim),
+  phone: z.string().superRefine(refine("phone")).transform(trim),
+  city: z.string().superRefine(refine("city")).transform(trim),
+  email: z
     .string()
-    .trim()
-    .regex(/^\+?[0-9\s().-]{8,20}$/, "Numéro de téléphone invalide"),
-  city: z.string().trim().min(2, "Ville trop courte").max(120),
-  email: z.email("Adresse email invalide").optional().or(z.literal("")),
-  message: z.string().trim().max(5000).optional().or(z.literal("")),
+    .optional()
+    .default("")
+    .superRefine(refine("email"))
+    .transform(trim),
+  message: z
+    .string()
+    .optional()
+    .default("")
+    .superRefine(refine("message"))
+    .transform(trim),
   /** Piège à robots : rempli → on répond succès sans rien traiter. */
   website: z.string().optional(),
 });
@@ -177,13 +205,21 @@ export async function POST(request: Request) {
 
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
-    const issue = parsed.error.issues[0];
+    /*
+     * Toutes les erreurs, indexées par champ — et non la première seule sous
+     * son nom de variable anglais. Le formulaire les repose sous les champs
+     * concernés ; il n'y a plus d'aller-retour réseau par faute de frappe.
+     */
+    const fields: Record<string, string> = {};
+    for (const issue of parsed.error.issues) {
+      const key = String(issue.path[0] ?? "");
+      if (key && !fields[key]) fields[key] = issue.message;
+    }
     return NextResponse.json(
       {
         ok: false,
-        error: issue
-          ? `Champ « ${String(issue.path[0] ?? "formulaire")} » : ${issue.message}`
-          : "Formulaire incomplet.",
+        error: "Quelques informations sont à corriger.",
+        fields,
       },
       { status: 422 },
     );
@@ -198,26 +234,58 @@ export async function POST(request: Request) {
     process.env.CONTACT_FROM_EMAIL ??
     `${site.legalName} <onboarding@resend.dev>`;
 
+  const isProduction = process.env.NODE_ENV === "production";
+
+  /*
+   * Piège classique : le domaine est vérifié dans Resend, mais l'expéditeur
+   * est resté sur le bac à sable partagé. Resend refuse alors tout
+   * destinataire autre que le propriétaire du compte — avec un message qui
+   * parle de vérifier le domaine, déjà fait.
+   */
+  const sandboxSender =
+    from.includes("@resend.dev") && !to.endsWith("@resend.dev");
+
+  /*
+   * Une demande perdue coûte plus cher qu'une erreur affichée : en production,
+   * toute configuration qui garantit la non-délivrance est traitée comme une
+   * panne. Le visiteur voit alors l'erreur, garde sa saisie et se voit proposer
+   * WhatsApp — au lieu de repartir convaincu d'avoir été entendu.
+   */
+  if (isProduction && (!apiKey || sandboxSender)) {
+    console.error(
+      "[contact] Configuration d'envoi invalide — demande NON délivrée :",
+      {
+        raison: !apiKey
+          ? "RESEND_API_KEY absente"
+          : `CONTACT_FROM_EMAIL sur le bac à sable Resend (${from})`,
+        destinataire: to,
+        demande: { ...data, website: undefined },
+      },
+    );
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "L'envoi a échoué. Réessayez ou passez par WhatsApp.",
+      },
+      { status: 500 },
+    );
+  }
+
+  if (sandboxSender) {
+    console.warn(
+      `[contact] CONTACT_FROM_EMAIL utilise le bac à sable Resend (${from}). ` +
+        `Tant qu'il n'expédie pas depuis un domaine vérifié, seul le ` +
+        `propriétaire du compte peut recevoir — l'envoi vers ${to} échouera.`,
+    );
+  }
+
+  /* Développement seulement : on consigne et on laisse le parcours se dérouler. */
   if (!apiKey) {
     console.warn("[contact] RESEND_API_KEY absente — demande consignée :", {
       ...data,
       website: undefined,
     });
     return NextResponse.json({ ok: true, delivered: false });
-  }
-
-  /*
-   * Piège classique : le domaine est vérifié dans Resend, mais l'expéditeur
-   * est resté sur le bac à sable partagé. Resend refuse alors tout
-   * destinataire autre que le propriétaire du compte — avec un message qui
-   * parle de vérifier le domaine, déjà fait. On le dit clairement ici.
-   */
-  if (from.includes("@resend.dev") && !to.endsWith("@resend.dev")) {
-    console.warn(
-      `[contact] CONTACT_FROM_EMAIL utilise le bac à sable Resend (${from}). ` +
-        `Tant qu'il n'expédie pas depuis un domaine vérifié, seul le ` +
-        `propriétaire du compte peut recevoir — l'envoi vers ${to} échouera.`,
-    );
   }
 
   const { object } = summarize(data);

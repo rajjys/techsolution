@@ -48,15 +48,16 @@ export function Solutions() {
                   id="solutions-title"
                   className="mt-6 text-[26px] font-bold leading-[1.18] text-slate-900 sm:text-3xl sm:leading-[1.15] md:text-4xl lg:text-[42px] lg:leading-[1.1]"
                 >
-                  Entre délestages à répétition et coûts élevés de carburant,{" "}
+                  Les délestages à répétition, le carburant qui grimpe&nbsp;:{" "}
                   <span className="text-brand-600">
-                    Votre site, lui, reste indépendant.
+                    votre courant, lui, ne s&apos;arrête pas.
                   </span>
                 </h2>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
-                  Ne laissez plus l&apos;instabilité du réseau paralyser vos équipes ou vous garder dans le noir. 
-                  De l&apos;étude de vos besoins jusqu&apos;à la maintenance de vos équipements, 
-                  nous installons un système solaire autonome qui garantit une alimentation continue et sans interruption.
+                  De l&apos;étude de charge jusqu&apos;au contrat d&apos;entretien,
+                  nous installons des systèmes solaires autonomes dimensionnés
+                  pour tenir la nuit et la saison des pluies — chez vous comme
+                  sur vos sites.
                 </p>
               </Reveal>
 

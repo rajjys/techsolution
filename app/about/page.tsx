@@ -66,14 +66,23 @@ export default function AboutPage() {
         }
       />
 
-      {/* Raison d'être — le seul registre chaud hors de l'accueil */}
+      {/*
+        Raison d'être — le seul registre chaud hors de l'accueil.
+
+        L'échelle du manifeste reste sous celle du H1 à chaque palier
+        (24/30/36/40 contre 30/36/44/48). Elle venait de l'accueil, où le bloc
+        montait à 76 px sans H1 concurrent au-dessus ; transposée telle quelle
+        elle dépassait le titre de la page à partir de `lg` et l'égalait à
+        `sm` et `md`. Rien sur une page ne doit approcher son H1 — surtout pas
+        un paragraphe.
+      */}
       <Section className="relative isolate overflow-hidden bg-surface-warm">
         <Glow variant="warm" />
         <div className="container relative">
           <Reveal>
             <div className="mx-auto max-w-4xl">
               <p
-                className={`text-balance bg-clip-text text-transparent ${DAYLIGHT} text-[26px] font-normal leading-[1.16] tracking-tight sm:text-[36px] md:text-[44px] lg:text-[52px]`}
+                className={`text-balance bg-clip-text text-transparent ${DAYLIGHT} text-[24px] font-normal leading-[1.16] tracking-tight sm:text-[30px] md:text-[36px] lg:text-[40px]`}
               >
                 Un pays qui reçoit chaque jour de quoi s&apos;éclairer plusieurs
                 fois, et qui achète pourtant son électricité au bidon.
@@ -86,6 +95,31 @@ export default function AboutPage() {
                 chaque jour faute d&apos;une installation dimensionnée
                 correctement — et parce que remplacer un groupe électrogène par
                 un autre groupe électrogène n&apos;a jamais réglé le problème.
+              </p>
+
+              {/*
+                Les chiffres qui portaient le manifeste de l'accueil. Ils
+                arrivent ici et pas ailleurs : la page d'accueil tenait déjà
+                cette démonstration — pourquoi le solaire, en RDC — mais la
+                posait entre la preuve et l'offre, c'est-à-dire devant un
+                visiteur qui avait justement fini d'en douter. Elle appartient
+                à la page qui explique pourquoi l'entreprise existe.
+
+                Fondue dans cette section plutôt qu'ajoutée à la suite : le
+                paragraphe au-dessus fait déjà exactement cette affirmation.
+                Deux blocs en dégradé disant la même chose à dix centimètres
+                l'un de l'autre auraient affaibli les deux.
+              */}
+              <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
+                Chaque jour, 4,5 à 5,5 kWh par mètre carré tombent sur les 26
+                provinces du pays. Pourtant, en 2017, près de 10&nbsp;%
+                seulement de la population était raccordée au réseau
+                électrique&nbsp;(Banque mondiale, 2020). Et le raccordement ne
+                règle pas tout&nbsp;: à Kinshasa, 60&nbsp;% des habitants ont
+                accès à l&apos;électricité, mais la qualité et la fiabilité du
+                service y restent très faibles. Le pays ne souffre pas d&apos;un
+                déficit d&apos;énergie — il souffre d&apos;un déficit de
+                captation.
               </p>
             </div>
           </Reveal>
@@ -164,7 +198,7 @@ export default function AboutPage() {
             rule
             eyebrow="Nos valeurs"
             title="Ce qui ne change pas d'un chantier à l'autre."
-            lead="Sept principes, écrits une fois et appliqués partout — y compris quand ils coûtent plus cher que l'alternative."
+            lead={`${values.length} principes, écrits une fois et appliqués partout — y compris quand ils coûtent plus cher que l'alternative.`}
           />
 
           <Stagger className="mt-10 grid gap-4 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3 lg:gap-5">

@@ -16,7 +16,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { faqs, services, type Service } from "@/lib/data/services";
+import {
+  faqs,
+  processSteps,
+  services,
+  type Service,
+} from "@/lib/data/services";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -254,7 +259,7 @@ export default function ServicesPage() {
             onDark
             eyebrow="Notre méthode"
             title="De votre première question à un système entretenu."
-            lead="Quatre étapes, un interlocuteur unique, et un livrable à chacune. Rien ne vous est facturé avant que vous ayez le devis en main."
+            lead={`${processSteps.length} étapes, un interlocuteur unique, et un livrable à chacune. Rien ne vous est facturé avant que vous ayez le devis en main.`}
           />
           <ProcessTimeline />
         </div>
