@@ -78,7 +78,55 @@ const schema = z.object({
     .transform(trim),
   /** Piège à robots : rempli → on répond succès sans rien traiter. */
   website: z.string().optional(),
+  /*
+   * Origine de la demande. L'email disait quoi et pour qui, jamais par où :
+   * impossible de savoir quel chemin du site produit des rappels, donc quoi
+   * renforcer. Purement informatif — jamais de quoi refuser une demande.
+   */
+  source: z.enum(["kit", "service", "nu"]).optional(),
+  referrer: z.string().max(500).optional().default(""),
+  landing: z.string().max(500).optional().default(""),
 });
+
+/* ── Limitation de débit ──────────────────────────────────────────────────
+ *
+ * Le piège à robots n'arrête que les plus naïfs, et l'endpoint déclenchait un
+ * envoi Resend à chaque appel : sans plafond, c'est un distributeur d'emails
+ * gratuit et une boîte de réception noyée.
+ *
+ * En mémoire, donc par instance : Fluid Compute réutilise les instances, ce
+ * qui suffit à casser un flot venant d'une même source. Ce n'est pas une
+ * défense distribuée — pour ça il faudrait Vercel BotID ou le WAF, et c'est
+ * la marche suivante si l'abus devient réel.
+ */
+const RATE_LIMIT = { max: 5, windowMs: 10 * 60 * 1000 } as const;
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter(
+    (at) => now - at < RATE_LIMIT.windowMs,
+  );
+  /* Purge opportuniste : sans elle la Map enfle à chaque IP vue. */
+  if (hits.size > 5000) hits.clear();
+  if (recent.length >= RATE_LIMIT.max) {
+    hits.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  hits.set(ip, recent);
+  return false;
+}
+
+/** Première adresse de la chaîne de proxy — celle du client sur Vercel. */
+function clientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  return (
+    forwarded?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "inconnu"
+  );
+}
 
 type Payload = z.infer<typeof schema>;
 
@@ -89,6 +137,34 @@ function escapeHtml(value: string): string {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+/**
+ * Numéro au format `wa.me` — indicatif pays, sans « + » ni zéro d'accès.
+ *
+ * Préfixer 243 sans réfléchir mutilait tout numéro étranger : un
+ * « +33 6 12 34 56 78 » devenait « 24333612345678 ». Une forme internationale
+ * explicite (« + » ou « 00 ») est donc respectée telle quelle ; seul un numéro
+ * national congolais se voit compléter.
+ *
+ * Retourne `null` quand il n'y a pas de quoi construire un lien — l'email
+ * n'affiche alors que l'appel.
+ */
+function toWhatsAppNumber(raw: string): string | null {
+  const trimmed = raw.trim();
+  const digits = trimmed.replace(/[^0-9]/g, "");
+  if (digits.length < 8) return null;
+  if (trimmed.startsWith("+")) return digits;
+  if (digits.startsWith("00")) return digits.slice(2);
+  if (digits.startsWith("243")) return digits;
+  /*
+   * National : 0XXXXXXXXX ou XXXXXXXXX. On retire le zéro d'accès puis on
+   * re-teste l'indicatif — « (0243) 82 125 0250 » existe dans la nature, et
+   * préfixer sans ce second test donnait 243243… Aucun mobile congolais ne
+   * commence par 243 (les préfixes sont en 08x et 09x), le test est sûr.
+   */
+  const national = digits.replace(/^0/, "");
+  return national.startsWith("243") ? national : `243${national}`;
 }
 
 /**
@@ -126,6 +202,33 @@ function summarize(data: Payload) {
     ["Ville", data.city],
   );
 
+  /* Par où la demande est arrivée — pour savoir quoi renforcer sur le site. */
+  const origin =
+    data.source === "kit"
+      ? "Lien préqualifié depuis un kit"
+      : data.source === "service"
+        ? "Lien préqualifié depuis un domaine"
+        : data.source === "nu"
+          ? "Formulaire ouvert sans préqualification"
+          : undefined;
+  if (origin) rows.push(["Origine", origin]);
+  if (data.landing && data.landing !== "/contact") {
+    rows.push(["Page d'arrivée", data.landing]);
+  }
+  if (data.referrer) {
+    /* Le domaine seul : l'URL entière encombre sans rien apprendre de plus. */
+    try {
+      const url = new URL(data.referrer);
+      const label =
+        url.host === new URL(site.url).host
+          ? `Page précédente : ${url.pathname}`
+          : `Venu de ${url.host}`;
+      rows.push(["Provenance", label]);
+    } catch {
+      /* Referrer illisible : on n'en dit rien plutôt que d'écrire du bruit. */
+    }
+  }
+
   return { object, rows, kit };
 }
 
@@ -138,12 +241,21 @@ function buildHtml(data: Payload) {
       <td style="padding:11px 20px;border-bottom:1px solid #E8EEFA;font-size:14px;color:#0F172A;font-weight:600;">${escapeHtml(value)}</td>
     </tr>`;
 
-  /* Le commercial doit pouvoir appeler depuis son téléphone sans recopier. */
+  /*
+   * Le commercial doit pouvoir joindre depuis son téléphone sans recopier —
+   * et en RDC le rappel le plus rapide passe par WhatsApp. Deux liens, un
+   * seul numéro : appeler, ou écrire.
+   */
+  const wa = toWhatsAppNumber(data.phone);
   const contact = `
     <tr>
       <td style="padding:11px 20px;border-bottom:1px solid #E8EEFA;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;white-space:nowrap;vertical-align:top;">Téléphone</td>
       <td style="padding:11px 20px;border-bottom:1px solid #E8EEFA;font-size:16px;font-weight:700;">
-        <a href="tel:${escapeHtml(data.phone.replace(/\s/g, ""))}" style="color:#232199;text-decoration:none;">${escapeHtml(data.phone)}</a>
+        <a href="tel:${escapeHtml(wa ? `+${wa}` : data.phone)}" style="color:#232199;text-decoration:none;">${escapeHtml(data.phone)}</a>${
+          wa
+            ? `<span style="color:#CBD5E1;padding:0 8px;">|</span><a href="https://wa.me/${escapeHtml(wa)}" style="color:#1FA855;text-decoration:none;font-size:14px;font-weight:600;">WhatsApp</a>`
+            : ""
+        }
       </td>
     </tr>`;
 
@@ -186,6 +298,9 @@ function buildText(data: Payload) {
     "",
     `Nom : ${data.name}`,
     `Téléphone : ${data.phone}`,
+    ...(toWhatsAppNumber(data.phone)
+      ? [`WhatsApp : https://wa.me/${toWhatsAppNumber(data.phone)}`]
+      : []),
     `Email : ${data.email || "non communiqué"}`,
     ...rows.map(([label, value]) => `${label} : ${value}`),
     ...(data.message ? ["", "Précisions :", data.message] : []),
@@ -227,6 +342,17 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
   if (data.website) return NextResponse.json({ ok: true });
+
+  if (rateLimited(clientIp(request))) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Trop de demandes envoyées depuis cet appareil. Réessayez dans quelques minutes, ou passez par WhatsApp.",
+      },
+      { status: 429, headers: { "Retry-After": "600" } },
+    );
+  }
 
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL ?? site.email;

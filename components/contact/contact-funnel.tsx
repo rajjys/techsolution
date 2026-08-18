@@ -524,6 +524,12 @@ export function ContactFunnel({
       email: values.email,
       message: values.message,
       website: String(data.get("website") ?? ""),
+      /* D'où vient la demande — l'email ne le disait pas, et c'est ce qui
+         permet de savoir quel chemin du site produit des rappels. */
+      source,
+      referrer: typeof document !== "undefined" ? document.referrer : "",
+      landing:
+        typeof window !== "undefined" ? window.location.pathname + window.location.search : "",
     };
 
     track("devis_soumis", {
@@ -571,7 +577,7 @@ export function ContactFunnel({
   /* ── Confirmation ─────────────────────────────────────────────── */
   if (status === "success") {
     return (
-      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-soft sm:p-10">
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-soft sm:p-8 lg:p-10">
         <span className="flex size-14 items-center justify-center rounded-2xl bg-brand-600">
           <CheckCircle2 className="size-7 text-white" aria-hidden="true" />
         </span>
@@ -583,11 +589,47 @@ export function ContactFunnel({
         >
           Demande reçue. Merci.
         </h2>
-        <p className="mt-3 max-w-lg leading-relaxed text-slate-600">
-          Un ingénieur vous rappelle sous 24 h ouvrées pour caler la visite du
-          site. Vous n&apos;avez rien d&apos;autre à faire.
+
+        {/*
+         * Le numéro composé, relu au visiteur. C'était la seule trace écrite
+         * qu'il n'avait nulle part : ni accusé de réception, ni récapitulatif.
+         * Le voir permet aussi d'attraper une faute de frappe tant qu'il est
+         * encore sur la page — un chiffre faux, et le rappel n'arrive jamais.
+         */}
+        <p className="mt-4 leading-relaxed text-slate-600">
+          Un ingénieur vous rappelle sous 24 h ouvrées au{" "}
+          <strong className="font-display font-bold tracking-tight text-slate-900">
+            {values.phone}
+          </strong>
+          {values.city ? `, pour votre site de ${values.city}.` : "."}
         </p>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+            La suite
+          </p>
+          <ol className="mt-3 space-y-2.5">
+            {[
+              "L'appel, pour caler la visite du site.",
+              "L'audit sur place, gratuit et sans engagement.",
+              "Le devis chiffré poste par poste. Vous décidez ensuite.",
+            ].map((line, i) => (
+              <li key={line} className="flex gap-3 text-sm text-slate-700">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-slate-300 text-[11px] font-bold text-slate-500">
+                  {i + 1}
+                </span>
+                {line}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <p className="mt-5 text-[13px] leading-relaxed text-slate-500">
+          Une erreur dans votre numéro&nbsp;? Écrivez-nous sur WhatsApp, nous
+          corrigerons avant l&apos;appel.
+        </p>
+
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-4">
           <Button variant="neutral" asChild>
             <a
               href={whatsappLink}
@@ -970,9 +1012,16 @@ export function ContactFunnel({
                 ) : null}
 
                 <p className="mt-6 border-t border-slate-100 pt-5 text-xs leading-relaxed text-slate-500">
-                  Réponse sous 24 h ouvrées. Vos informations servent
-                  uniquement à traiter cette demande, et ne sont ni revendues
-                  ni transmises à un tiers.
+                  Réponse sous 24 h ouvrées. Vos informations servent uniquement
+                  à traiter cette demande&nbsp;: elles ne sont ni revendues ni
+                  transmises à un tiers.{" "}
+                  <Link
+                    href="/confidentialite"
+                    className="font-semibold text-slate-600 underline underline-offset-2 hover:text-brand-700"
+                  >
+                    Ce que nous en faisons
+                  </Link>
+                  .
                 </p>
 
                 <div className={cn(BAR_CLASSES)}>

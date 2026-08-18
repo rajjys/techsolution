@@ -243,10 +243,20 @@ export function Footer() {
 
         {/* ── Barre légale ────────────────────────────────────────────── */}
         <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-7 text-center text-[13px] text-brand-200 sm:text-sm md:flex-row md:text-left lg:py-8">
-          <p>
-            © {year}{" "}
-            <span className="font-semibold text-white">{site.legalName}</span> —{" "}
-            {site.domain}. Tous droits réservés.
+          <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:justify-start">
+            <span>
+              © {year}{" "}
+              <span className="font-semibold text-white">
+                {site.legalName}
+              </span>{" "}
+              — {site.domain}.
+            </span>
+            <Link
+              href="/confidentialite"
+              className="underline underline-offset-2 transition-colors hover:text-white"
+            >
+              Confidentialité
+            </Link>
           </p>
           <p className="flex items-center gap-2.5">
             <span
