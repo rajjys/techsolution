@@ -11,6 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 import { ContactFunnel } from "@/components/contact/contact-funnel";
 import { Glow } from "@/components/glow";
 import { WhatsAppIcon } from "@/components/icons";
@@ -147,6 +148,12 @@ export default async function ContactPage({
 
         <div className="container relative">
           <div className="mx-auto max-w-[46rem]">
+            <BreadcrumbJsonLd
+              trail={[
+                { label: "Accueil", href: "/" },
+                { label: "Contact" },
+              ]}
+            />
             <nav aria-label="Fil d'Ariane" className="mb-6">
               <ol className="flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500">
                 <li>

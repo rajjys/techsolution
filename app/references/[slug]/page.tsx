@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, MapPin } from "lucide-react";
 
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { Section } from "@/components/section";
@@ -47,6 +48,18 @@ export default async function CaseStudyPage({
 
   return (
     <>
+      {/*
+        Pas de fil visuel ici — l'en-tête sombre porte un retour explicite vers
+        /references, qui dit la même chose. Le balisage déclare le chemin réel.
+      */}
+      <BreadcrumbJsonLd
+        trail={[
+          { label: "Accueil", href: "/" },
+          { label: "Références", href: "/references" },
+          { label: study.title },
+        ]}
+      />
+
       {/* En-tête */}
       <section className="relative isolate overflow-hidden bg-brand-950">
         <Glow variant="dark" corner="top-right" />

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
@@ -130,6 +131,7 @@ export function PageHero({
         )}
       >
         {/* Toujours en tête et aligné à gauche, comme sur toutes les pages */}
+        {breadcrumb ? <BreadcrumbJsonLd trail={trail} /> : null}
         {breadcrumb ? (
           <nav aria-label="Fil d'Ariane" className="mb-7 lg:mb-9">
             <ol className="flex flex-wrap items-center gap-1 text-xs font-medium text-slate-500">
