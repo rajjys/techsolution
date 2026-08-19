@@ -4,6 +4,11 @@
 > Ce document dit **ce qui existe** et **ce qui manque**. Il ne dit pas quoi
 > faire : c'est le travail à venir. Rien ici n'est supposé — tout a été lu dans
 > le HTML produit ou dans le dépôt.
+>
+> **Mise à jour du 19 août 2026** — les lots A, B et C sont livrés. Ce qui a
+> changé est consigné au §7, avec les mesures avant/après et les trois constats
+> que ce relevé avait manqués. Les §2 et §3 restent l'état du 18 août : ils
+> servent de point de comparaison, ils ne décrivent plus le site.
 
 Contexte général du projet : `docs/HANDOFF.md`. Règles visuelles :
 `docs/design-system.md`. Source de vérité du contenu :
@@ -137,3 +142,123 @@ Aucun de ces chantiers ne se juge à l'œil. Avant/après attendu sur :
 - Aperçu de partage réel : WhatsApp, LinkedIn, X.
 - Search Console : impressions et position moyenne par requête — mais le signal
   met des semaines à apparaître, et c'est normal.
+
+---
+
+## 7. Ce qui a été livré — 19 août 2026
+
+Onze commits. `npm run build`, `tsc` et `eslint` verts à chacun ; chaque point
+vérifié sur le HTML produit et en capture navigateur, jamais sur le JSX.
+
+### 7.1 Ce que le relevé du 18 avait manqué
+
+Trois constats, tous confirmés sur le rendu, tous plus lourds que ce qui était
+listé au §3 :
+
+1. **Le partage social ne fonctionnait sur aucune page sauf l'accueil.** Le §3
+   ne signalait que l'image. En réalité `og:title`, `og:description` **et
+   `og:url`** étaient identiques partout : un lien vers un kit collé dans
+   WhatsApp affichait le titre, le texte et l'URL de la page d'accueil. Cause :
+   `openGraph` déclaré dans une page **remplace** celui du layout, il n'en
+   hérite pas champ par champ — et aucune page ne déclarait le sien.
+2. **Les six études de cas manquaient au sitemap.** Le seul contenu qui associe
+   une ville réelle à une réalisation réelle, donc exactement ce qui sert le
+   local, n'était pas déclaré.
+3. **La photo la plus visible du site est une image de stock Unsplash**
+   (`components/home/hero.tsx`), alors que 142 Mo de photos de chantiers réels
+   dorment dans `public/gallery/`. Décision du propriétaire : on la garde pour
+   l'instant, seule la performance est corrigée.
+
+### 7.2 Ce qui est corrigé
+
+| | Avant | Après |
+|---|---|---|
+| URLs au sitemap | 7 | **13** (les 6 études de cas) |
+| `lastmod` | recalculé à chaque build | figé par route |
+| `og:url` / `og:title` | ceux de l'accueil, partout | propres à chaque page |
+| Vignette de partage | logo bleu sur blanc, une pour tout le site | **une par page**, photo de chantier réelle, ville en surtitre pour les études de cas |
+| Poids d'une vignette | — | 70 à 130 Ko (JPEG, sous le seuil WhatsApp) |
+| Favicon | tracé creux, invisible à 16 px et sur SERP sombre | pastille indigo pleine, lisible à 16/24/32/48 px dans les deux thèmes |
+| `BreadcrumbList` | absent | sur les 11 pages intérieures |
+| `sameAs` | absent | les 3 comptes officiels |
+| Identifiants légaux | absents | RCCM, ID. Nat., NIF — pied de page **et** `Organization` |
+| `areaServed` | « RDC » | RDC **+ les 9 provinces livrées**, dérivées de `presenceCities` |
+| `keywords` | présent | retiré |
+| Titre d'accueil | 86 caractères, tronqué par Google | 58 |
+| Descriptions | résumé de la page | preuve chiffrée, clients nommés, lieu |
+| Pied de page | « Interventions dans les 26 provinces » | « 17 installations livrées dans 9 provinces — interventions sur les 26 » |
+
+### 7.3 Performance — mesurée, plus supposée
+
+Le §3 disait « jamais mesuré ». Fait, sur l'accueil mobile, en **Slow-4G +
+CPU ×4** — les conditions de terrain :
+
+| | Avant | Après |
+|---|---|---|
+| LCP | 17 324 ms | **11 856 ms** |
+| Poids total | 473 Ko | **282 Ko** |
+
+Quatre causes traitées : le hero Unsplash était **préchargé sur mobile alors
+qu'il y est masqué** (`hidden lg:block` n'empêche pas le téléchargement — 80 Ko
+jamais affichés, en tête de file) ; les deux logos étaient servis en `w=3840`
+faute de `sizes` (44 + 41 Ko → 9 Ko) ; le filigrane du pied de page portait
+40 Ko de RVB inutile pour un masque CSS qui n'utilise que l'alpha (→ 6 Ko) ;
+`icon.png` pesait 40 Ko sur chaque page (→ 6 Ko servis).
+
+**Fausse alerte levée** : les 4,4 Mo de `gallery-web` ne sont pas un problème.
+`next/image` sert 65 Ko d'AVIF sur l'accueil mobile. Le §3 avait raison de dire
+« à mesurer avant de conclure ».
+
+**Reste** : `gtag.js` pèse 166 Ko et redevient, de loin, la ressource la plus
+lourde du site. C'est un arbitrage — mesurer coûte, et l'entonnoir `devis_*` en
+dépend.
+
+### 7.4 Vérifications de non-régression
+
+- 44 liens internes, toutes variantes `?kit=` / `?service=` / `?domaine=` et
+  ancres comprises : **tous en 200**. Aucun lien mort.
+- Liens externes : tous résolvent. LinkedIn répond 999, réponse anti-robot
+  standard, pas une erreur.
+- **Liens WhatsApp : corrects.** Vérifié dans le HTML produit, les espaces sont
+  encodés en `%20`. Ce qui avait été pris pour des espaces vient d'ailleurs :
+  d'anciennes URL `/contact?produit=Kit Solaire Hybride 650 Va` encore indexées.
+  Elles répondent 200 et déclarent `canonical → /contact` : elles sortiront
+  seules de l'index, rien à faire.
+- Les 13 blocs JSON-LD parsent et portent tous `@context` et `@type`.
+- Captures desktop (1440) et mobile (390) sur accueil, services, produits,
+  références : aucune régression visuelle.
+
+### 7.5 Ce qui reste ouvert
+
+**Lot D — local et contenu.** Décision prise : « la preuve d'abord » — une page
+par ville où un chantier est documenté (Mahagi, Bunia, Goma, Butembo, Numbi)
+plus Kinshasa au titre du bureau. Lubumbashi, Beni et les autres attendent une
+première réalisation. Plus une page `/faq` : les 6 questions actuelles sont
+**rendues à l'identique sur /services et /produits** — doublon interne à
+traiter — et il en faudrait 8 à 12 de plus, techniques et locales, que seule
+l'entreprise peut fournir.
+
+⚠️ **Beni n'existe nulle part dans le projet**, ni dans `presenceCities`, ni
+dans les études de cas.
+
+**Lot E — balisage sémantique.** `Service`, `Product`/`OfferCatalog` (sans prix,
+`Offer` avec `availability` seule), `Article` sur les études de cas, `llms.txt`.
+Aucun ne produit de résultat enrichi ; leur valeur est l'extraction par les
+moteurs conversationnels.
+
+**Note sur `FAQPage`** : Google a supprimé les résultats enrichis FAQ en
+août 2023 sauf pour les sites gouvernementaux et de santé. Le baliser reste
+utile pour les IA, mais il ne faut en attendre aucun accordéon dans la SERP.
+
+**Hors site, et c'est le plus rentable** : la fiche Google Business Profile
+n'est **pas revendiquée** (« Own this business? » visible dans le panneau) et
+contredit le site — adresse « LUXBEAUTY, Yambi yaya » au lieu du Boulevard de
+la Libération, horaires « opens 8 pm » au lieu de 8h–17h. Aucune ligne de code
+ne compense ça.
+
+**Le vrai problème de fond** : sur « techsolution rdc », `techsolution.cd`
+n'apparaît pas en première page — elle est occupée par techsolutionsrdc.com,
+Intelligencia Tech Solutions RDC, Itechsolution et Tech Solutions Congo. La
+Search Console montre 60 impressions et une position moyenne de 6,8 : quand le
+site sort, il sort bien. Il ne sort presque jamais. Ce n'est pas un problème de
+classement, c'est un problème de couverture et d'entité.
