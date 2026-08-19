@@ -34,6 +34,52 @@ export const site = {
   approach: "100% client",
 } as const;
 
+/**
+ * Identifiants légaux — fournis par l'entreprise.
+ *
+ * En RDC, ce sont les trois numéros qu'un acheteur institutionnel vérifie
+ * avant d'ouvrir un dossier, et ils manquaient partout : le pied de page
+ * affichait « Certifié & agréé » sans rien pour l'étayer. Ils sont repris
+ * dans le balisage `Organization`, où ils servent de preuve d'entité.
+ *
+ * Note : le RCCM est immatriculé à Goma (`CD/GOM/…`) alors que le siège
+ * d'exploitation est à Bunia. C'est l'état déclaré, on ne le corrige pas.
+ */
+export const legal = {
+  rccm: "CD/GOM/RCCM/24-A-02549",
+  idnat: "19-G4701-N41786J",
+  nif: "A2417275E",
+} as const;
+
+/**
+ * Comptes officiels — alimentent `sameAs` du balisage `Organization`.
+ *
+ * `sameAs` est ce qui relie le domaine aux profils dans le graphe d'entités
+ * de Google. C'est le levier le plus direct contre la confusion de marque :
+ * au moins cinq entités portent un nom voisin de « Tech Solution RDC », et
+ * `techsolution.cd` ne sortait pas en première page sur son propre nom.
+ *
+ * ⚠️ Le profil LinkedIn est un profil **personnel** (`/in/`), pas une page
+ * d'entreprise (`/company/`). Il fait moins bien le travail dans `sameAs` —
+ * à remplacer si une page d'entreprise est créée.
+ */
+export const socialLinks = [
+  {
+    label: "Facebook",
+    /* L'URL fournie passait par `/login/?next=` : c'est un mur de connexion,
+       pas une adresse de profil. Seul l'identifiant est conservé. */
+    href: "https://www.facebook.com/61573693041161",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/tech-solution-congo-a87308353",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/tech_solution_rdc",
+  },
+] as const;
+
 export type Office = {
   city: string;
   /** Siège ou antenne — affiché en pastille à côté de la ville. */
