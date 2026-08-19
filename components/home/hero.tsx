@@ -40,8 +40,22 @@ export function Hero() {
           src="https://images.unsplash.com/photo-1509389928833-fe62aef36deb?auto=format&fit=crop&w=2400&q=80"
           alt=""
           fill
-          priority
-          sizes="100vw"
+          /*
+           * `loading="lazy"` et non `priority`, alors que l'image est bien
+           * au-dessus de la ligne de flottaison — sur desktop.
+           *
+           * `hidden lg:block` masque le conteneur sous `lg` mais n'empêche pas
+           * le téléchargement : le navigateur allait chercher 80 Ko jamais
+           * affichés, et `priority` les plaçait en tête de file, devant la
+           * police et le HTML. Sur une connexion de terrain, l'image décorative
+           * du desktop retardait le texte du mobile.
+           *
+           * En `lazy`, un élément en `display:none` n'entre jamais dans le
+           * viewport : mobile ne la charge pas du tout. Sur desktop elle est
+           * dans le viewport dès la mise en page et part immédiatement.
+           */
+          loading="lazy"
+          sizes="(min-width: 1024px) 100vw, 1px"
           className="object-cover object-[70%_45%] saturate-[0.85] brightness-[1.04]"
         />
         {/*
