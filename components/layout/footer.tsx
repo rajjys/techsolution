@@ -4,9 +4,18 @@ import { ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
 
 import { FooterCta, FooterLead } from "@/components/layout/footer-cta";
 import { Logo } from "@/components/logo";
-import { BoltRule } from "@/components/icons";
+import { BoltRule, SocialIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/section";
-import { footerLinks, formatOfficeAddress, offices, site } from "@/lib/site";
+import {
+  footerLinks,
+  formatOfficeAddress,
+  legal,
+  offices,
+  site,
+  socialLinks,
+} from "@/lib/site";
+import { projects } from "@/lib/data/clients";
+import { provinces } from "@/lib/data/drc";
 import { services } from "@/lib/data/services";
 
 /**
@@ -143,6 +152,27 @@ export function Footer() {
               <ShieldCheck className="size-4 shrink-0 text-solar-400" />
               Certifié &amp; agréé — depuis {site.foundedYear}
             </p>
+
+            {/*
+              Comptes officiels. Ils n'existaient nulle part sur le site : ni
+              pour le visiteur, ni pour `sameAs`, qui est ce qui rattache le
+              domaine à l'entreprise dans le graphe d'entités de Google.
+            */}
+            <ul className="mt-6 flex items-center gap-2.5">
+              {socialLinks.map((account) => (
+                <li key={account.label}>
+                  <a
+                    href={account.href}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    aria-label={`${site.name} sur ${account.label}`}
+                    className="grid size-10 place-items-center rounded-xl border border-white/15 bg-white/[0.04] text-brand-200 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-950"
+                  >
+                    <SocialIcon name={account.label} className="size-[18px]" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -243,8 +273,15 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            {/*
+              La preuve d'abord, la capacité ensuite. « Interventions dans les
+              26 provinces » figurait seul, sur les treize pages, et Google le
+              reprenait tel quel en extrait : une promesse de couverture met en
+              concurrence avec tout le pays, là où une livraison prouvée
+              distingue. Les deux chiffres viennent de la donnée.
+            */}
             <p className="mt-4 text-xs text-brand-300">
-              Interventions dans les 26 provinces de la RDC.
+              {`${projects.length} installations livrées dans ${site.provincesDelivered} provinces — interventions sur les ${provinces.length}.`}
             </p>
           </div>
         </div>
@@ -265,6 +302,35 @@ export function Footer() {
             >
               Confidentialité
             </Link>
+          </p>
+
+          {/*
+            Identifiants légaux : en RDC ce sont les trois numéros qu'un
+            acheteur institutionnel vérifie avant d'ouvrir un dossier. Le pied
+            de page affichait « Certifié & agréé » sans rien pour l'étayer.
+            En `tabular-nums`, et sur une ligne qui se replie.
+          */}
+          <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] tabular-nums text-brand-300 md:justify-start lg:text-xs">
+            {/*
+              Séparateur visible à toutes les largeurs — `Dot` s'efface sous
+              `sm`, et trois numéros longs collés ne se relisent plus. C'est
+              précisément la ligne qu'on recopie dans un dossier.
+            */}
+            {[
+              `RCCM ${legal.rccm}`,
+              `ID. Nat. ${legal.idnat}`,
+              `NIF ${legal.nif}`,
+            ].map((entry, index) => (
+              <span key={entry} className="flex items-center gap-3">
+                {index > 0 ? (
+                  <span
+                    className="size-1 shrink-0 rounded-full bg-white/25"
+                    aria-hidden="true"
+                  />
+                ) : null}
+                {entry}
+              </span>
+            ))}
           </p>
           <p className="flex items-center gap-2.5">
             <span
