@@ -4,14 +4,15 @@ import { ChevronRight } from "lucide-react";
 
 import { Glow } from "@/components/glow";
 import { Section } from "@/components/section";
+import { pageMetadata } from "@/lib/seo";
 import { getHeadquarters, site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/confidentialite",
   title: "Confidentialité",
   description:
     "Ce que TECH SOLUTION RDC collecte via le formulaire de devis, pourquoi, combien de temps, et comment demander la suppression de vos données.",
-  alternates: { canonical: "/confidentialite" },
-};
+});
 
 /**
  * Politique de confidentialité.

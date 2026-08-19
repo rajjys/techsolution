@@ -22,14 +22,15 @@ import {
   services,
   type Service,
 } from "@/lib/data/services";
+import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/services",
   title: "Services & Expertise",
   description:
     "Énergie solaire, systèmes backup, infrastructures électriques industrielles, télécoms, sécurité électronique et maintenance",
-  alternates: { canonical: "/services" },
-};
+});
 
 /**
  * Une expertise = une section pleine largeur, avec sa propre surface.

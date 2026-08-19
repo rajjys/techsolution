@@ -20,15 +20,16 @@ import { Button } from "@/components/ui/button";
 import { KIT_NEED, needs, resolveNeed } from "@/lib/data/contact";
 import { kits } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
+import { pageMetadata } from "@/lib/seo";
 import { offices, site } from "@/lib/site";
 import { buildProductWhatsAppLink, buildWhatsAppLink } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/contact",
   title: "Contact & Devis gratuit",
   description:
     "Décrivez votre site en quelques clics : un ingénieur vous rappelle sous 24 h ouvrées. Audit sur site et devis gratuits, partout en RDC.",
-  alternates: { canonical: "/contact" },
-};
+});
 
 const SPEC_ROWS = [
   { key: "inverter", icon: Zap, label: "Onduleur" },

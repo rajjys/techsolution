@@ -9,14 +9,14 @@ import { PageHero } from "@/components/page-hero";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { values } from "@/lib/data/clients";
+import { pageMetadata } from "@/lib/seo";
 import { metrics, offices, site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
   title: "À propos",
-  description:
-    `${site.name} — notre mission, notre vision et nos valeurs. Une ingénierie au service de la révolution énergétique en République Démocratique du Congo.`,
-  alternates: { canonical: "/about" },
-};
+  description: `${site.name} — notre mission, notre vision et nos valeurs. Une ingénierie au service de la révolution énergétique en République Démocratique du Congo.`,
+});
 
 /** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */
 const DAYLIGHT =

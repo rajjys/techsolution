@@ -8,10 +8,14 @@ import { KitsSelector } from "@/components/home/kits-selector";
 import { Maintenance } from "@/components/home/maintenance";
 import { Offerings } from "@/components/home/offerings";
 import { Solutions } from "@/components/home/solutions";
+import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/",
+  /* Pas de `title` : l'accueil garde le titre par défaut du layout. */
+  description: site.description,
+});
 
 export default function HomePage() {
   return (

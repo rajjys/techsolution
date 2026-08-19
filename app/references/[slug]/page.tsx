@@ -10,6 +10,7 @@ import { Section } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { caseStudies } from "@/lib/data/case-studies";
 import { serviceForCategory } from "@/lib/data/services";
+import { pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -23,11 +24,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = caseStudies.find((c) => c.slug === slug);
   if (!study) return { title: "Étude de cas introuvable" };
-  return {
+  return pageMetadata({
+    path: `/references/${study.slug}`,
     title: `${study.title} — ${study.city}`,
     description: study.summary,
-    alternates: { canonical: `/references/${study.slug}` },
-  };
+    /* Une réalisation racontée est un contenu daté, pas une page de site. */
+    type: "article",
+  });
 }
 
 export default async function CaseStudyPage({

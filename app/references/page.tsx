@@ -12,14 +12,14 @@ import { Button } from "@/components/ui/button";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
 import { clients, projects } from "@/lib/data/clients";
 import { provinces } from "@/lib/data/drc";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/references",
   title: "Clients, Références & Présence en RDC",
-  description:
-    `Le track record ${site.name} : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...`,
-  alternates: { canonical: "/references" },
-};
+  description: `Le track record ${site.name} : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...`,
+});
 
 export default async function ReferencesPage({
   searchParams,
