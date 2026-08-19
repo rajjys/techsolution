@@ -22,16 +22,6 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: site.description,
-  keywords: [
-    "énergie solaire RDC",
-    "installation solaire Congo",
-    "panneaux solaires Kinshasa",
-    "électricité industrielle RDC",
-    "backup batteries lithium",
-    site.name,
-    "énergie Bunia Goma Butembo",
-    "installateur solaire certifié RDC",
-  ],
   openGraph: {
     type: "website",
     locale: "fr_CD",
