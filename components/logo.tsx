@@ -27,10 +27,22 @@ export function Logo({
         ? "/assets/logo-nav-white.png"
         : "/assets/logo-nav-blue.png";
 
+  /*
+   * Dimensions **d'affichage**, pas dimensions du fichier.
+   *
+   * Les originaux font 2924 et 3058 px de large. Déclarés tels quels et sans
+   * `sizes`, `next/image` en déduisait qu'il fallait la plus grande variante
+   * disponible et servait `w=3840` — 44 Ko et 41 Ko pour deux lockups affichés
+   * à 170 px de large, préchargés sur toutes les pages. En déclarant la taille
+   * réelle de rendu, le srcset retombe sur 1x/2x, soit ~5 Ko.
+   *
+   * Le ratio est conservé (3,514 pour `nav`, 2,334 pour `full`) et la taille
+   * visible reste pilotée par les classes ci-dessous — rien ne bouge à l'écran.
+   */
   const dims =
     variant === "full"
-      ? { width: 3058, height: 1310 }
-      : { width: 2924, height: 832 };
+      ? { width: 187, height: 80 }
+      : { width: 169, height: 48 };
 
   return (
     <Image
@@ -38,7 +50,13 @@ export function Logo({
       alt={`${site.name} — ${site.tagline}`}
       width={dims.width}
       height={dims.height}
-      priority
+      /*
+       * Seul le lockup de navigation est préchargé : il est dans l'en-tête,
+       * donc au-dessus de la ligne de flottaison. Celui du pied de page était
+       * préchargé lui aussi, alors qu'il n'apparaît qu'après toute la page.
+       */
+      priority={variant === "nav"}
+      loading={variant === "nav" ? undefined : "lazy"}
       className={cn(
         variant === "full" ? "h-20 w-auto" : "h-11 w-auto lg:h-12",
         className,
