@@ -9,10 +9,18 @@ import { Eyebrow } from "@/components/section";
 import { footerLinks, formatOfficeAddress, offices, site } from "@/lib/site";
 import { services } from "@/lib/data/services";
 
-/** Masque du filigrane — le glyphe seul, en tracé, sans le wordmark. */
+/**
+ * Masque du filigrane — le glyphe seul, en tracé, sans le wordmark.
+ *
+ * Fichier dédié : un masque CSS n'utilise que le canal alpha, la couleur est
+ * ignorée. `logo-mark-blue.png` pesait 40 Ko de RVB inutile — deuxième
+ * ressource la plus lourde du site — pour un filigrane rendu à 9 % d'opacité.
+ * Celui-ci ne porte que l'alpha, quantifié sur 16 niveaux : 6 Ko, sans
+ * différence visible sous le dégradé qui le remplit.
+ */
 const MARK_MASK = {
-  maskImage: "url('/assets/logo-mark-blue.png')",
-  WebkitMaskImage: "url('/assets/logo-mark-blue.png')",
+  maskImage: "url('/assets/logo-mark-mask.png')",
+  WebkitMaskImage: "url('/assets/logo-mark-mask.png')",
   maskSize: "contain",
   WebkitMaskSize: "contain",
   maskRepeat: "no-repeat",
