@@ -29,7 +29,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/contact",
   title: "Contact & Devis gratuit",
   description:
-    "Décrivez votre site en quelques clics : un ingénieur vous rappelle sous 24 h ouvrées. Audit sur site et devis gratuits, partout en RDC.",
+    "Décrivez votre site en quelques clics : un ingénieur vous rappelle sous 24 h ouvrées. Audit sur site et devis gratuits — Bunia, Kinshasa et toute la RDC.",
 });
 
 const SPEC_ROWS = [

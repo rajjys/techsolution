@@ -17,8 +17,13 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   path: "/references",
-  title: "Clients, Références & Présence en RDC",
-  description: `Le track record ${site.name} : MONUSCO, CARE, Save the Children, ALIMA, Afriland First Bank,...`,
+  /*
+   * Les noms de clients sont l'actif de crédibilité du site : ils passent dans
+   * le titre, où ils sont lus avant le clic. La description finissait sur
+   * « ,... » — une liste tronquée n'inspire pas la précision.
+   */
+  title: "Réalisations — MONUSCO, CARE, ALIMA, Afriland",
+  description: `${projects.length} installations en service pour ${clients.length} organisations, de Bunia à Kinshasa : ONG internationales, banques, programmes d’État et médias.`,
 });
 
 export default async function ReferencesPage({

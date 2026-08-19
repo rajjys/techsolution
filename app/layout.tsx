@@ -19,7 +19,13 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Énergie solaire, électricité & infrastructures techniques`,
+    /*
+     * 56 caractères. L'ancien en faisait 86 : Google le coupait à
+     * « Tech Solution RDC — Énergie solaire, électricité … », et la moitié du
+     * message tombait. La marque reste en tête — cinq entités portent un nom
+     * voisin, il faut se distinguer d'elles avant de se décrire.
+     */
+    default: `${site.name} — Installation solaire & backup en RDC`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

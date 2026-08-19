@@ -29,9 +29,9 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   path: "/produits",
-  title: "Kits solaires & Catalogue",
+  title: "Kits solaires hybrides — 650 Va à 30 kVA",
   description:
-    "Kits solaires hybrides: de 650 Va à 30 kVA triphasé. Onduleurs hybrides, batteries lithium et panneaux dimensionnés",
+    "Neuf kits hybrides clés en main, du foyer à l’usine : onduleur, batteries lithium LiFePO₄ et panneaux, dimensionnés après audit. Pose incluse en RDC.",
 });
 
 /** Ce qui accompagne chaque kit — vaut pour les neuf, d'où la place ici. */

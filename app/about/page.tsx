@@ -14,8 +14,8 @@ import { metrics, offices, site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",
-  title: "À propos",
-  description: `${site.name} — notre mission, notre vision et nos valeurs. Une ingénierie au service de la révolution énergétique en République Démocratique du Congo.`,
+  title: "Qui sommes-nous — ingénierie congolaise",
+  description: `Entreprise congolaise d’ingénierie énergétique, basée à Bunia et Kinshasa depuis ${site.foundedYear}. Notre mission, nos valeurs et nos engagements de service.`,
 });
 
 /** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */

@@ -27,9 +27,14 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMetadata({
   path: "/services",
-  title: "Services & Expertise",
+  /*
+   * « Services & Expertise » ne correspond à aucune requête : personne ne
+   * cherche « services ». Le titre porte désormais les trois termes réellement
+   * tapés, et la description ce qui décide — l'audit gratuit.
+   */
+  title: "Installation solaire & électricité industrielle",
   description:
-    "Énergie solaire, systèmes backup, infrastructures électriques industrielles, télécoms, sécurité électronique et maintenance",
+    "Solaire, backup lithium, électricité industrielle, télécoms, sécurité, maintenance. Audit de charge et devis gratuits, partout en RDC.",
 });
 
 /**
