@@ -97,7 +97,7 @@ don't reintroduce the radix one.
 
 - `lib/site.ts` — company info (name, `domain: techsolution.cd`, phone `+243 821 250 250`, email `info@techsolution.cd`, base `Bunia, Ituri`, `foundedYear: 2024`), `navLinks`, `metrics`. **Nav is: Services · Produits · Références · À propos** (Accueil & Contact removed — logo links home, "Demander un devis" button → /contact).
 - `lib/whatsapp.ts` — `buildWhatsAppLink()`, `buildProductWhatsAppLink()`, `buildServiceWhatsAppLink()` (pre-filled FR messages, `wa.me/243821250250`).
-- `lib/data/services.ts` — 6 expertise areas + process steps + FAQ. Real references per service. Images point to `/gallery-web/service-*.jpg`.
+- `lib/data/services.ts` — 6 expertise areas + process steps + FAQ. Real references per service. Images point to `/photos/*.webp` (cf. §6).
 - `lib/data/kits.ts` — **9 REAL solar kits** (650 Va → 30 kVA triphasé) transcribed from the `VERSO.jpg` catalog poster: composition (inverter/battery/panels) + usage + segment (residentiel/professionnel/industriel). Note the 650 Va kit uses a **Gel** battery (only non-lithium one).
 - `lib/data/case-studies.ts` — **6 case studies** from the farde (Mahagi, Goma, Butembo, Numbi, Bunia across Ituri/Nord-Kivu/Sud-Kivu) with `challenge/solution/results`, city coords, and a `spec` field (⚠️ the spec kW/kWh values are **made-up placeholders**, flagged in comments, awaiting real data). Plus `presenceCities` = the 9 provinces of presence for the map.
 - `lib/data/clients.ts` — 10 real clients (MONUSCO, CARE, Save the Children, ALIMA, LSC, Afriland, CADECO, PDL-145T, GRECOM, LTJ, New AZ) + 17 projects + 7 company values. **Personal contact phone numbers from the farde are deliberately NOT published.**
@@ -147,15 +147,57 @@ en bas) ; sa preuve chiffrée a été fondue dans la raison d'être de /about.
 
 ---
 
-## 6. Images / gallery (IMPORTANT)
+## 6. Photothèque (IMPORTANT — refondue le 21 août 2026)
 
-- `public/gallery/` — **142 MB of real HD originals** (77 photos ~4000px, 3 videos incl. a 37 MB drone clip). **Gitignored** — never committed. Keep on disk.
-- `public/gallery-web/` — **committed, optimized web versions** (~1.5 MB total, ~150–350 KB each). These are what the app references. Curated & downsized (≤1400px, q78) from the originals via `sharp`.
-- The **drone video is NOT used yet** (would need compression to a few MB + poster frame, or external hosting).
-- Approach agreed with owner: bind images to **tier/context** (equipment / residential / industrial), NOT to an exact kit config (configs change).
-- All image work is done in the scratchpad with `sharp` + `playwright-core` (Chrome at `/Applications/Google Chrome.app/...`) for screenshot verification. I visually verify every image/section at desktop (1440) and mobile (360/390) before committing.
+**`public/photos/` est la seule source d'images du site.** 53 fichiers WebP,
+6,7 Mo, ~127 Ko pièce, versionnés. Chaque nom dit **ce que montre l'image**,
+jamais où elle sert : `pose-panneau-toiture`, `telecom-baie-technique`,
+`equipe-trois-techniciens`. Une image peut donc changer de place sans mentir.
 
----
+⚠️ **Un nom de fichier est une affirmation.** Aucun ne nomme un client ni une
+ville — seule exception, `mahagi-batiment-administratif`, dont la photo porte
+le panneau officiel du bâtiment. Même règle pour les `imageAlt` : ils décrivent
+ce qu'on voit. Le type `CaseStudy` la documente à l'endroit où elle s'applique.
+
+**Hors dépôt** (gitignorés, à garder sur disque) :
+- `public/gallery/` — 155 Mo d'originaux HD, dont la vidéo drone (jamais utilisée).
+- `public/web-optimized/` — 608 vues en WebP 1920 px : **l'archive de travail**.
+- `public/ai-preview/` — les mêmes 608 en JPEG léger, appariées une à une par
+  leur nom. C'est le dossier à lire quand il faut analyser le fonds avec un
+  agent ; `web-optimized` est la source dont on tire les fichiers finaux.
+
+`public/gallery-web/` **n'existe plus** : ses 26 fichiers étaient soit repris
+dans `photos/`, soit orphelins depuis longtemps.
+
+**Ce que la passe du 21 août a corrigé.** Les images avaient été choisies au fil
+de l'eau : `service-solaire.jpg` et `commercial.jpg` étaient la même photo,
+quatre des six réalisations empruntaient une illustration de service, la
+« sécurité électronique » montrait un tableau de disjoncteurs, et le hero
+d'accueil était une **ferme solaire Unsplash**. Tout cela est réglé, et plus
+aucune image du site ne vient d'un domaine tiers (`remotePatterns` retiré de
+`next.config.ts`).
+
+**Ce que l'archive contient encore, et qu'on n'utilise pas.** 185 des 608 vues
+(30 %) documentent un unique chantier de **chauffe-eau solaire « WOVS »**, un
+service absent du site — deux vues conservées, le reste archivé sur décision du
+propriétaire. Le fonds contient aussi des vues drone, des portraits d'équipe et
+des détails de matériel encore disponibles pour un futur besoin.
+
+**Trous connus du fonds :**
+- ⚠️ **Aucune photo de caméra, d'alarme ou de contrôle d'accès**, alors que
+  /services vend la sécurité électronique. L'armoire de contrôle est le plus
+  proche honnête — à remplacer dès qu'un chantier de vidéosurveillance est
+  photographié.
+- Une seule photo de climatisation dans tout le fonds.
+- `residentiel-30kva-kigali` (ancien `gallery-web`) est à **Kigali**, donc hors
+  RDC ; il n'était utilisé nulle part et n'a pas été repris.
+
+**Méthode, si le fonds grossit.** Le dédoublonnage par empreinte perceptuelle
+(dHash 16×16 + signature couleur) n'écarte presque rien sur ce corpus : les
+vues sont réellement distinctes, seule la *scène* se répète. Il faut donc les
+regarder — planches contact indexées de 40 vignettes, lues une par une. Le
+travail est fait dans le scratchpad avec `sharp`, et chaque écran est vérifié
+en capture (1440 et 390) avant commit.
 
 ## 7. Working conventions (please keep)
 
@@ -296,8 +338,10 @@ lib/                     site, whatsapp, utils
 lib/data/                services, kits, case-studies, clients, drc
 public/assets/           processed logos (logo-nav-*, logo-full-*, LOGO * originals)
 public/logos/            9 grayscale client logos
-public/gallery-web/      committed optimized photos (offers, services, kits, cases)
-public/gallery/          142 MB HD originals — GITIGNORED
+public/photos/           53 photos curatées, versionnées — SEULE source du site (§6)
+public/web-optimized/    archive 608 vues WebP 1920px — GITIGNORÉ
+public/ai-preview/       les mêmes en JPEG léger, pour analyse — GITIGNORÉ
+public/gallery/          155 Mo d'originaux HD — GITIGNORÉ
 docs/                    FARDE TECH SOLUTION.pdf (source of truth), PLAN.md, HANDOFF.md
 ```
 
