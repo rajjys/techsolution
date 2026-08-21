@@ -20,6 +20,15 @@ export type CaseStudy = {
   category: CaseCategory;
   /** Repère technique (indicatif — à confirmer avec données réelles) */
   spec: string;
+  /**
+   * Photo du chantier, et son texte alternatif.
+   *
+   * ⚠️ **L'`imageAlt` décrit ce que montre la photo, jamais le client ni la
+   * ville** — sauf preuve dans l'image elle-même. Seul Mahagi y échappe : le
+   * panneau officiel du bâtiment est lisible dans le cadre. Les autres photos
+   * illustrent le type d'intervention, elles ne documentent pas le site : le
+   * dire autrement serait affirmer un fait qu'on ne peut pas établir.
+   */
   image: string;
   imageAlt: string;
   summary: string;
@@ -42,8 +51,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Ituri",
     category: "Solaire",
     spec: "≈ 8 kVA · Lithium 10 kWh",
-    image: "/gallery-web/commercial.jpg",
-    imageAlt: "Centrale solaire sur bâtiment administratif à Mahagi",
+    image: "/photos/mahagi-batiment-administratif.webp",
+    imageAlt: "Bâtiment administratif du territoire de Mahagi, équipé par Tech Solution RDC",
     summary:
       "Alimentation solaire autonome du bureau administratif du territoire, dans le cadre du Programme PDL-145T",
     lon: 30.98,
@@ -67,8 +76,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Ituri",
     category: "Électricité",
     spec: "Rénovation + ≈ 5 kVA solaire",
-    image: "/gallery-web/service-electricite.jpg",
-    imageAlt: "Rénovation électrique de l'agence CADECO de Mahagi",
+    image: "/photos/onduleurs-muraux-batiment.webp",
+    imageAlt: "Onduleurs hybrides et chemin de câbles posés dans un bâtiment tertiaire",
     summary:
       "Rénovation complète de l'infrastructure électrique et installation d'une centrale solaire pour l'agence CADECO de Mahagi.",
     lon: 30.98,
@@ -92,8 +101,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Nord-Kivu",
     category: "Télécoms",
     spec: "Backup serveur · ≈ 3 kVA",
-    image: "/gallery-web/service-telecom.jpg",
-    imageAlt: "Alimentation solaire d'une salle serveur à Goma",
+    image: "/photos/baie-batterie-salle-technique.webp",
+    imageAlt: "Baie technique et batterie de secours alimentant un serveur",
     summary:
       "Alimentation autonome et stable du serveur télécom de GRECOM-RDC à Goma, pour une disponibilité continue des services.",
     lon: 29.22,
@@ -117,8 +126,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Nord-Kivu",
     category: "Backup",
     spec: "Backup ≈ 5 kVA · Lithium",
-    image: "/gallery-web/service-backup.jpg",
-    imageAlt: "Système backup lithium installé à Butembo",
+    image: "/photos/victron-onduleur-batteries.webp",
+    imageAlt: "Onduleur Victron et parc batteries assurant la continuité électrique",
     summary:
       "Installation d'un système de secours (backup) pour le site RTO de LTJ à Butembo, garantissant la continuité en cas de coupure.",
     lon: 29.28,
@@ -142,8 +151,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Sud-Kivu",
     category: "Solaire",
     spec: "Kit ≈ 3 kVA · Off-grid",
-    image: "/gallery-web/residentiel.jpg",
-    imageAlt: "Kit solaire installé sur le bureau LSC à Numbi",
+    image: "/photos/toiture-residence-duo.webp",
+    imageAlt: "Deux techniciens sur une centrale solaire en toiture de résidence",
     summary:
       "Kit solaire alimentant le bureau de LSC à Numbi, en zone reculée du Sud-Kivu, pour une autonomie totale.",
     lon: 28.85,
@@ -167,8 +176,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Ituri",
     category: "Maintenance",
     spec: "Contrat de maintenance annuel",
-    image: "/gallery-web/service-maintenance.jpg",
-    imageAlt: "Maintenance des installations de l'agence Afriland à Bunia",
+    image: "/photos/tableau-pose-duo.webp",
+    imageAlt: "Techniciens posant un tableau de distribution basse tension",
     summary:
       "Contrat de maintenance des systèmes de climatisation et des installations techniques de l'agence Afriland First Bank de Bunia.",
     lon: 30.25,
