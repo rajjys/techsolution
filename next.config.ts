@@ -8,13 +8,6 @@ const nextConfig: NextConfig = {
     // On laisse donc le navigateur charger les images directement en local.
     // La production conserve l'optimisation complète.
     unoptimized: process.env.NODE_ENV === "development",
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-    ],
     qualities: [60, 75, 85, 90],
     formats: ["image/avif", "image/webp"],
   },

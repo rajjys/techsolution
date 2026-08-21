@@ -37,7 +37,7 @@ export function Hero() {
       {/* Image de fond — desktop uniquement */}
       <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
         <Image
-          src="https://images.unsplash.com/photo-1509389928833-fe62aef36deb?auto=format&fit=crop&w=2400&q=80"
+          src="/photos/hero-technicien-toiture.webp"
           alt=""
           fill
           /*
@@ -56,7 +56,7 @@ export function Hero() {
            */
           loading="lazy"
           sizes="(min-width: 1024px) 100vw, 1px"
-          className="object-cover object-[70%_45%] saturate-[0.85] brightness-[1.04]"
+          className="object-cover object-[62%_42%] saturate-[0.92] brightness-[1.03]"
         />
         {/*
           Voile : `brand-50` plein à gauche → transparent à droite, d'un seul
