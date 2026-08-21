@@ -50,3 +50,13 @@ next-env.d.ts
 
 # Galerie photos/vidéos HD originales (142 Mo) — hors dépôt ; versions web optimisées uniquement
 /public/gallery/
+
+# Audits prospects (ne pas versionner)
+Audit-pmultiples-*.pdf
+
+# Archive photo brute (608 vues, 179 Mo) — hors dépôt.
+# `web-optimized/` est la source haute qualité, `ai-preview/` sa version
+# allégée pour l'analyse. Seule la sélection curatée de `public/photos/`
+# est versionnée : c'est elle que le site consomme.
+/public/ai-preview/
+/public/web-optimized/
