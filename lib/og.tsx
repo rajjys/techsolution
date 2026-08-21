@@ -27,14 +27,29 @@ export const OG_CONTENT_TYPE = "image/jpeg";
  * L'hôtel Bambou à Kisangani : la scène est large, très lisible réduite à
  * 300 px dans un fil WhatsApp, et reconnaissable comme congolaise. C'est la
  * même image que le hero de /references, où elle est déjà légendée.
- *
- * Recadrée au format de la vignette et servie en JPEG : satori ne décode pas
- * le WebP de l'original, et l'échec ne se voyait qu'au prerender.
  */
-const DEFAULT_PHOTO = "assets/og-default.jpg";
+const DEFAULT_PHOTO = "photos/kisangani-hotel-bambou.webp";
 
 async function asset(relative: string) {
   return readFile(join(process.cwd(), "public", relative));
+}
+
+/**
+ * Photo de fond, ramenée au format de la vignette et au JPEG.
+ *
+ * **satori ne décode pas le WebP**, et l'échec ne se voit qu'au prerender :
+ * le typage, le lint et la compilation passent, puis le build casse sur
+ * « Offset is outside the bounds of the DataView ». Toute la photothèque
+ * étant en WebP, on décode ici une bonne fois plutôt que d'entretenir une
+ * copie JPEG par image. Le recadrage au passage évite de faire porter à
+ * satori une image bien plus grande que la vignette.
+ */
+async function backdrop(relative: string) {
+  const buffer = await asset(relative);
+  return sharp(buffer)
+    .resize(OG_SIZE.width, OG_SIZE.height, { fit: "cover", position: "attention" })
+    .jpeg({ quality: 84 })
+    .toBuffer();
 }
 
 async function fonts() {
@@ -70,12 +85,11 @@ export async function ogImage({
   photo?: string;
 }) {
   const [background, logo, loaded] = await Promise.all([
-    asset(photo),
+    backdrop(photo),
     asset("assets/logo-full-white.png"),
     fonts(),
   ]);
 
-  /* JPEG uniquement : satori ne décode pas le WebP. */
   const bg = `data:image/jpeg;base64,${background.toString("base64")}`;
   const mark = `data:image/png;base64,${logo.toString("base64")}`;
 
