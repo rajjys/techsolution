@@ -8,6 +8,6 @@ export default async function Image() {
   return ogImage({
     eyebrow: "À propos",
     title: "Une ingénierie congolaise au service de l’autonomie électrique.",
-    photo: "gallery-web/equipe-technique.jpg",
+    photo: "photos/equipe-complicite.webp",
   });
 }

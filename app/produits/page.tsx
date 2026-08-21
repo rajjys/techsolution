@@ -80,8 +80,8 @@ export default function ProduitsPage() {
         }
         lead={`Choisissez ce que vous devez alimenter — quelques lampes, une villa, une clinique, une usine. L'échelle vous place sur le bon kit, ${powerRange}, et en détaille la composition.`}
         image={{
-          src: "/gallery-web/onduleurs-mur.jpg",
-          alt: "Onduleurs hybrides Tech Solution installés et mis en service",
+          src: "/photos/produits-onduleur-batterie.webp",
+          alt: "Onduleur hybride et batterie lithium avant installation",
           position: "68% 45%",
         }}
         actions={

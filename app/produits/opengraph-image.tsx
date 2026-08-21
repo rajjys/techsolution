@@ -8,6 +8,6 @@ export default async function Image() {
   return ogImage({
     eyebrow: "Kits solaires",
     title: "Du foyer à l’usine : neuf kits hybrides, de 650 Va à 30 kVA.",
-    photo: "gallery-web/systeme-victron.jpg",
+    photo: "photos/armoire-batterie-lithium.webp",
   });
 }

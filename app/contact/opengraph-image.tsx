@@ -8,6 +8,6 @@ export default async function Image() {
   return ogImage({
     eyebrow: "Devis gratuit",
     title: "Audit sur site, dimensionnement et devis — réponse sous 24 h ouvrées.",
-    photo: "gallery-web/technicien-intervention.jpg",
+    photo: "photos/cablage-duo-technicien.webp",
   });
 }

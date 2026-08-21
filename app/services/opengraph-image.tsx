@@ -8,6 +8,6 @@ export default async function Image() {
   return ogImage({
     eyebrow: "Nos expertises",
     title: "Six domaines pour que le courant ne s’arrête plus.",
-    photo: "gallery-web/technicien-toiture.jpg",
+    photo: "photos/pose-panneau-toiture.webp",
   });
 }

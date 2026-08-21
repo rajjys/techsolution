@@ -68,8 +68,8 @@ export function Maintenance() {
       {/* Image : en flux au-dessus du texte sous lg, épinglée à gauche ensuite. */}
       <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:left-0 lg:aspect-auto lg:w-1/2">
         <Image
-          src="/gallery-web/service-maintenance.jpg"
-          alt={`Technicien ${site.name} en intervention de maintenance`}
+          src="/photos/maintenance-controle-rapport.webp"
+          alt={`Technicien ${site.name} en contrôle de maintenance, rapport en main`}
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
