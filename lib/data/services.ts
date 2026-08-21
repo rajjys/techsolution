@@ -71,8 +71,8 @@ export const services: Service[] = [
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
     projectCategory: "Solaire",
-    image: "/gallery-web/service-solaire.jpg",
-    imageAlt: `Centrale solaire ${site.name} installée sur toiture en RDC`,
+    image: "/photos/solaire-toiture-technicien.webp",
+    imageAlt: `Technicien ${site.name} sur une centrale solaire en toiture, en RDC`,
   },
   {
     slug: "backup-stockage",
@@ -99,8 +99,8 @@ export const services: Service[] = [
       "Alimentation du serveur GRECOM — Goma",
     ],
     projectCategory: "Backup",
-    image: "/gallery-web/service-backup.jpg",
-    imageAlt: `Onduleur hybride et batterie lithium ${site.name}`,
+    image: "/photos/backup-onduleur-technicien.webp",
+    imageAlt: `Technicien ${site.name} posant un onduleur hybride et son parc batteries`,
   },
   {
     slug: "infrastructure-electrique",
@@ -127,8 +127,8 @@ export const services: Service[] = [
       "Installations tertiaires — Afriland First Bank Bunia",
     ],
     projectCategory: "Électricité",
-    image: "/gallery-web/service-electricite.jpg",
-    imageAlt: `Techniciens ${site.name} câblant une armoire électrique`,
+    image: "/photos/electricite-tableau-technicien.webp",
+    imageAlt: `Technicien ${site.name} sur un tableau de distribution basse tension`,
   },
   {
     slug: "telecom-medias",
@@ -155,8 +155,8 @@ export const services: Service[] = [
       "Serveur télécom GRECOM-RDC — Goma",
     ],
     projectCategory: "Télécoms",
-    image: "/gallery-web/service-telecom.jpg",
-    imageAlt: `Onduleur ${site.name} alimentant une salle technique`,
+    image: "/photos/telecom-baie-technique.webp",
+    imageAlt: `Baie technique ${site.name} alimentant un site télécom`,
   },
   {
     slug: "securite-electronique",
@@ -179,8 +179,8 @@ export const services: Service[] = [
     ],
     references: ["Système d'alarme — Save the Children, Bunia"],
     projectCategory: "Sécurité",
-    image: "/gallery-web/service-securite.jpg",
-    imageAlt: `Tableau électrique et protection installés par ${site.name}`,
+    image: "/photos/securite-armoire-controle.webp",
+    imageAlt: `Armoire de contrôle et de protection installée par ${site.name}`,
   },
   {
     slug: "maintenance-froid",
@@ -206,8 +206,8 @@ export const services: Service[] = [
       "Suivi des parcs solaires installés (LTJ, ONG, radios)",
     ],
     projectCategory: "Maintenance",
-    image: "/gallery-web/service-maintenance.jpg",
-    imageAlt: `Technicien ${site.name} en intervention de maintenance`,
+    image: "/photos/climatisation-groupe-exterieur.webp",
+    imageAlt: `Technicien ${site.name} intervenant sur un groupe de climatisation`,
   },
 ];
 
