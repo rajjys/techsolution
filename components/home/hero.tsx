@@ -62,7 +62,7 @@ export function Hero() {
       {/* Image de fond — desktop uniquement */}
       <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
         <Image
-          src="/photos/hero-technicien-toiture.webp"
+          src="/photos/hero-pose-panneau.webp"
           alt=""
           fill
           /*
@@ -81,7 +81,7 @@ export function Hero() {
            */
           loading="lazy"
           sizes="(min-width: 1024px) 100vw, 1px"
-          className="object-cover object-[62%_60%] saturate-[1.02] brightness-[0.98]"
+          className="object-cover object-[50%_70%] saturate-[1.04] brightness-[1.0]"
         />
         {/*
           Voile : `brand-50` plein à gauche → transparent à droite, d'un seul
@@ -90,9 +90,15 @@ export function Hero() {
           contrastées des panneaux transparaissaient derrière le chapô, et le
           mélange donnait ce rendu trouble, « presque propre ».
 
-          Le voile s'éteint à 84 % et non au bord droit : au-delà, la photo
-          est nette. Un dégradé qui court jusqu'au bord ne laisse aucune zone
-          franche et donne cette impression de brume sur toute l'image.
+          ⚠️ Ce voile a été **réouvert** le 22 août. Il avait été calibré pour
+          un hero `brand-50` : du texte sombre sur fond pâle exige un voile
+          quasi opaque, et la photo se réduisait alors à une bande de 20 % au
+          bord droit — « on ne voit que le technicien, pas le travail ». Sur
+          fond `brand-800` avec du texte blanc, la contrainte s'inverse : le
+          blanc reste lisible sur une photo à peine assombrie. Le voile part
+          donc de 0,97 et s'éteint au bord, laissant près de la moitié de la
+          largeur à l'image. C'est le fond sombre qui a rendu la photo
+          possible, pas un réglage de plus.
 
           Surtout : la colonne de texte et l'image ne se recouvrent jamais.
           C'est la règle du modèle — chez BairesDev le texte s'arrête vers
@@ -116,7 +122,7 @@ export function Hero() {
           valeur par défaut, le voile se dégradait depuis le bord gauche, et
           la classe se lisait juste sans exister.
         */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(28_26_122)_0%,rgb(28_26_122)_46%,rgb(28_26_122/0.98)_53%,rgb(28_26_122/0.92)_59%,rgb(28_26_122/0.8)_65%,rgb(28_26_122/0.62)_71%,rgb(28_26_122/0.42)_77%,rgb(28_26_122/0.22)_83%,rgb(28_26_122/0.08)_89%,rgb(28_26_122/0)_95%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(28_26_122/0.97)_0%,rgb(28_26_122/0.95)_28%,rgb(28_26_122/0.9)_36%,rgb(28_26_122/0.8)_43%,rgb(28_26_122/0.66)_50%,rgb(28_26_122/0.5)_57%,rgb(28_26_122/0.34)_64%,rgb(28_26_122/0.2)_72%,rgb(28_26_122/0.1)_80%,rgb(28_26_122/0.04)_90%,rgb(28_26_122/0)_100%)]" />
       </div>
 
       <div className="container relative">
