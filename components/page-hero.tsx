@@ -29,6 +29,19 @@ export type HeroImage = {
    *   abstraites, dont l'absence ne retire rien.
    */
   mobile?: "band" | "hidden";
+  /**
+   * Largeur de la zone où la photo se lit franchement, à partir de `lg`.
+   *
+   * Par défaut le voile ne s'ouvre qu'à 67 % : il faut cette densité pour
+   * qu'un titre sombre reste lisible sur une photo. Mais un sujet large —
+   * une équipe de trois, une centrale en enfilade — n'entre pas dans le
+   * tiers restant, et se retrouve tranché par le dégradé.
+   *
+   * `"wide"` ouvre à 52 %. La colonne de texte est bornée à `max-w-lg`, donc
+   * elle n'atteint pas ce point : on gagne un cinquième de largeur d'image
+   * sans jamais poser de texte sur la partie claire.
+   */
+  reveal?: "default" | "wide";
 };
 
 /**
@@ -126,8 +139,11 @@ export function PageHero({
             bande franche commence toujours vers 67 %, comme avant.
           */}
           <div
-            className="absolute inset-0 -z-10 hidden lg:block
-            lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.97)_39%,rgb(242_242_253/0.88)_44%,rgb(242_242_253/0.72)_49%,rgb(242_242_253/0.5)_54%,rgb(242_242_253/0.28)_59%,rgb(242_242_253/0.1)_63%,rgb(242_242_253/0)_67%)]"
+            className={cn(
+              `absolute inset-0 -z-10 hidden lg:block lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.97)_39%,rgb(242_242_253/0.88)_44%,rgb(242_242_253/0.72)_49%,rgb(242_242_253/0.5)_54%,rgb(242_242_253/0.28)_59%,rgb(242_242_253/0.1)_63%,rgb(242_242_253/0)_67%)]`,
+              image.reveal === "wide" &&
+                "lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_26%,rgb(242_242_253/0.97)_30%,rgb(242_242_253/0.88)_34%,rgb(242_242_253/0.72)_38%,rgb(242_242_253/0.5)_42%,rgb(242_242_253/0.28)_46%,rgb(242_242_253/0.1)_49%,rgb(242_242_253/0)_52%)]",
+            )}
             aria-hidden="true"
           />
         </>
