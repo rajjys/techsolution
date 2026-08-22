@@ -49,13 +49,11 @@ export default async function ReferencesPage({
         }
         lead={`${projects.length} installations en service pour ${clients.length} organisations — ONG internationales, banques, programmes d'État, médias et entreprises.`}
         image={{
-          src: "/photos/kisangani-hotel-bambou.webp",
+          src: "/photos/kisangani-hotel-bambou-copy.jpg",
           alt: "Centrale solaire en toiture de l'hôtel Bambou, sur le fleuve à Kisangani",
           position: "48% 78%",
           /* La preuve de l'échelle livrée — elle vaut d'être vue. */
           mobile: "band",
-          /* La centrale court en enfilade : la zone nette élargie la garde entière. */
-          reveal: "wide",
         }}
         actions={
           <>

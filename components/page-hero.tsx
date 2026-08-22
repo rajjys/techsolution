@@ -29,19 +29,6 @@ export type HeroImage = {
    *   abstraites, dont l'absence ne retire rien.
    */
   mobile?: "band" | "hidden";
-  /**
-   * Largeur de la zone où la photo se lit franchement, à partir de `lg`.
-   *
-   * Par défaut le voile ne s'ouvre qu'à 67 % : il faut cette densité pour
-   * qu'un titre sombre reste lisible sur une photo. Mais un sujet large —
-   * une équipe de trois, une centrale en enfilade — n'entre pas dans le
-   * tiers restant, et se retrouve tranché par le dégradé.
-   *
-   * `"wide"` ouvre à 52 %. La colonne de texte est bornée à `max-w-lg`, donc
-   * elle n'atteint pas ce point : on gagne un cinquième de largeur d'image
-   * sans jamais poser de texte sur la partie claire.
-   */
-  reveal?: "default" | "wide";
 };
 
 /**
@@ -52,20 +39,22 @@ export type HeroImage = {
  * de changer de site. Le sombre reste réservé aux moments de preuve
  * (réalisations, méthode) et à la conclusion (pied de page).
  *
- * Avec une photo, deux dispositifs se superposent :
+ * **Le texte et la photo ne se recouvrent pas.** À partir de `lg`, la photo
+ * occupe sa moitié droite et touche le bord de l'écran ; le texte reste sur
+ * la grille du conteneur, sur `brand-50` franc. C'est la grammaire « pleine
+ * largeur » du §1 appliquée à l'en-tête.
  *
- * 1. un **masque en dégradé** sur l'image elle-même — c'est lui qui supprime
- *    le bord franc. Un simple voile posé par-dessus laissait voir l'arête où
- *    la photo commençait, comme un mur derrière un nuage ;
- * 2. un **voile de la couleur du fond** pour le contraste du texte. Sur
- *    mobile il reste quasi opaque sur les deux tiers hauts — tout le bloc de
- *    texte, actions comprises — puis s'ouvre franchement en bas. Il ne
- *    s'allégeait autrefois qu'à partir de 60 %, et les boutons tombaient dans
- *    la zone claire : le contour du secondaire se confondait avec la photo.
+ * Il en a fallu deux tentatives pour y venir. La photo était d'abord posée en
+ * fond, sous un voile qui devait la noyer pour qu'un titre sombre reste
+ * lisible — la photo se réduisait alors au tiers droit, et tout sujet large
+ * s'y faisait trancher. Ouvrir ce voile a rendu la photo visible et le chapô
+ * illisible : la colonne de texte finit à 42–47 % de l'écran, là où le voile
+ * n'était plus qu'à 0,47 puis 0,22 d'opacité. Les deux besoins étaient
+ * inconciliables tant qu'ils partageaient la même surface.
  *
- * Les deux dégradés sont écrits en **paliers rapprochés** plutôt qu'en trois
- * arrêts. Une rampe d'alpha linéaire se voit : l'œil détecte la cassure de
- * pente là où elle commence, et lit une arête que le code ne contient pas.
+ * Il ne reste donc qu'un seul dispositif : un **masque en dégradé** sur le
+ * bord gauche de l'image, étroit (10 % de sa largeur), dont le seul rôle est
+ * de supprimer l'arête. Pas de voile : il n'y a plus rien à voiler.
  *
  * @see docs/design-system.md — « Rythme des fonds »
  */
@@ -115,9 +104,9 @@ export function PageHero({
             quoi la photo est atténuée deux fois et vire au fantôme.
           */}
           <div
-            className="absolute inset-0 -z-10 hidden lg:left-[20%] lg:block
-            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_26%)]
-            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_26%)]"
+            className="absolute inset-0 -z-10 hidden lg:left-[48%] lg:block
+            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_10%)]
+            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_10%)]"
             aria-hidden="true"
           >
             <Image
@@ -131,21 +120,6 @@ export function PageHero({
             />
           </div>
 
-          {/*
-            Voile de contraste. Sous lg il couvre tout le bloc de texte,
-            boutons compris, et ne s'ouvre que dans le dernier cinquième.
-            À partir de lg il devient directionnel et libère complètement le
-            tiers droit, où la photo doit se lire pour ce qu'elle est — la
-            bande franche commence toujours vers 67 %, comme avant.
-          */}
-          <div
-            className={cn(
-              `absolute inset-0 -z-10 hidden lg:block lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.97)_39%,rgb(242_242_253/0.88)_44%,rgb(242_242_253/0.72)_49%,rgb(242_242_253/0.5)_54%,rgb(242_242_253/0.28)_59%,rgb(242_242_253/0.1)_63%,rgb(242_242_253/0)_67%)]`,
-              image.reveal === "wide" &&
-                "lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_26%,rgb(242_242_253/0.97)_30%,rgb(242_242_253/0.88)_34%,rgb(242_242_253/0.72)_38%,rgb(242_242_253/0.5)_42%,rgb(242_242_253/0.28)_46%,rgb(242_242_253/0.1)_49%,rgb(242_242_253/0)_52%)]",
-            )}
-            aria-hidden="true"
-          />
         </>
       ) : (
         <Glow variant="cool" corner="bottom-right" />
