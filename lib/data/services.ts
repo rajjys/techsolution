@@ -71,8 +71,8 @@ export const services: Service[] = [
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
     projectCategory: "Solaire",
-    image: "/photos/solaire-toiture-technicien.webp",
-    imageAlt: `Technicien ${site.name} sur une centrale solaire en toiture, en RDC`,
+    image: "/photos/centrale-toiture-batiment.webp",
+    imageAlt: `Centrale solaire ${site.name} en toiture d'un bâtiment, en RDC`,
   },
   {
     slug: "backup-stockage",
@@ -99,8 +99,8 @@ export const services: Service[] = [
       "Alimentation du serveur GRECOM — Goma",
     ],
     projectCategory: "Backup",
-    image: "/photos/backup-onduleur-technicien.webp",
-    imageAlt: `Technicien ${site.name} posant un onduleur hybride et son parc batteries`,
+    image: "/photos/victron-triphase-batteries.webp",
+    imageAlt: `Onduleurs triphasés et parc batteries lithium installés par ${site.name}`,
   },
   {
     slug: "infrastructure-electrique",

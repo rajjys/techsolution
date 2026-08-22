@@ -207,9 +207,11 @@ export default function ServicesPage() {
         }
         lead={`Délestages, carburant, matériel grillé, sites isolés : nous traitons la cause, de l'audit de charge au contrat d'entretien. Pour les foyers, les entreprises et les sites industriels, partout en RDC.`}
         image={{
-          src: "/photos/pose-panneau-equipe.webp",
-          alt: "Deux techniciens Tech Solution RDC posant un panneau solaire en toiture",
-          position: "58% 50%",
+          src: "/photos/toiture-duo-fixation.webp",
+          alt: "Deux techniciens Tech Solution RDC fixant une centrale solaire en toiture",
+          position: "52% 55%",
+          /* Deux techniciens au travail, marque visible. */
+          mobile: "band",
         }}
         actions={
           <>

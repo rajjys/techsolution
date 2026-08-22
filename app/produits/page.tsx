@@ -82,7 +82,7 @@ export default function ProduitsPage() {
         image={{
           src: "/photos/produits-onduleur-batterie.webp",
           alt: "Onduleur hybride et batterie lithium avant installation",
-          position: "68% 45%",
+          position: "42% 60%",
         }}
         actions={
           <>

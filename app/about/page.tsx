@@ -44,9 +44,11 @@ export default function AboutPage() {
         }
         lead={`${site.name} est née en ${site.foundedYear} de ce constat : en RDC, l'énergie ne manque pas — c'est l'ingénierie pour la capter, la stocker et la distribuer qui fait défaut. Nous installons et entretenons des systèmes solaires avec batteries pour les foyers, les entreprises et les institutions, depuis nos bases de ${baseCities}.`}
         image={{
-          src: "/photos/equipe-trois-techniciens.webp",
+          src: "/photos/equipe-complicite.webp",
           alt: `L'équipe technique ${site.name}`,
-          position: "50% 30%",
+          position: "45% 35%",
+          /* Des visages, des sourires, la marque : c'est ce qu'on achète. */
+          mobile: "band",
         }}
         actions={
           <>
