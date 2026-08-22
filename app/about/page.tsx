@@ -46,9 +46,11 @@ export default function AboutPage() {
         image={{
           src: "/photos/equipe-complicite.webp",
           alt: `L'équipe technique ${site.name}`,
-          position: "45% 35%",
+          position: "58% 35%",
           /* Des visages, des sourires, la marque : c'est ce qu'on achète. */
           mobile: "band",
+          /* Trois personnes alignées : il leur faut la zone nette élargie. */
+          reveal: "wide",
         }}
         actions={
           <>

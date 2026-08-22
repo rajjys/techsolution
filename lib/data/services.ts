@@ -71,8 +71,8 @@ export const services: Service[] = [
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
     projectCategory: "Solaire",
-    image: "/photos/centrale-toiture-batiment.webp",
-    imageAlt: `Centrale solaire ${site.name} en toiture d'un bâtiment, en RDC`,
+    image: "/photos/drone-centrale-toiture.webp",
+    imageAlt: `Vue aérienne d'une centrale solaire ${site.name} en toiture, en RDC`,
   },
   {
     slug: "backup-stockage",
@@ -127,8 +127,8 @@ export const services: Service[] = [
       "Installations tertiaires — Afriland First Bank Bunia",
     ],
     projectCategory: "Électricité",
-    image: "/photos/electricite-tableau-technicien.webp",
-    imageAlt: `Technicien ${site.name} sur un tableau de distribution basse tension`,
+    image: "/photos/onduleurs-muraux-batiment.webp",
+    imageAlt: `Onduleurs, chemins de câbles et coffret de distribution installés par ${site.name}`,
   },
   {
     slug: "telecom-medias",

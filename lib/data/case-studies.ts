@@ -76,8 +76,8 @@ export const caseStudies: CaseStudy[] = [
     province: "Ituri",
     category: "Électricité",
     spec: "Rénovation + ≈ 5 kVA solaire",
-    image: "/photos/onduleurs-muraux-batiment.webp",
-    imageAlt: "Onduleurs hybrides et chemin de câbles posés dans un bâtiment tertiaire",
+    image: "/photos/chemin-cables-facade.webp",
+    imageAlt: "Chemins de câbles et coffret de protection dans un bâtiment tertiaire",
     summary:
       "Rénovation complète de l'infrastructure électrique et installation d'une centrale solaire pour l'agence CADECO de Mahagi.",
     lon: 30.98,

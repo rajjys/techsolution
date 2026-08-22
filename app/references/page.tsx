@@ -51,9 +51,11 @@ export default async function ReferencesPage({
         image={{
           src: "/photos/kisangani-hotel-bambou.webp",
           alt: "Centrale solaire en toiture de l'hôtel Bambou, sur le fleuve à Kisangani",
-          position: "55% 62%",
+          position: "48% 78%",
           /* La preuve de l'échelle livrée — elle vaut d'être vue. */
           mobile: "band",
+          /* La centrale court en enfilade : la zone nette élargie la garde entière. */
+          reveal: "wide",
         }}
         actions={
           <>

@@ -209,9 +209,11 @@ export default function ServicesPage() {
         image={{
           src: "/photos/toiture-duo-fixation.webp",
           alt: "Deux techniciens Tech Solution RDC fixant une centrale solaire en toiture",
-          position: "52% 55%",
+          position: "50% 72%",
           /* Deux techniciens au travail, marque visible. */
           mobile: "band",
+          /* Deux techniciens et le champ de panneaux, sur toute la largeur utile. */
+          reveal: "wide",
         }}
         actions={
           <>
