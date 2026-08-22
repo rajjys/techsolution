@@ -14,6 +14,21 @@ export type HeroImage = {
   alt: string;
   /** `object-position` — pour amener le sujet dans la zone dégagée du voile. */
   position?: string;
+  /**
+   * Ce que la photo devient **sous `lg`**.
+   *
+   * Elle était jusqu'ici posée en fond derrière un voile à 97 % d'opacité :
+   * elle coûtait ses octets et ne donnait rien à voir — un fantôme. Deux
+   * sorties honnêtes, et une seule règle : **une photo mérite sa place dans
+   * le flux, ou elle disparaît.**
+   *
+   * - `"band"` — bande pleine largeur sous le texte, vraiment visible.
+   *   Réservé aux photos qui portent des visages, la marque ou une preuve :
+   *   c'est ce qu'on achète, ça ne se cache pas derrière un dégradé.
+   * - `"hidden"` (défaut) — rien sous `lg`. Pour les photos techniques ou
+   *   abstraites, dont l'absence ne retire rien.
+   */
+  mobile?: "band" | "hidden";
 };
 
 /**
@@ -72,7 +87,7 @@ export function PageHero({
     <section
       className={cn(
         "relative isolate overflow-hidden bg-brand-50",
-        image && "min-h-[34rem] lg:min-h-[39rem]",
+        image && "lg:min-h-[39rem]",
       )}
     >
       {image ? (
@@ -87,9 +102,7 @@ export function PageHero({
             quoi la photo est atténuée deux fois et vire au fantôme.
           */}
           <div
-            className="absolute inset-0 -z-10 lg:left-[20%]
-            [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_30%)]
-            [mask-image:linear-gradient(to_bottom,transparent_0%,black_30%)]
+            className="absolute inset-0 -z-10 hidden lg:left-[20%] lg:block
             lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_26%)]
             lg:[mask-image:linear-gradient(to_right,transparent_0%,black_26%)]"
             aria-hidden="true"
@@ -99,7 +112,7 @@ export function PageHero({
               alt=""
               fill
               priority
-              sizes="100vw"
+              sizes="(min-width: 1024px) 80vw, 1px"
               className="object-cover"
               style={{ objectPosition: image.position ?? "50% 45%" }}
             />
@@ -113,8 +126,7 @@ export function PageHero({
             bande franche commence toujours vers 67 %, comme avant.
           */}
           <div
-            className="absolute inset-0 -z-10
-            bg-[linear-gradient(to_bottom,rgb(242_242_253/0.98)_0%,rgb(242_242_253/0.97)_66%,rgb(242_242_253/0.86)_80%,rgb(242_242_253/0.55)_92%,rgb(242_242_253/0.34)_100%)]
+            className="absolute inset-0 -z-10 hidden lg:block
             lg:bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_34%,rgb(242_242_253/0.97)_39%,rgb(242_242_253/0.88)_44%,rgb(242_242_253/0.72)_49%,rgb(242_242_253/0.5)_54%,rgb(242_242_253/0.28)_59%,rgb(242_242_253/0.1)_63%,rgb(242_242_253/0)_67%)]"
             aria-hidden="true"
           />
@@ -127,7 +139,7 @@ export function PageHero({
         className={cn(
           "container relative flex flex-col pt-10 sm:pt-12 lg:pt-16",
           compact ? "pb-10 lg:pb-14" : "pb-12 sm:pb-16 lg:pb-24",
-          image && "min-h-[34rem] lg:min-h-[39rem]",
+          image && "lg:min-h-[39rem]",
         )}
       >
         {/* Toujours en tête et aligné à gauche, comme sur toutes les pages */}
@@ -212,6 +224,26 @@ export function PageHero({
           <div className={cn(image && "max-w-lg xl:max-w-xl")}>{children}</div>
         </div>
       </div>
+
+      {/*
+        Bande mobile. Elle sort du conteneur pour toucher les deux bords —
+        une photo de plein pied qu'on regarde, et non un fond qu'on devine.
+        Placée **sous** le texte : au-dessus, elle repousserait le h1 et les
+        actions sous la ligne de flottaison, exactement le défaut que le
+        §6 bis du système reproche aux préambules d'en-tête.
+      */}
+      {image?.mobile === "band" ? (
+        <div className="relative -mt-2 block h-56 w-full sm:h-72 lg:hidden">
+          <Image
+            src={image.src}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectPosition: image.position ?? "50% 45%" }}
+          />
+        </div>
+      ) : null}
     </section>
   );
 }
