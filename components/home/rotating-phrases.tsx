@@ -41,7 +41,7 @@ export function RotatingPhrases() {
         jusqu'à 640 px creusait un vide fantôme sous le titre sur tous les
         téléphones.
       */
-      className="block min-h-[2.2em] text-solar-700 min-[360px]:min-h-[1.15em]"
+      className="block min-h-[2.2em] text-solar-500 min-[360px]:min-h-[1.15em]"
       aria-live="polite"
     >
       <AnimatePresence mode="wait" initial={false}>
