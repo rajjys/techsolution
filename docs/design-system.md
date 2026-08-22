@@ -36,6 +36,8 @@ de l'aube à la nuit. C'est ce qui donne au parcours sa continuité.
 3. Les surfaces blanches sont les temps de repos : aucune décoration.
 4. **Le sombre est réservé** aux moments de preuve (réalisations, méthode) et
    à la conclusion (pied de page). Ce n'est pas une couleur d'en-tête.
+   **Une exception, une seule, et elle est datée du 22 août 2026 : le hero de
+   l'accueil**, passé en `brand-800`. Voir « La plaque de marque » ci-dessous.
 5. **Une seule surface chaude par page.** La chaleur est une ponctuation.
 6. Les pages intérieures ouvrent en **clair** (`PageHero`, `brand-50`) : passer
    de l'accueil à une page interne ne doit pas donner l'impression de changer
@@ -48,6 +50,36 @@ de l'aube à la nuit. C'est ce qui donne au parcours sa continuité.
 8. Une section d'index (le menu d'une page) prend la teinte la plus soutenue
    de la page — `surface-cool-deep` — pour que les cartes blanches y ressortent
    et qu'on la distingue immédiatement du contenu qu'elle annonce.
+
+**La plaque de marque.** Le hero de l'accueil est en `brand-800`, à contre-pied
+des règles 4 et 6. La décision vient d'un constat mesuré : en `brand-50`, les
+teintes réellement affichées dans la colonne de texte étaient fond #f0f0ff 84 %,
+texte #181830 6 %, or #ffc000 4,8 % — **l'indigo de marque n'apparaissait pas**.
+Un visiteur l'a résumé sans connaître le système : « tout est noir et or ».
+
+La cause n'était pas le fond mais l'accent. Les quatre pages intérieures
+accentuent leur titre en `brand-600` ; l'accueil était la seule à l'accentuer en
+or, ce qui contredisait déjà le §2 — le solaire est *action*, et la chute d'un
+titre n'est pas une action.
+
+L'arc n'est pas supprimé, il est **précédé** : le hero devient une couverture,
+et l'aube commence juste après, à la section d'autorité restée blanche. La
+courbe blanche y gagne d'ailleurs en lisibilité. `brand-800` et non `brand-950` :
+à #0B0A33 l'indigo vire au quasi noir, et répondre « noir et or » par « presque
+noir et or » ne règle rien.
+
+Cette exception ne s'étend pas aux pages intérieures : `PageHero` reste clair
+(règle 6), sans quoi le site n'aurait plus de temps de repos.
+
+**Une photo d'en-tête mérite sa place, ou elle disparaît.** Sous `lg`, la photo
+de `PageHero` était posée en fond derrière un voile à 97 % d'opacité : elle
+coûtait ses octets sans rien donner à voir. Le champ `HeroImage.mobile` tranche,
+et il n'a que deux valeurs. `"band"` sort la photo en bande pleine largeur
+**sous** le texte — jamais au-dessus, où elle repousserait le titre et les
+actions sous la ligne de flottaison (§6 bis) — et il est réservé aux photos qui
+portent des visages, la marque ou une preuve. `"hidden"`, le défaut, la retire
+purement et simplement. Il n'y a pas de troisième voie : un fond photographique
+qu'on devine sans le voir est un coût sans contrepartie.
 
 **Pleine largeur.** Une image qui illustre un bloc majeur occupe la moitié de
 la section et touche le bord de l'écran (`lg:absolute lg:inset-y-0 lg:w-1/2`),
