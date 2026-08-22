@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { RotatingPhrases } from "@/components/home/rotating-phrases";
+import { Glow } from "@/components/glow";
 import { Button } from "@/components/ui/button";
 import { offices } from "@/lib/site";
 
@@ -23,17 +24,41 @@ const baseCities = new Intl.ListFormat("fr", { type: "conjunction" }).format(
  */
 export function Hero() {
   /*
-   * Le hero est bleu très pâle, la section d'autorité est blanche : c'est ce
-   * qui rend la courbe lisible, y compris sur mobile où l'image est masquée
-   * et où le fond est alors la seule séparation.
+   * Fond `brand-800` — et c'est une décision, pas une dérive.
    *
-   * `brand-50` et non plus un crème : le fond, le mobilier et le logo sont
-   * désormais du même bleu, et le jaune reste seul à porter l'action. Un fond
-   * chaud sous un bouton jaune aurait remis deux teintes voisines en
-   * concurrence — le défaut même qu'on cherchait à sortir de la page.
+   * Le hero était en `brand-50`, si pâle qu'il se lit comme du blanc. Mesuré
+   * sur les pixels réellement affichés dans la colonne de texte : fond
+   * #f0f0ff 84 %, texte #181830 6 %, or #ffc000 4,8 %, et **l'indigo de
+   * marque absent des cinq teintes dominantes**. Un visiteur l'a résumé sans
+   * savoir qu'il décrivait un défaut de conception : « tout est noir et or ».
+   *
+   * La cause n'était pas le fond mais l'accent : les quatre pages intérieures
+   * accentuent leur titre en `brand-600`, l'accueil était la seule à
+   * l'accentuer en or. C'était aussi une entorse au §2 du système — le
+   * solaire est « action, exclusivement », et la chute d'un titre n'est pas
+   * une action.
+   *
+   * ⚠️ Ce fond casse sciemment deux règles de design-system.md §1 : le sombre
+   * y est « réservé aux moments de preuve et à la conclusion » (règle 4) et la
+   * page descend un arc de l'aube à la nuit (règle 6). La lecture change : le
+   * hero devient une **plaque de marque**, une couverture, et l'arc démarre
+   * juste après, à la section d'autorité qui reste blanche. Le contraste de la
+   * courbe blanche sur l'indigo est d'ailleurs plus net qu'il ne l'était sur
+   * `brand-50`.
+   *
+   * `brand-800` et non `brand-950` : à #0B0A33 l'indigo vire au quasi noir, et
+   * répondre « noir et or » par « presque noir et or » n'aurait rien réglé.
    */
   return (
-    <section className="relative overflow-hidden bg-brand-50">
+    <section className="relative isolate overflow-hidden bg-brand-800">
+      {/*
+        Halos radiaux — le système les impose sur toute surface teintée ou
+        sombre (§1, règle 2) : sans eux l'aplat paraît plat et bon marché.
+        Le coin solaire est en haut à droite, à l'opposé de la colonne de
+        texte, pour ne pas concurrencer le bouton.
+      */}
+      <Glow variant="dark" corner="top-right" />
+
       {/* Image de fond — desktop uniquement */}
       <div className="absolute inset-0 hidden lg:block" aria-hidden="true">
         <Image
@@ -56,7 +81,7 @@ export function Hero() {
            */
           loading="lazy"
           sizes="(min-width: 1024px) 100vw, 1px"
-          className="object-cover object-[62%_42%] saturate-[0.92] brightness-[1.03]"
+          className="object-cover object-[62%_60%] saturate-[1.02] brightness-[0.98]"
         />
         {/*
           Voile : `brand-50` plein à gauche → transparent à droite, d'un seul
@@ -91,7 +116,7 @@ export function Hero() {
           valeur par défaut, le voile se dégradait depuis le bord gauche, et
           la classe se lisait juste sans exister.
         */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(242_242_253)_0%,rgb(242_242_253)_46%,rgb(242_242_253/0.98)_53%,rgb(242_242_253/0.92)_59%,rgb(242_242_253/0.8)_65%,rgb(242_242_253/0.62)_71%,rgb(242_242_253/0.42)_77%,rgb(242_242_253/0.22)_83%,rgb(242_242_253/0.08)_89%,rgb(242_242_253/0)_95%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgb(28_26_122)_0%,rgb(28_26_122)_46%,rgb(28_26_122/0.98)_53%,rgb(28_26_122/0.92)_59%,rgb(28_26_122/0.8)_65%,rgb(28_26_122/0.62)_71%,rgb(28_26_122/0.42)_77%,rgb(28_26_122/0.22)_83%,rgb(28_26_122/0.08)_89%,rgb(28_26_122/0)_95%)]" />
       </div>
 
       <div className="container relative">
@@ -117,7 +142,7 @@ export function Hero() {
             stockage sans le jargon des batteries.
           */}
           <Reveal mode="mount">
-            <h1 className="text-[30px] font-semibold leading-[1.12] tracking-[-0.025em] text-slate-900 sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
+            <h1 className="text-[30px] font-semibold leading-[1.12] tracking-[-0.025em] text-white sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
               Fini les délestages&nbsp;: l&apos;autonomie solaire pour{" "}
               <RotatingPhrases />
             </h1>
@@ -139,9 +164,9 @@ export function Hero() {
               Gras à l'intérieur du chapô : un point d'accroche pour le regard
               qui balaie sans lire.
             */}
-            <p className="mx-auto mt-4 max-w-xl text-lg font-normal leading-relaxed text-[#52606D] sm:mt-6 lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
+            <p className="mx-auto mt-4 max-w-xl text-lg font-normal leading-relaxed text-brand-200 sm:mt-6 lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
               Étude, installation et{" "}
-              <strong className="font-semibold text-slate-900">
+              <strong className="font-semibold text-white">
                 maintenance
               </strong>{" "}
               de systèmes solaires avec batteries — partout en RDC, depuis nos
@@ -159,7 +184,7 @@ export function Hero() {
           <Reveal mode="mount" delay={0.2}>
             <div className="mx-auto mt-8 flex max-w-sm flex-col items-center gap-5 sm:mx-0 sm:mt-10 sm:max-w-none sm:flex-row sm:justify-center sm:gap-7 lg:mt-14 lg:justify-start">
               <Button
-                variant="primary"
+                variant="primary-dark"
                 size="lg"
                 className="w-full sm:w-auto"
                 asChild
@@ -168,9 +193,9 @@ export function Hero() {
               </Button>
               <Link
                 href="/references"
-                className="group inline-flex items-center gap-2 whitespace-nowrap rounded-lg px-1 py-1 text-base font-semibold text-slate-600 underline-offset-4 transition-colors duration-200
-                hover:text-slate-900 hover:underline
-                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 sm:text-[17px]"
+                className="group inline-flex items-center gap-2 whitespace-nowrap rounded-lg px-1 py-1 text-base font-semibold text-brand-200 underline-offset-4 transition-colors duration-200
+                hover:text-white hover:underline
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-800 sm:text-[17px]"
               >
                 Découvrir nos réalisations
                 <ArrowRight className="size-[18px] transition-transform duration-200 group-hover:translate-x-1" />
