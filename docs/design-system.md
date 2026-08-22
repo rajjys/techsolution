@@ -71,6 +71,26 @@ noir et or » ne règle rien.
 Cette exception ne s'étend pas aux pages intérieures : `PageHero` reste clair
 (règle 6), sans quoi le site n'aurait plus de temps de repos.
 
+**Le voile suit la couleur du fond, pas l'inverse.** Un voile dense n'est pas
+une signature, c'est une contrainte de lisibilité : sur fond pâle, un titre
+sombre l'exige, et la photo se réduit alors à un cinquième de la largeur. Sur
+fond `brand-800` avec un titre blanc, la contrainte tombe — le blanc tient sur
+une photo à peine assombrie. Le hero d'accueil laisse donc près de la moitié de
+sa largeur à l'image. **Quand la surface change, le voile se recalcule** : le
+garder tel quel, c'était payer le prix d'un fond clair sans en avoir un.
+
+Corollaire de cadrage : le conteneur du hero est plus large que la photo, donc
+`object-cover` ne rogne **qu'en hauteur**. Régler `object-position` en
+horizontal n'y produit rien. C'est la valeur verticale qui décide de ce qu'on
+voit.
+
+**Une zone nette élargie pour les sujets larges.** Les `PageHero` restent clairs,
+donc leur voile reste dense et n'ouvre qu'à 67 %. Un sujet large — une équipe de
+trois, une centrale en enfilade — n'entre pas dans le tiers restant et se fait
+trancher par le dégradé. `HeroImage.reveal: "wide"` ouvre à 52 % ; la colonne de
+texte étant bornée à `max-w-lg`, elle n'atteint jamais ce point, et rien n'est
+posé sur la partie claire.
+
 **Une photo d'en-tête mérite sa place, ou elle disparaît.** Sous `lg`, la photo
 de `PageHero` était posée en fond derrière un voile à 97 % d'opacité : elle
 coûtait ses octets sans rien donner à voir. Le champ `HeroImage.mobile` tranche,
