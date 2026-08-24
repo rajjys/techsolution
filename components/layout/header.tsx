@@ -62,6 +62,12 @@ export function Header() {
    * commencer par une boîte. Fondue, la page s'ouvre d'un seul tenant et la
    * photo monte jusqu'au haut de la fenêtre.
    *
+   * ⚠️ La barre est **teintée à 80 %, pas transparente**. Entièrement
+   * transparente, les liens en `brand-200` tombaient à **1,26 : 1** là où la
+   * photo est claire — « À propos », qui se trouve au-dessus de la toiture
+   * ensoleillée, disparaissait purement et simplement. À 80 % ils remontent à
+   * 5,09 : 1. Un filet `white/10` marque la limite sans refermer la barre.
+   *
    * Les trois conditions comptent. **`scrolled`** : passé le premier
    * défilement l'en-tête surplombe du contenu clair, il doit y redevenir
    * blanc — et il réapparaît en remontant, donc l'état ne peut pas être figé
@@ -91,11 +97,12 @@ export function Header() {
         className={cn(
           "border-b transition-all duration-300",
           onHero
-            ? "border-transparent bg-transparent"
+            ? "border-white/10 bg-brand-800/80 backdrop-blur-md"
             : "bg-white/90 backdrop-blur-md",
-          scrolled
-            ? "border-slate-200/90 shadow-[0_8px_30px_-12px_rgba(11,25,44,0.12)]"
-            : "border-transparent",
+          !onHero &&
+            (scrolled
+              ? "border-slate-200/90 shadow-[0_8px_30px_-12px_rgba(11,25,44,0.12)]"
+              : "border-transparent"),
         )}
       >
         <div className="container flex h-[72px] items-center justify-between gap-4 xl:!max-w-[1304px]">

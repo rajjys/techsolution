@@ -53,8 +53,26 @@ export type HeroImage = {
  * inconciliables tant qu'ils partageaient la même surface.
  *
  * Il ne reste donc qu'un seul dispositif : un **masque en dégradé** sur le
- * bord gauche de l'image, étroit (10 % de sa largeur), dont le seul rôle est
- * de supprimer l'arête. Pas de voile : il n'y a plus rien à voiler.
+ * bord gauche de l'image. Pas de voile — il n'y a plus rien à voiler.
+ *
+ * Ce masque est écrit en **onze paliers**, et c'est le sujet. Sur 10 % de
+ * largeur il produisait une arête verticale franche : l'œil lit une ligne là
+ * où le code croit poser un fondu. Il court désormais sur 54 % de la largeur
+ * de l'image, en une courbe qui reste sous 4 % d'opacité jusqu'au bout de la
+ * colonne de texte, puis monte franchement. Le texte garde son fond net, et
+ * la photo naît sans couture.
+ *
+ * C'est le §10 appliqué : une rampe d'alpha à trois arrêts laisse voir sa
+ * cassure de pente, et se lit comme un bord.
+ *
+ * Contraste mesuré sur le rendu, pas estimé : le pire pixel de fond sous la
+ * ligne de chapô donne **6,7 : 1** sur les quatre en-têtes.
+ *
+ * ⚠️ Piège de mesure, consigné parce qu'il m'a fait décaler la courbe pour
+ * rien : échantillonner une bande *à hauteur de texte* moyenne les glyphes
+ * avec le fond et renvoie un contraste faussement mauvais — 4,0 : 1 là où le
+ * fond réel donne 6,8. Il faut sonder une bande **sans glyphe**, juste sous
+ * le dernier interligne, et y prendre le pixel le plus sombre.
  *
  * @see docs/design-system.md — « Rythme des fonds »
  */
@@ -104,9 +122,9 @@ export function PageHero({
             quoi la photo est atténuée deux fois et vire au fantôme.
           */}
           <div
-            className="absolute inset-0 -z-10 hidden lg:left-[48%] lg:block
-            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_10%)]
-            lg:[mask-image:linear-gradient(to_right,transparent_0%,black_10%)]"
+            className="absolute inset-0 -z-10 hidden lg:left-[42%] lg:block
+            lg:[-webkit-mask-image:linear-gradient(to_right,transparent_0%,#00000004_10%,#0000000d_16%,#0000001c_21%,#00000036_26%,#00000059_30%,#00000085_34%,#000000b3_38%,#000000d6_42%,#000000f0_47%,#000000ff_54%)]
+            lg:[mask-image:linear-gradient(to_right,transparent_0%,#00000004_10%,#0000000d_16%,#0000001c_21%,#00000036_26%,#00000059_30%,#00000085_34%,#000000b3_38%,#000000d6_42%,#000000f0_47%,#000000ff_54%)]"
             aria-hidden="true"
           >
             <Image
