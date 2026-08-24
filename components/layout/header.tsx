@@ -105,7 +105,15 @@ export function Header() {
               : "border-transparent"),
         )}
       >
-        <div className="container flex h-[72px] items-center justify-between gap-4 xl:!max-w-[1304px]">
+        {/*
+          Pleine largeur, et non `container`.
+          Le conteneur plafonne à 1240 px : sur un écran large, la photo du
+          hero touchait le bord droit tandis que le CTA s'arrêtait au milieu —
+          deux alignements concurrents sur la même ligne d'horizon. La barre
+          reprend donc les marges du conteneur sans en prendre le plafond :
+          la marque à gauche, tout le reste à droite, chacun au bord.
+        */}
+        <div className="flex h-[72px] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8 xl:px-10">
           <Link
             href="/"
             aria-label={`${site.name} — Accueil`}
@@ -214,7 +222,7 @@ export function Header() {
                 <div className="border-b border-slate-100 p-5">
                   <SheetTitle asChild>
                     <Link href="/" onClick={() => setMobileOpen(false)}>
-                      <Logo />
+                      <Logo alwaysWordmark />
                     </Link>
                   </SheetTitle>
                   <SheetDescription className="sr-only">
