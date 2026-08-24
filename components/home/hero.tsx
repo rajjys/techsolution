@@ -50,7 +50,14 @@ export function Hero() {
    * répondre « noir et or » par « presque noir et or » n'aurait rien réglé.
    */
   return (
-    <section className="relative isolate overflow-hidden bg-brand-800">
+    /*
+      Le hero remonte sous l'en-tête et se rend sa hauteur en rembourrage.
+      L'en-tête est `sticky` : il occupe donc 72 px dans le flux, et la barre
+      tranchait la plaque de marque à l'horizontale. Remonté, le fond et la
+      photo courent jusqu'au haut de la fenêtre, et l'en-tête — transparent
+      tant qu'on n'a pas défilé — s'y pose au lieu de la couper.
+    */
+    <section className="relative isolate -mt-[72px] overflow-hidden bg-brand-800 pt-[72px]">
       {/*
         Halos radiaux — le système les impose sur toute surface teintée ou
         sombre (§1, règle 2) : sans eux l'aplat paraît plat et bon marché.

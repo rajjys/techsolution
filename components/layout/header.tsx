@@ -53,6 +53,23 @@ export function Header() {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  /**
+   * L'en-tête se fond dans le hero — accueil uniquement, et seulement tant
+   * qu'on n'a pas défilé.
+   *
+   * Le hero est passé en `brand-800` : une barre blanche par-dessus tranchait
+   * la plaque de marque à l'horizontale et donnait à la page l'air de
+   * commencer par une boîte. Fondue, la page s'ouvre d'un seul tenant et la
+   * photo monte jusqu'au haut de la fenêtre.
+   *
+   * Les trois conditions comptent. **`scrolled`** : passé le premier
+   * défilement l'en-tête surplombe du contenu clair, il doit y redevenir
+   * blanc — et il réapparaît en remontant, donc l'état ne peut pas être figé
+   * sur la seule page. **`mobileOpen`** : le panneau est blanc, une barre
+   * transparente au-dessus laisserait un logo blanc sur blanc.
+   */
+  const onHero = pathname === "/" && !scrolled && !mobileOpen;
+
   return (
     <header
       className={cn(
@@ -72,7 +89,10 @@ export function Header() {
       {/* Barre principale */}
       <div
         className={cn(
-          "border-b bg-white/90 backdrop-blur-md transition-all duration-300",
+          "border-b transition-all duration-300",
+          onHero
+            ? "border-transparent bg-transparent"
+            : "bg-white/90 backdrop-blur-md",
           scrolled
             ? "border-slate-200/90 shadow-[0_8px_30px_-12px_rgba(11,25,44,0.12)]"
             : "border-transparent",
@@ -84,7 +104,26 @@ export function Header() {
             aria-label={`${site.name} — Accueil`}
             className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2"
           >
-            <Logo />
+            {/*
+              Sur l'accueil, les deux lockups sont rendus et l'on bascule en
+              opacité : changer le `src` au défilement laisserait un trou le
+              temps du téléchargement, juste au moment où l'œil y revient.
+            */}
+            {pathname === "/" ? (
+              <span className="relative block">
+                <Logo className={cn("transition-opacity duration-300", onHero && "opacity-0")} />
+                <Logo
+                  onDark
+                  aria-hidden={!onHero}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-300",
+                    onHero ? "opacity-100" : "opacity-0",
+                  )}
+                />
+              </span>
+            ) : (
+              <Logo />
+            )}
           </Link>
 
           {/*
@@ -106,21 +145,46 @@ export function Header() {
                   aria-current={isActive(link.href) ? "page" : undefined}
                   className={cn(
                     "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
-                    isActive(link.href)
-                      ? "text-slate-900"
-                      : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
+                    onHero
+                      ? isActive(link.href)
+                        ? "text-white"
+                        : "text-brand-200 hover:bg-white/10 hover:text-white"
+                      : isActive(link.href)
+                        ? "text-slate-900"
+                        : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
                   )}
                 >
                   {link.label}
                   {isActive(link.href) ? (
-                    <span className="absolute inset-x-4 -bottom-px h-[3px] rounded-full bg-brand-600" />
+                    <span
+                      className={cn(
+                        "absolute inset-x-4 -bottom-px h-[3px] rounded-full",
+                        onHero ? "bg-solar-500" : "bg-brand-600",
+                      )}
+                    />
                   ) : null}
                 </Link>
               ))}
             </nav>
 
             <div className="hidden items-center lg:flex">
-              <Button variant="nav" size="sm" className="py-3 text-base" asChild>
+              {/*
+                Blanc et non `solar` : deux aplats jaunes au-dessus de la
+                ligne de flottaison mettraient le bouton de mobilier en
+                concurrence avec l'appel du hero, et le regard irait au coin
+                haut-droit au lieu du titre (§2 — un seul aplat saturé par
+                écran).
+              */}
+              <Button
+                variant="nav"
+                size="sm"
+                className={cn(
+                  "py-3 text-base",
+                  onHero &&
+                    "bg-white text-brand-950 hover:bg-white hover:text-brand-950 focus-visible:ring-offset-brand-800",
+                )}
+                asChild
+              >
                 <Link href="/contact">Demander un devis</Link>
               </Button>
             </div>
@@ -134,7 +198,9 @@ export function Header() {
                   className="lg:hidden"
                   aria-label="Ouvrir le menu de navigation"
                 >
-                  <Menu className="!size-6 text-brand-800" />
+                  <Menu
+                    className={cn("!size-6", onHero ? "text-white" : "text-brand-800")}
+                  />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="flex flex-col p-0">
