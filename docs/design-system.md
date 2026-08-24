@@ -84,12 +84,32 @@ Corollaire de cadrage : le conteneur du hero est plus large que la photo, donc
 horizontal n'y produit rien. C'est la valeur verticale qui décide de ce qu'on
 voit.
 
-**Une zone nette élargie pour les sujets larges.** Les `PageHero` restent clairs,
-donc leur voile reste dense et n'ouvre qu'à 67 %. Un sujet large — une équipe de
-trois, une centrale en enfilade — n'entre pas dans le tiers restant et se fait
-trancher par le dégradé. `HeroImage.reveal: "wide"` ouvre à 52 % ; la colonne de
-texte étant bornée à `max-w-lg`, elle n'atteint jamais ce point, et rien n'est
-posé sur la partie claire.
+**Le texte et la photo d'en-tête ne partagent pas la même surface.** Dans un
+`PageHero`, la photo occupe sa moitié droite et touche le bord de l'écran ; le
+texte reste sur la grille du conteneur, sur `brand-50` franc. Seul subsiste un
+masque étroit sur le bord gauche de l'image, dont l'unique rôle est de supprimer
+l'arête — il n'y a plus de voile, car il n'y a plus rien à voiler.
+
+C'est la conclusion d'une impasse, et elle mérite d'être retenue : tant que le
+texte et la photo partagent la surface, densifier le voile rend le texte lisible
+et la photo invisible, l'ouvrir fait exactement l'inverse. La colonne de texte
+finit à 42–47 % de l'écran ; tout dégradé qui commence à descendre avant ce point
+rend le chapô illisible, et tout dégradé qui tient au-delà écrase la photo. Trois
+réglages successifs n'ont fait que déplacer le problème. **Un réglage ne résout
+pas un conflit de surface.**
+
+**L'en-tête se fond dans le hero — accueil et sommet de page seulement.** Le
+hero étant en `brand-800`, une barre blanche par-dessus tranchait la plaque de
+marque à l'horizontale. Fondu, l'ensemble s'ouvre d'un seul tenant. L'en-tête
+étant `sticky`, il occupe sa hauteur dans le flux : c'est au hero de la reprendre
+en marge négative et de se la rendre en rembourrage.
+
+L'état fondu est gouverné par trois conditions, et aucune n'est décorative :
+la page (`/`), l'absence de défilement — l'en-tête réapparaît en remontant,
+au-dessus du contenu clair — et la fermeture du menu mobile, dont le panneau est
+blanc. Le CTA y passe en **blanc et jamais en `solar`** : deux aplats jaunes
+au-dessus de la ligne de flottaison mettraient le mobilier en concurrence avec
+l'appel du hero.
 
 **Une photo d'en-tête mérite sa place, ou elle disparaît.** Sous `lg`, la photo
 de `PageHero` était posée en fond derrière un voile à 97 % d'opacité : elle
