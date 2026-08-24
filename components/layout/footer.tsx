@@ -105,7 +105,7 @@ export function Footer() {
           de contrepoids à droite, séparée par un filet plutôt que par un
           alignement à droite qui déchirerait le texte.
         */}
-        <div className="grid gap-10 border-b border-white/10 py-12 lg:grid-cols-[1.55fr_1fr] lg:gap-0 lg:py-20">
+        <div className="grid gap-10 border-b border-white/10 py-12 lg:grid-cols-[1.55fr_1fr] lg:gap-0 lg:py-14">
           <div className="lg:pr-14 xl:pr-20">
             <Eyebrow onDark>Parlons de votre projet</Eyebrow>
             <h2 className="mt-5 text-balance text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[42px] lg:leading-[1.08]">
@@ -182,7 +182,12 @@ export function Footer() {
           filets ensuite : même dispositif que la section « Ce que nous
           offrons », qui divise déjà ses quatre engagements.
         */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 lg:grid-cols-3 lg:gap-0 lg:divide-x lg:divide-white/10 lg:py-16">
+        {/*
+          Colonnes inégales, parce que leur contenu l'est : deux listes de
+          liens courts n'ont pas besoin du même tiers qu'un bloc de deux
+          fiches d'adresse.
+        */}
+        <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-12 lg:grid-cols-[0.8fr_1fr_1.75fr] lg:gap-0 lg:divide-x lg:divide-white/10 lg:py-12">
           {/* Navigation */}
           <nav aria-label="Navigation pied de page" className="lg:pr-12">
             <ColumnTitle>Navigation</ColumnTitle>
@@ -226,7 +231,15 @@ export function Footer() {
           {/* Implantations — deux fiches, le siège marqué en solaire */}
           <div className="col-span-2 lg:col-span-1 lg:pl-12">
             <ColumnTitle>Nos bureaux</ColumnTitle>
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            {/*
+              Côte à côte, y compris sur desktop. Empilées (`lg:grid-cols-1`),
+              les deux fiches faisaient 262 px et fixaient à elles seules la
+              hauteur des trois colonnes : Navigation se retrouvait avec 151 px
+              de vide en pied. Côte à côte, elles font 131 px, et c'est
+              Expertises — la plus longue des trois listes — qui donne la
+              hauteur. La colonne reçoit la largeur qu'il faut ci-dessus.
+            */}
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
               {offices.map((office) => (
                 <li key={office.city}>
                   {/*
@@ -286,8 +299,16 @@ export function Footer() {
           </div>
         </div>
 
-        {/* ── Barre légale ────────────────────────────────────────────── */}
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-7 text-center text-[13px] text-brand-200 sm:text-sm md:flex-row md:text-left lg:py-8">
+        {/*
+          ── Barre légale ──────────────────────────────────────────────
+
+          Elle dégage le coin bas-droit, où le bouton WhatsApp flottant est
+          ancré. Il est `fixed` : arrivé en bas de page, il se pose sur le
+          dernier bloc de cette barre et en tronquait la fin. Sous `md` la
+          barre est empilée, donc c'est un rembourrage bas qu'il lui faut ;
+          au-delà elle est en ligne, et c'est la marge droite du dernier bloc.
+        */}
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-white/10 py-7 pb-24 text-center text-[13px] text-brand-200 sm:text-sm md:flex-row md:pb-7 md:text-left lg:py-8 lg:pb-8">
           <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:justify-start">
             <span>
               © {year}{" "}
@@ -332,7 +353,7 @@ export function Footer() {
               </span>
             ))}
           </p>
-          <p className="flex items-center gap-2.5">
+          <p className="flex items-center gap-2.5 md:pr-16 lg:pr-20">
             <span
               className="inline-block size-2 shrink-0 rounded-full bg-solar-500"
               aria-hidden="true"

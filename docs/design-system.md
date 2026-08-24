@@ -111,6 +111,12 @@ blanc. Le CTA y passe en **blanc et jamais en `solar`** : deux aplats jaunes
 au-dessus de la ligne de flottaison mettraient le mobilier en concurrence avec
 l'appel du hero.
 
+**Un élément flottant réserve son coin.** Le bouton WhatsApp est `fixed` en
+bas à droite : arrivé en bas de page, il se pose sur ce qui s'y trouve. C'est
+donc au dernier bloc de la page — la barre légale du pied de page — de dégager
+ce coin, en rembourrage bas quand il est empilé, en marge droite quand il est
+en ligne. Un élément fixe ne se déplace pas ; c'est le flux qui lui fait place.
+
 **Une photo d'en-tête mérite sa place, ou elle disparaît.** Sous `lg`, la photo
 de `PageHero` était posée en fond derrière un voile à 97 % d'opacité : elle
 coûtait ses octets sans rien donner à voir. Le champ `HeroImage.mobile` tranche,
