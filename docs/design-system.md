@@ -240,11 +240,18 @@ lien entre un service et sa catégorie de réalisation est porté par la donnée
 
 | Niveau | Taille |
 |--------|--------|
-| `h1` de page | 30 → 56 px |
+| `h1` de page (`PageHero`) | 30 → 56 px |
+| `h1` du hero d'accueil | 36 → 80 px |
 | Titre de section (`size="section"`) | 26 → 42 px |
 | Titre de bloc répété (`size="block"`) | 22 → 32 px |
 | Titre de carte | 17 → 20 px |
 | Chapô | 15 → 18 px |
+
+⚠️ Le chapô du hero d'accueil était à **18 px dès le mobile** — le haut de son
+échelle appliqué au plus petit écran. Avec un titre à 30 px, les deux blocs
+pesaient presque le même poids et le titre ne se détachait plus. Un chapô se
+lit **par le bas de son échelle sur mobile**, pas par le haut : c'est là que
+l'écart avec le titre est le plus étroit, donc le plus facile à perdre.
 | Corps de carte | 14 px, `leading-relaxed` |
 
 Le surtitre (`Eyebrow`) est le seul emploi structurel du solaire : filet de

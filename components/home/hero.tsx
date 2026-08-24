@@ -155,12 +155,27 @@ export function Hero() {
             stockage sans le jargon des batteries.
           */}
           <Reveal mode="mount">
-            <h1 className="text-[30px] font-semibold leading-[1.12] tracking-[-0.025em] text-white sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
+            <h1 className="text-[36px] font-semibold leading-[1.12] tracking-[-0.025em] text-white sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
               Fini les délestages&nbsp;: l&apos;autonomie solaire pour{" "}
               <RotatingPhrases />
             </h1>
           </Reveal>
 
+          {/*
+            Échelle mobile : titre 36 px, chapô 16 px.
+            Le titre était à 30 px et le chapô à 18 px — soit le **haut** de
+            l'échelle de chapô du §4 (« 15 → 18 px ») appliqué au plus petit
+            écran. Les deux blocs pesaient presque le même poids et le titre ne
+            se détachait plus. À 36/16 la hiérarchie revient, et « vos
+            entreprises » retombe sur sa propre ligne — c'est précisément la
+            chute que ce hero cherche à produire.
+
+            36 px et pas plus : à 38 px, « pour » reste seul sur une ligne. Les
+            trois phrases rotatives tiennent sur une ligne à 36 px dès 360 px
+            de large (la plus longue, « vos sites industriels », mesure 291 px
+            pour 320 px utiles), donc la hauteur réservée ne bouge pas et il
+            n'y a aucun décalage de mise en page.
+          */}
           <Reveal mode="mount" delay={0.1}>
             {/*
               Le chapô prend les créneaux que le titre ne peut pas porter : le
@@ -177,7 +192,7 @@ export function Hero() {
               Gras à l'intérieur du chapô : un point d'accroche pour le regard
               qui balaie sans lire.
             */}
-            <p className="mx-auto mt-4 max-w-xl text-lg font-normal leading-relaxed text-brand-200 sm:mt-6 lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
+            <p className="mx-auto mt-4 max-w-xl text-base font-normal leading-relaxed text-brand-200 sm:mt-6 sm:text-lg lg:mx-0 lg:max-w-xl lg:text-[22px] lg:leading-[32px]">
               Étude, installation et{" "}
               <strong className="font-semibold text-white">
                 maintenance
