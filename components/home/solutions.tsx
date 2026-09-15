@@ -17,7 +17,7 @@ export function Solutions() {
   return (
     <section
       aria-labelledby="solutions-title"
-      className="relative isolate bg-[#F4F7FE] pb-14 pt-[9.5rem] sm:pb-20 sm:pt-[11rem] lg:pb-28 lg:pt-[16rem]"
+      className="relative isolate bg-[#F4F7FE] pb-14 pt-[9.5rem] sm:pb-20 sm:pt-[11rem] lg:pb-28 lg:pt-[12rem]"
     >
       {/* Radiance bleue pleine largeur */}
       <div
@@ -37,7 +37,7 @@ export function Solutions() {
             <div className="lg:sticky lg:top-28">
               <Reveal>
                 <div className="flex items-center gap-4">
-                  <Eyebrow>Nos solutions</Eyebrow>
+                  <Eyebrow>Notre expertise</Eyebrow>
                   <span
                     className="h-px flex-1 border-t border-dashed border-slate-300"
                     aria-hidden="true"
@@ -62,9 +62,6 @@ export function Solutions() {
 
               <Reveal delay={0.1}>
                 <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4 lg:mt-10">
-                  <Button variant="primary" asChild>
-                    <Link href="/contact">Obtenez un devis gratuit</Link>
-                  </Button>
                   <Button variant="outline-strong" className="group" asChild>
                     <Link href="/services">
                       Tous nos services
