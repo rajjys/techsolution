@@ -12,7 +12,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
  * (« Éliminez les coupures », etc.) formaient une phrase autonome qui
  * répétait la première ; l'orange y décorait au lieu de désigner.
  */
-const PHRASES = ["vos entreprises", "vos foyers", "vos sites industriels"] as const;
+const PHRASES = ["vos maisons", "vos entreprises", "vos sites industriels"] as const;
 
 /** 4,2 s : le temps de lire, sans que l'œil soit rappelé sans cesse vers le haut. */
 const INTERVAL_MS = 4200;

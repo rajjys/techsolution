@@ -110,7 +110,7 @@ don't reintroduce the radix one.
 **Homepage `app/page.tsx` — l'ordre est un entonnoir, il est intentionnel :**
 `Hero → Authority → Solutions → Offerings → CaseStudiesReach → Maintenance → CostFrame → KitsSelector`
 
-1. `Hero` — « Fini les délestages : l'autonomie solaire pour **[vos entreprises /
+1. `Hero` — « Installation de systèmes solaires pour l’autonomie énergétique de **[vos entreprises /
    vos foyers / vos sites industriels]** », la rotation étant la chute de la
    phrase, en or, juste au-dessus du CTA jaune. Un seul bouton ; le secondaire
    est un lien texte. Photo masquée sous `lg`. ⚠️ **Ne pas redessiner le hero

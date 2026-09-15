@@ -133,7 +133,7 @@ export function Hero() {
       </div>
 
       <div className="container relative">
-        <div className="mx-auto max-w-3xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-52 lg:pt-14 lg:text-left xl:-ml-8">
+        <div className="mx-auto max-w-2xl pb-36 pt-8 text-center sm:pb-40 md:pt-12 lg:mx-0 lg:max-w-6xl lg:pb-52 lg:pt-14 lg:text-left xl:-ml-8">
           {/*
             Une seule phrase, dont la rotation est la chute — comme le modèle,
             où la couleur d'action tombe sur le groupe nominal qui achève le titre
@@ -155,8 +155,8 @@ export function Hero() {
             stockage sans le jargon des batteries.
           */}
           <Reveal mode="mount">
-            <h1 className="text-[36px] font-semibold leading-[1.12] tracking-[-0.025em] text-white sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[680px] lg:text-[80px] lg:leading-[1.05] lg:tracking-[-0.03em]">
-              Fini les délestages&nbsp;: l&apos;autonomie solaire pour{" "}
+            <h1 className="text-[36px] font-semibold leading-[1.12] tracking-[-0.025em] text-white sm:text-[42px] sm:leading-[1.1] md:text-6xl lg:max-w-[760px] lg:text-[68px] lg:leading-[1.05] lg:tracking-[-0.03em]">
+              Installation de systèmes solaires pour l’autonomie énergétique de{" "}
               <RotatingPhrases />
             </h1>
           </Reveal>
@@ -197,8 +197,8 @@ export function Hero() {
               <strong className="font-semibold text-white">
                 maintenance
               </strong>{" "}
-              de systèmes solaires avec batteries — partout en RDC, depuis nos
-              bases de {baseCities}.
+              de systèmes solaires avec batteries lithium — partout en RDC, depuis nos
+              bases à {baseCities}.
             </p>
           </Reveal>
 
