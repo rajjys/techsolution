@@ -50,14 +50,13 @@ export function Solutions() {
                 >
                   Les délestages à répétition, le carburant qui grimpe&nbsp;:{" "}
                   <span className="text-brand-600">
-                    votre courant, lui, ne s&apos;arrête pas.
+                    gardez votre activité sous tension.
                   </span>
                 </h2>
                 <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-slate-600 sm:text-base md:text-lg">
                   De l&apos;étude de charge jusqu&apos;au contrat d&apos;entretien,
-                  nous installons des systèmes solaires autonomes dimensionnés
-                  pour tenir la nuit et la saison des pluies — chez vous comme
-                  sur vos sites.
+                  nous installons des systèmes solaires et de stockage dimensionnés selon vos besoins
+                   — pour les foyers, entreprises et sites institutionnels, partout en RDC.
                 </p>
               </Reveal>
 

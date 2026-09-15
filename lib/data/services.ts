@@ -49,18 +49,18 @@ export const services: Service[] = [
     title: "Énergie solaire photovoltaïque",
     shortTitle: "Énergie solaire",
     outcome:
-      "Ne subissez plus les coupures, chez vous comme au bureau.",
+      "Gardez votre maison ou votre entreprise alimentée, même pendant les coupures.",
     delivery:
-      "Centrales et kits dimensionnés sur audit de charge, batteries 100 % lithium.",
+      "Des systemes dimensionnés sur vos besoins, avec stockage lithium pour les coupures prolongées",
     excerpt:
-      "Centrales et kits solaires pour sites domestiques, industriels et institutionnels — de l'étude au raccordement.",
+      "Systemes solaires pour foyers, entreprises et sites institutionnels — de l'étude au raccordement.",
     description:
       "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Une centrale solaire dimensionnée sur vos charges réelles inverse la logique : elle produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
     icon: Sun,
     capabilities: [
       "Audit énergétique et dimensionnement sur mesure",
-      "Centrales solaires pour bâtiments publics et privés",
-      "Kits solaires professionnels pour bureaux et ONG",
+      "Systemes solaires pour bâtiments publics et privés",
+      "Kits solaires industriels pour bureaux et ONG",
       "Éclairage public et solutions communautaires",
       "Mise en service, formation et transfert de compétences",
     ],
@@ -81,7 +81,7 @@ export const services: Service[] = [
     outcome:
       "Gardez vos équipements critiques allumés, 24 h/24.",
     delivery:
-      "Onduleurs hybrides, parcs batteries lithium et supervision, même hors réseau.",
+      "Onduleurs hybrides, parcs batteries lithium et supervision",
     excerpt:
       "Onduleurs hybrides et parcs batteries lithium pour une continuité électrique 24h/24, même hors réseau.",
     description:
@@ -107,9 +107,9 @@ export const services: Service[] = [
     title: "Infrastructure électrique industrielle",
     shortTitle: "Infrastructure électrique",
     outcome:
-      "Arrêtez de remplacer du matériel grillé par le réseau.",
+      "Installations conformes et protégées contre les surtensions et coupures brusques.",
     delivery:
-      "Tableaux, distribution basse tension, protection foudre et mise en conformité.",
+      "Tableaux, distribution basse tension, protection anti-foudre et mise en conformité.",
     excerpt:
       "Tableaux, distribution basse tension, protection contre les surtensions et mise en conformité des bâtiments.",
     description:
@@ -261,7 +261,7 @@ export const faqs = [
   {
     question: "Quels types de clients accompagnez-vous ?",
     answer:
-      "Des organisations internationales (MONUSCO, CARE, Save the Children, ALIMA), des banques (Afriland First Bank, CADECO), des programmes publics (PDL-145T), des médias et des entreprises privées. Nos process répondent aux exigences documentaires des bailleurs et institutions.",
+      "Nous accompagnons les particuliers, les entreprises, les organisations internationales, les banques, les médias et les institutions publiques. Nos solutions vont des installations solaires résidentielles aux systèmes de forte capacité pour les bureaux, commerces, sites industriels et infrastructures critiques.",
   },
   {
     question: "Quels équipements installez-vous ?",

@@ -91,7 +91,7 @@ export function Authority() {
             <dl className="flex flex-wrap justify-center gap-x-10 gap-y-4 lg:justify-start">
               {[
                 { value: "17+", label: "projets d'envergure" },
-                { value: "60+", label: "ménages alimentés" },
+                { value: "60+", label: "foyers alimentés" },
               ].map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse">
                   <dt className="mt-1 text-sm font-medium text-slate-500">
