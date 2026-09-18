@@ -55,7 +55,7 @@ export const services: Service[] = [
     excerpt:
       "Systemes solaires pour foyers, entreprises et sites institutionnels — de l'étude au raccordement.",
     description:
-      "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Une centrale solaire dimensionnée sur vos charges réelles inverse la logique : elle produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
+      "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Un système solaire dimensionnée sur vos charges réelles inverse la logique : elle produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
     icon: Sun,
     capabilities: [
       "Audit énergétique et dimensionnement sur mesure",
@@ -66,13 +66,13 @@ export const services: Service[] = [
     ],
     references: [
       "Bureau administratif du territoire de Mahagi — projet PDL-145T",
-      "Banque CADECO Mahagi (rénovation + centrale solaire)",
+      "Banque CADECO Mahagi (rénovation + système solaire)",
       "Salles du royaume LTJ — Goma & Bunia",
       "Bureaux CARE, ALIMA & LSC — Bunia et Numbi",
     ],
     projectCategory: "Solaire",
     image: "/photos/drone-centrale-toiture.webp",
-    imageAlt: `Vue aérienne d'une centrale solaire ${site.name} en toiture, en RDC`,
+    imageAlt: `Vue aérienne d'un système solaire ${site.name} en toiture, en RDC`,
   },
   {
     slug: "backup-stockage",

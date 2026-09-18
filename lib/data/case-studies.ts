@@ -44,7 +44,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     slug: "pdl-145t-mahagi",
-    title: "Centrale solaire du bureau administratif du territoire",
+    title: "Système solaire du bureau administratif du territoire",
     client: "Programme PDL-145T — État congolais",
     sector: "Secteur public",
     city: "Mahagi",
@@ -60,7 +60,7 @@ export const caseStudies: CaseStudy[] = [
     challenge:
       "Assurer une alimentation électrique fiable au bureau administratif du territoire de Mahagi, dans une zone où le réseau public est absent ou instable, pour garantir la continuité du service public.",
     solution:
-      "Conception et installation d'une centrale solaire hybride dimensionnée sur les charges réelles du bâtiment, avec stockage et supervision, dans le cadre du programme national PDL-145T.",
+      "Conception et installation d'un système solaire hybride dimensionnée sur les charges réelles du bâtiment, avec stockage et supervision, dans le cadre du programme national PDL-145T.",
     results: [
       "Continuité de service du bureau administratif",
       "Autonomie énergétique sans groupe électrogène",
@@ -69,7 +69,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "cadeco-mahagi",
-    title: "Rénovation électrique & centrale solaire de l'agence bancaire",
+    title: "Rénovation électrique & système solaire de l'agence bancaire",
     client: "CADECO",
     sector: "Banque publique",
     city: "Mahagi",
@@ -79,13 +79,13 @@ export const caseStudies: CaseStudy[] = [
     image: "/photos/chemin-cables-facade.webp",
     imageAlt: "Chemins de câbles et coffret de protection dans un bâtiment tertiaire",
     summary:
-      "Rénovation complète de l'infrastructure électrique et installation d'une centrale solaire pour l'agence CADECO de Mahagi.",
+      "Rénovation complète de l'infrastructure électrique et installation d'un système solaire pour l'agence CADECO de Mahagi.",
     lon: 30.98,
     lat: 2.34,
     challenge:
       "Moderniser une agence bancaire en activité, dont l'installation électrique vieillissante ne garantissait plus la continuité d'exploitation ni la sécurité des équipements.",
     solution:
-      "Rénovation de l'infrastructure électrique et déploiement d'une centrale solaire, réalisés sans interrompre l'activité de l'agence.",
+      "Rénovation de l'infrastructure électrique et déploiement d'un système solaire, réalisés sans interrompre l'activité de l'agence.",
     results: [
       "Continuité d'exploitation bancaire assurée",
       "Protection des équipements sensibles",
@@ -152,7 +152,7 @@ export const caseStudies: CaseStudy[] = [
     category: "Solaire",
     spec: "Kit ≈ 3 kVA · Off-grid",
     image: "/photos/toiture-residence-duo.webp",
-    imageAlt: "Deux techniciens sur une centrale solaire en toiture de résidence",
+    imageAlt: "Deux techniciens sur un système solaire en toiture de résidence",
     summary:
       "Kit solaire alimentant le bureau de LSC à Numbi, en zone reculée du Sud-Kivu, pour une autonomie totale.",
     lon: 28.85,

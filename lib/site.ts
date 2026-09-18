@@ -1,5 +1,5 @@
 /**
- * Configuration centrale du site — TECH SOLUTION RDC.
+ * Configuration système du site — TECH SOLUTION RDC.
  * Données issues de la farde officielle de l'entreprise (docs/FARDE TECH SOLUTION.pdf).
  */
 export const site = {

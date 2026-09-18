@@ -41,7 +41,7 @@ export function Engagement() {
       <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:left-0 lg:aspect-auto lg:w-1/2">
         <Image
           src="/photos/nzulo-station-pompage.webp"
-          alt="Centrale solaire de la station de traitement d'eau de Nzulo, Nord-Kivu"
+          alt="Système solaire de la station de traitement d'eau de Nzulo, Nord-Kivu"
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"

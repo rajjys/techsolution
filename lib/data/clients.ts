@@ -135,7 +135,7 @@ export const clients: Client[] = [
     sector: "Banque publique",
     sectorGroup: "banque",
     city: "Mahagi",
-    services: ["Rénovation électrique + centrale solaire"],
+    services: ["Rénovation électrique + Système solaire"],
     featured: true,
   },
   {
@@ -145,7 +145,7 @@ export const clients: Client[] = [
     sector: "Programme national de développement",
     sectorGroup: "public",
     city: "Mahagi",
-    services: ["Centrale solaire du bureau administratif"],
+    services: ["Système solaire du bureau administratif"],
     featured: true,
   },
   {
@@ -164,7 +164,7 @@ export const clients: Client[] = [
     sector: "Organisation privée",
     sectorGroup: "prive",
     city: "Bunia, Butembo & Goma",
-    services: ["Backups & centrales solaires (4 sites)"],
+    services: ["Backups & systèmes solaires (4 sites)"],
   },
   {
     name: "New AZ Building",
@@ -202,7 +202,7 @@ export type Project = {
 /** 17 réalisations documentées dans la farde de l'entreprise. */
 export const projects: Project[] = [
   {
-    title: "Centrale solaire du bureau administratif du territoire (PDL-145T)",
+    title: "Système solaire du bureau administratif du territoire (PDL-145T)",
     client: "État congolais — programme PDL-145T",
     sectorGroup: "public",
     caseStudy: "pdl-145t-mahagi",
@@ -211,7 +211,7 @@ export const projects: Project[] = [
     category: "Solaire",
   },
   {
-    title: "Rénovation électrique et centrale solaire de l'agence bancaire",
+    title: "Rénovation électrique et système solaire de l'agence bancaire",
     client: "CADECO",
     sectorGroup: "banque",
     caseStudy: "cadeco-mahagi",

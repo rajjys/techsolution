@@ -140,7 +140,7 @@ export default async function CaseStudyPage({
                 </p>
                 {/*
                   Préqualifié par la catégorie de la réalisation : la fiche
-                  d'une centrale solaire ouvre l'entonnoir sur le solaire.
+                  d'un Système solaire ouvre l'entonnoir sur le solaire.
                   Le lien est porté par la donnée (Service.projectCategory),
                   pas par une table de correspondance parallèle.
                 */}

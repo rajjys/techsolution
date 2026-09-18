@@ -151,7 +151,7 @@ export default function ProduitsPage() {
                     Aucun palier ne correspond ?
                   </h3>
                   <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-                    Centrales hybrides, parcs batteries, triphasé sur mesure :
+                    Systèmes solaires hybrides, parcs batteries, triphasé sur mesure :
                     nous dimensionnons hors catalogue à partir de vos charges
                     réelles et de vos contraintes d&apos;implantation.
                   </p>
