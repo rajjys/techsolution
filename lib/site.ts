@@ -97,14 +97,14 @@ export const offices: Office[] = [
   {
     city: "Bunia",
     role: "Siège",
-    street: "Boulevard de la Libération, près du Rond-Point Zéro",
+    street: "32 Avenue Bakuwasa, Quartier Hoho, Commune de Mbunya",
     region: "Province de l'Ituri",
     headquarters: true,
   },
   {
     city: "Kinshasa",
     role: "Antenne",
-    street: "Limete, 2ᵉ Rue Industrielle",
+    street: "Avenue Mbomu numéro 157 commune de Kinshasa",
     region: "Ville-province de Kinshasa",
   },
 ];

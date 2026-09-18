@@ -7,6 +7,6 @@ export const contentType = OG_CONTENT_TYPE;
 export default async function Image() {
   return ogImage({
     eyebrow: "Nos réalisations",
-    title: "17 installations en service, pour 11 organisations.",
+    title: "20+ installations d'envergure, 60+ ménages installés",
   });
 }

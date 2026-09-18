@@ -29,18 +29,17 @@ export function CaseStudiesReach() {
             Preuves sur le terrain
           </Eyebrow>
           <h2 className="mx-auto mt-6 text-balance text-[26px] font-bold leading-[1.15] text-white sm:text-3xl sm:leading-[1.12] md:text-4xl lg:text-[46px] lg:leading-[1.08]">
-            Des ONG, des banques et des programmes d&apos;État nous confient
-            leur courant.
+            Des foyers aux grandes organisations, nous installons votre autonomie énergétique.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-200 sm:text-base md:text-lg">
             <span className="font-semibold text-solar-400">
-              {projects.length} installations
+              {projects.length + 60 }+ installations 
             </span>{" "}
             en service dans{" "}
             <span className="font-semibold text-solar-400">
               {site.provincesDelivered} provinces
             </span>{" "}
-            — trouvez celle qui ressemble le plus à votre situation.
+            — Découvrez nos installations, du solaire résidentiel aux projets de grande envergure.
           </p>
         </Reveal>
 

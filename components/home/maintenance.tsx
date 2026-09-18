@@ -95,7 +95,7 @@ export function Maintenance() {
                 id="entretien-titre"
                 className="mt-5 text-balance text-[26px] font-bold leading-[1.15] text-slate-900 sm:text-[30px] lg:text-[34px] lg:leading-[1.12]"
               >
-                L&apos;installation n&apos;est pas la fin du chantier.{" "}
+                L&apos;installation n&apos;est pas la fin de la collaboration.{" "}
                 <span className="text-brand-600">
                   C&apos;est le début du contrat.
                 </span>
