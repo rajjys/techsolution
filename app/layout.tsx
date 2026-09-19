@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/next';
 
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -143,6 +144,7 @@ export default function RootLayout({
         <Header />
         <main id="contenu">{children}</main>
         <GoogleAnalytics gaId="G-BM0WRKQTVY" />
+        <Analytics />
         <Footer />
         <WhatsAppFab />
         <script
