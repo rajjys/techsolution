@@ -38,8 +38,8 @@ export function middleware(_request: NextRequest) {
         <main>
           <h1>Service temporarily unavailable</h1>
           <p>
-            This website is temporarily unavailable.
-            Please contact the service provider for further information.
+            Ce site web est temporairement indisponible.
+            Veuillez contacter le prestataire de services pour plus d'informations.
           </p>
         </main>
       </body>
