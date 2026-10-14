@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Gauge, MapPin } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, placeLabel } from "@/lib/utils";
 import type { CaseStudy } from "@/lib/data/case-studies";
 import { caseStudyHref } from "@/lib/routes";
 
@@ -48,6 +48,7 @@ export function CaseStudyCard({
             : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 32vw"
         }
         className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+        style={study.imagePosition ? { objectPosition: study.imagePosition } : undefined}
       />
       <div
         className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/85 via-40% to-brand-950/15"
@@ -97,7 +98,7 @@ export function CaseStudyCard({
           <span className="inline-flex min-w-0 items-center gap-1.5 text-sm font-semibold text-solar-400">
             <MapPin className="size-4 shrink-0" aria-hidden="true" />
             <span className="truncate">
-              {study.city} — {study.province}
+              {placeLabel(study.city, study.province)}
             </span>
           </span>
           <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-white">

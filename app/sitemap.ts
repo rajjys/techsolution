@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import { caseStudies } from "@/lib/data/case-studies";
 import { kits } from "@/lib/data/kits";
 import { productCategories } from "@/lib/data/products";
-import { kitHref, productCategoryHref } from "@/lib/routes";
+import { caseStudyHref, kitHref, productCategoryHref } from "@/lib/routes";
 import { site } from "@/lib/site";
 
 /**
@@ -27,8 +27,6 @@ const REVISED: Record<string, string> = {
   "/confidentialite": "2026-08-18",
 };
 
-/** Révision des études de cas — affirmations non étayées retirées en octobre. */
-const CASE_STUDIES_REVISED = "2026-10-14";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = Object.entries(REVISED).map(
@@ -48,14 +46,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
 
   /*
-   * Les six études de cas. Elles étaient absentes : c'est pourtant le seul
+   * Les études de cas. Elles étaient absentes : c'est pourtant le seul
    * contenu du site qui associe une ville réelle à une réalisation réelle,
    * donc exactement ce qui sert la recherche locale. Elles sont liées depuis
    * /references, mais un lien ne vaut pas une déclaration.
    */
   const studies: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${site.url}/references/${study.slug}`,
-    lastModified: new Date(CASE_STUDIES_REVISED),
+    url: `${site.url}${caseStudyHref(study.slug)}`,
+    /* La date de l'étude elle-même : en réviser une ne rajeunit pas les autres. */
+    lastModified: new Date(study.revised),
     changeFrequency: "yearly",
     priority: 0.7,
   }));
