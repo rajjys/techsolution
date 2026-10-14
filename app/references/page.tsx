@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight, Download, MapPin } from "lucide-react";
 
@@ -6,7 +7,10 @@ import { Glow } from "@/components/glow";
 import { Reveal } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
 import { CaseStudyShowcase } from "@/components/references/case-study-showcase";
-import { RealisationsList } from "@/components/references/realisations-list";
+import {
+  RealisationsList,
+  RealisationsListFromUrl,
+} from "@/components/references/realisations-list";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
@@ -18,23 +22,19 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = pageMetadata({
   path: "/references",
   /*
-   * Les noms de clients sont l'actif de crédibilité du site : ils passent dans
-   * le titre, où ils sont lus avant le clic. La description finissait sur
-   * « ,... » — une liste tronquée n'inspire pas la précision.
+   * Le sujet et le lieu dans le titre : « Réalisations — MONUSCO, CARE… »
+   * nommait des clients sans dire de quoi ni où. Les noms passent dans la
+   * description, où ils donnent la raison de cliquer.
    */
-  title: "Réalisations — MONUSCO, CARE, ALIMA, Afriland",
-  description: `${projects.length} installations documentées pour ${clients.length} clients nommés, de Bunia à Kinshasa : ONG internationales, banques, programmes d’État, médias et hôtellerie.`,
+  title: "Réalisations solaires et électriques en RDC",
+  description: `${projects.length} installations documentées de Bunia à Kinshasa — MONUSCO, CARE, Afriland, CADECO, l’hôtel Gracia — dont ${caseStudies.length} racontées de bout en bout.`,
 });
 
-export default async function ReferencesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ domaine?: string }>;
-}) {
-  /* `?domaine=` vient des CTA de /services : il fixe l'état initial de la
-     liste, qui se filtre ensuite côté client. */
-  const { domaine } = await searchParams;
-
+/**
+ * /references — statique : le `?domaine=` des liens de /services est lu par
+ * la liste elle-même, côté client (cf. `RealisationsListFromUrl`).
+ */
+export default function ReferencesPage() {
   return (
     <>
       <PageHero
@@ -43,8 +43,10 @@ export default async function ReferencesPage({
         eyebrow="Nos réalisations"
         title={
           <>
-            Ce que nous avons livré,{" "}
-            <span className="text-brand-600">et où.</span>
+            {/* Le sujet d'abord, la voix de la marque ensuite : le H1 dit de
+                quoi parle la page, la chute garde « et où ». */}
+            Nos réalisations en RDC :{" "}
+            <span className="text-brand-600">ce que nous avons livré, et où.</span>
           </>
         }
         lead={`${projects.length} installations documentées pour ${clients.length} clients nommés — ONG internationales, banques, programmes d'État, médias, hôtellerie et entreprises.`}
@@ -162,7 +164,9 @@ export default async function ReferencesPage({
             lead="Aucune n'est une intention ni un projet à l'étude : ce sont des chantiers livrés, avec leur client et leur localisation."
           />
 
-          <RealisationsList initialDomain={domaine} />
+          <Suspense fallback={<RealisationsList />}>
+            <RealisationsListFromUrl />
+          </Suspense>
 
           <Reveal delay={0.1}>
             <div className="mt-12 flex flex-col items-start gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-8 md:flex-row md:items-center md:justify-between">
