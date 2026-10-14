@@ -14,7 +14,7 @@ import {
   validateField,
   type ContactField,
 } from "@/lib/data/contact";
-import { kits } from "@/lib/data/kits";
+import { findKit } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { site } from "@/lib/site";
 
@@ -208,7 +208,7 @@ function toWhatsAppNumber(raw: string): string | null {
  * c'est ici qu'ils redeviennent des phrases lisibles par un commercial.
  */
 function summarize(data: Payload) {
-  const kit = kits.find((item) => item.slug === data.kit);
+  const kit = findKit(data.kit);
   const service = services.find((item) => item.slug === data.need);
 
   /* Une demande libre n'a pas d'objet commercial : le sujet le dit. */

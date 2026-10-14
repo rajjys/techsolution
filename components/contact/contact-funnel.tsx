@@ -40,7 +40,7 @@ import {
   type Situation,
   type Timing,
 } from "@/lib/data/contact";
-import { kits } from "@/lib/data/kits";
+import { findKit, kits } from "@/lib/data/kits";
 import { buildProductWhatsAppLink, buildWhatsAppLink } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -411,7 +411,7 @@ export function ContactFunnel({
   initialNeed?: string;
 }) {
   const reduce = useReducedMotion();
-  const presetKit = kits.find((item) => item.slug === initialKit);
+  const presetKit = findKit(initialKit);
   /* Un kit est une installation solaire : l'arrivée par `?kit=` répond au
      domaine autant qu'au palier. */
   const presetNeed = presetKit
@@ -451,7 +451,7 @@ export function ContactFunnel({
 
   const steps = buildSteps(need, skipTier);
   const step = steps[Math.min(index, steps.length - 1)];
-  const kit = kits.find((item) => item.slug === kitSlug);
+  const kit = findKit(kitSlug);
   const isLast = step === "contact";
   /* Le total ne bouge plus dès que « besoin » est derrière nous. */
   const pathResolved = index > 0;
