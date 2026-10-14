@@ -748,15 +748,38 @@ Delivered in the working tree on 2 Oct and verified:
   H1; Product, BreadcrumbList and Organization all parse.
 - [x] **3.2** Share image per kit (segment, phase, name and promise, segment
   photo), plus one each for the hub and the range.
-- [ ] **3.3 (L)** **Next:** `QuoteModal`, reusing `/api/contact`,
-  `validateField`, the honeypot and the `devis_*` events.
-- [x] **3.4** Two calls to action on the ladder, the comparison table and the
-  home cards: "Demander ce kit" (→ `/contact?kit=` until the modal ships) +
-  "Fiche / En savoir plus" → product page. Old `?kit=` links still pre-fill
-  via `findKit`.
+- [x] **3.3** Quote modal `components/products/kit-quote.tsx` (14 Oct).
+  - **Trigger:** `KitQuoteLink`, a real link to `/contact?kit=`. A plain
+    click opens the modal; ⌘/Ctrl/middle-click and no-JS go to the funnel.
+    It takes the **kit slug, not the object**: a `Kit` carries icon
+    components, and passing it from a server page broke the kit page with a
+    500 that `tsc` never sees.
+  - **Form:** five fields (name, phone, city, optional email and message).
+    The kit can be changed. Validation is `validateField`, with errors under
+    each field and focus on the first. The honeypot is kept.
+  - **Submission:** sends `source: "modal"`, `need: energie-solaire` and a
+    `siteType` derived from the segment; emits the `devis_*` events.
+  - **Success state:** reads the phone number back and offers WhatsApp.
+  - **Layout:** a sheet on mobile, a dialog from `sm` up; the sticky action
+    bar from `/contact` keeps the submit button visible down to 360 × 740.
+  - **API, additive only:** `source: "modal"` is accepted; for modal requests
+    alone, the timing question becomes optional. The `/contact` funnel's
+    rules are unchanged (a probe without timing still gets 422). The lead
+    email shows the source: "Fenêtre « Demander ce kit »".
+- [x] **3.4** Two calls to action on the ladder, the comparison table, the
+  home cards and the kit page: "Demander ce kit" opens the modal, and
+  "Fiche / En savoir plus" goes to the product page. Old `?kit=` links still
+  pre-fill via `findKit`.
 - [x] **3.5** Sitemap: hub, range and 9 kits from data (24 URLs).
-- [ ] **3.6** Modal tests left: 360/390/1440, keyboard only, no JS, and
-  `page.route` interception (never a real POST).
+- [x] **3.6** Modal tested in Chrome at 1440/1024/390/360.
+  - **Interaction:** opens without changing the URL; an empty submit gives 3
+    errors and focuses the first; changing the kit changes `siteType`;
+    success state; closing returns focus to the trigger; Esc closes;
+    ⌘-click opens a new tab on `/contact`; the table's "Devis" opens the
+    right kit; inputs are 16 px; no JS → funnel.
+  - **Requests:** browser submissions were intercepted with `page.route`.
+    The server schema was checked by posting the modal's exact payload with
+    the honeypot filled: 200, and no email sent.
 
 ### Phase 3 bis — Navigation (delivered 14 Oct)
 - [x] **3b.1** Mega menus for Services and Produits

@@ -17,6 +17,7 @@ import { PageHero } from "@/components/page-hero";
 import { KitCommitments } from "@/components/products/kit-commitments";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { KitQuoteLink } from "@/components/products/kit-quote";
 import {
   findKit,
   kitNeighbours,
@@ -26,7 +27,7 @@ import {
   type Kit,
 } from "@/lib/data/kits";
 import { findProductCategory } from "@/lib/data/products";
-import { contactHref, kitHref, productCategoryHref } from "@/lib/routes";
+import { kitHref, productCategoryHref } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { buildProductWhatsAppLink } from "@/lib/whatsapp";
@@ -142,10 +143,10 @@ export default async function KitPage({
         actions={
           <>
             <Button className="group" asChild>
-              <Link href={contactHref({ kit: kit.slug })}>
+              <KitQuoteLink kitSlug={kit.slug}>
                 Demander ce kit
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
+              </KitQuoteLink>
             </Button>
             <Button variant="neutral" asChild>
               <a

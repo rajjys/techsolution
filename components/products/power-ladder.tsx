@@ -7,8 +7,9 @@ import { ArrowRight, BatteryCharging, Star, SunMedium, Zap } from "lucide-react"
 
 import { WhatsAppIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { KitQuoteLink } from "@/components/products/kit-quote";
 import { kitSegments, kits } from "@/lib/data/kits";
-import { contactHref, kitHref } from "@/lib/routes";
+import { kitHref } from "@/lib/routes";
 import { buildProductWhatsAppLink } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -308,10 +309,10 @@ export function PowerLadder({
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Button variant="card" className="group" asChild>
-                  <Link href={contactHref({ kit: active.slug })}>
+                  <KitQuoteLink kitSlug={active.slug}>
                     Demander ce kit
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </Link>
+                  </KitQuoteLink>
                 </Button>
                 <Button variant="neutral" asChild>
                   <a

@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 
+import { KitQuoteLink } from "@/components/products/kit-quote";
+
 import { kitSegments, kits } from "@/lib/data/kits";
-import { contactHref, kitHref } from "@/lib/routes";
+import { kitHref } from "@/lib/routes";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -129,14 +131,14 @@ export function KitsTable({
                         Fiche
                         <span className="sr-only">{` du ${kit.name}`}</span>
                       </Link>
-                      <Link
-                        href={contactHref({ kit: kit.slug })}
+                      <KitQuoteLink
+                        kitSlug={kit.slug}
                         onClick={(event) => event.stopPropagation()}
                         className="inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                       >
                         Devis
                         <span className="sr-only">{` pour le ${kit.name}`}</span>
-                      </Link>
+                      </KitQuoteLink>
                     </span>
                   </td>
                 </tr>

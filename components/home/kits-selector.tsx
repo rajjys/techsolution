@@ -3,6 +3,7 @@ import { ArrowRight, BatteryCharging, SunMedium, Zap } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { KitQuoteLink } from "@/components/products/kit-quote";
 import { Button } from "@/components/ui/button";
 import { showcaseKits, type Kit } from "@/lib/data/kits";
 import { contactHref, kitHref, productCategoryHref } from "@/lib/routes";
@@ -109,8 +110,8 @@ function KitCard({ kit }: { kit: Kit }) {
         </ul>
 
         <div className="mt-auto flex flex-col items-center gap-3 pt-6">
-          <Link
-            href={contactHref({ kit: kit.slug })}
+          <KitQuoteLink
+            kitSlug={kit.slug}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               highlight
@@ -121,7 +122,7 @@ function KitCard({ kit }: { kit: Kit }) {
             Demander ce kit
             <span className="sr-only"> — {kit.name}</span>
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-          </Link>
+          </KitQuoteLink>
           <Link
             href={kitHref(kit)}
             className="rounded text-sm font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-brand-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
