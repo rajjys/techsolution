@@ -1,3 +1,5 @@
+import { clients, projects } from "@/lib/data/clients";
+
 /**
  * Configuration système du site — TECH SOLUTION RDC.
  * Données issues de la farde officielle de l'entreprise (docs/FARDE TECH SOLUTION.pdf).
@@ -94,6 +96,21 @@ export const socialLinks = [
   },
 ] as const;
 
+/**
+ * La direction — nom et fonctions confirmés par l'entreprise (oct. 2026).
+ *
+ * La biographie (formation, années de terrain, une phrase en ses mots) reste
+ * à fournir : rien n'est écrit à sa place. Deux photos le montrent dans ses
+ * deux rôles — en costume pour la direction, en tenue siglée sur un toit pour
+ * l'ingénierie.
+ */
+export const leader = {
+  name: "Jonathan Mupenda",
+  role: "Directeur général et ingénieur principal",
+  photo: "/photos/jonathan-mupenda-ceo.webp",
+  photoOnSite: "/photos/jonathan-mupenda-chantier-bras-croises.webp",
+} as const;
+
 export type Office = {
   city: string;
   /** Siège ou antenne — affiché en pastille à côté de la ville. */
@@ -162,19 +179,32 @@ export const footerLinks: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-/** Chiffres clés — tous documentés dans la farde de l'entreprise. */
+/**
+ * Chiffres clés de /about — dérivés de la donnée, sauf les foyers (déclarés).
+ *
+ * Ils disaient « 17+ projets » et « 10+ clients » écrits à la main, quand le
+ * reste du site en comptait déjà 19 et 12. Les foyers remplacent « 100 %
+ * démarche client », qui est un slogan (il reste au pied de page) : c'est le
+ * chiffre qui manquait aux particuliers, et le site leur parlait trop peu.
+ */
 export const metrics = [
   {
-    value: 17,
-    suffix: "+",
-    label: "Projets livrés",
-    detail: "Installations documentées et opérationnelles",
+    value: projects.length,
+    suffix: "",
+    label: "Installations documentées",
+    detail: "Chantiers livrés, avec leur client et leur lieu",
   },
   {
-    value: 10,
+    value: site.householdsEquipped,
     suffix: "+",
-    label: "Clients institutionnels",
-    detail: "ONG internationales, banques et entreprises",
+    label: "Foyers équipés",
+    detail: "Maisons et villas alimentées au solaire",
+  },
+  {
+    value: clients.length,
+    suffix: "",
+    label: "Clients nommés",
+    detail: "ONG internationales, banques, programmes d'État, hôtellerie",
   },
   {
     value: 26,
@@ -182,10 +212,4 @@ export const metrics = [
     label: "Provinces couvertes",
     detail: "Capacité d'intervention sur toute la RDC",
   },
-  {
-    value: 100,
-    suffix: "%",
-    label: "Démarche client",
-    detail: "Engagement qualité de bout en bout",
-  },
-] as const;
+];

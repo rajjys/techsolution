@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Download } from "lucide-react";
 
 import { Engagement } from "@/components/about/engagement";
+import { Leadership } from "@/components/about/leadership";
 import { Glow } from "@/components/glow";
 import { CountUp, Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
@@ -10,12 +11,12 @@ import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { values } from "@/lib/data/clients";
 import { pageMetadata } from "@/lib/seo";
-import { metrics, offices, site } from "@/lib/site";
+import { leader, metrics, offices, site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",
   title: "Qui sommes-nous — ingénierie congolaise",
-  description: `Entreprise congolaise d’ingénierie énergétique, basée à Bunia et Kinshasa depuis ${site.foundedYear}. Notre mission, nos valeurs et nos engagements de service.`,
+  description: `Entreprise congolaise d’ingénierie énergétique dirigée par son ingénieur principal, ${leader.name}. Bunia et Kinshasa, depuis ${site.foundedYear} : mission, valeurs, engagements.`,
 });
 
 /** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */
@@ -160,6 +161,8 @@ export default function AboutPage() {
           </div>
         </div>
       </Section>
+
+      <Leadership />
 
       {/* Les chiffres — le sombre est la couleur de la preuve */}
       <Section className="relative isolate overflow-hidden bg-brand-900">

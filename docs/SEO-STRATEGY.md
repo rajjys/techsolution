@@ -39,6 +39,16 @@
   360/390/768/1024/1440).
 - This is Next 16. Before writing route, metadata, redirect or proxy code,
   read the relevant guide in `node_modules/next/dist/docs/` (AGENTS.md).
+- **Two standing rules from the owner (14 Oct), part of every step's "done":**
+  1. **The sitemap follows the content.** A commit that changes what a page
+     says updates its `lastmod` (`REVISED` in `app/sitemap.ts`, or the
+     `revised` field of its data) in the same commit. A new page enters the
+     sitemap from the data, never by hand.
+  2. **No page ships without its internal links**, inbound and outbound, per
+     §11. The full link graph is checked at the end (step 7.3).
+- **Local dev:** run `next dev --webpack`. Turbopack's dev server leaks about
+  1 GB of memory every 90 seconds on this machine, even on `main`; webpack
+  stays flat at about 1 GB.
 
 ---
 
@@ -586,6 +596,7 @@ by measurement, as in August.
 | Q24 FAQ | "Create the questions, I'll answer them" | `docs/FAQ-PRODUITS-QUESTIONS.md`: 16 questions waiting for answers |
 | Q25 local operations | **Permanent technicians in Bunia, Kinshasa and Goma.** Elsewhere, technicians are hired locally on contract, per job; local maintenance works the same way. | Goma's page can say it has a permanent team. Tier 3 pages must say the team is assembled locally. |
 | Q26 photos | Office photos coming. **Complaint: the site talks to companies more than to households.** | §17.2 |
+| Q31 the CEO | Yes: Jonathan Mupenda, CEO and lead engineer, on the site with his photo | Done on `/about` (§17.3); FAQ questionnaire sent to the owner |
 
 ### 7.2 Still open
 
@@ -598,8 +609,9 @@ by measurement, as in August.
 - **Q24** The 16 product FAQ answers (`docs/FAQ-PRODUITS-QUESTIONS.md`).
 - **Q26** Office photos, plus **real household photos**, with the families'
   agreement (§17.2).
-- **Q31 (new)** May the site name Jonathan Mupenda as CEO and lead engineer,
-  with a photo? (§17.3)
+- **Q33 (new)** Jonathan Mupenda's bio, in his own words: training, years in
+  the field, one sentence on why he does this work. The `/about` block has
+  only his name and roles until then.
 - **Q32 (new)** Lubumbashi, Kisangani, Matadi, Beni: which office's GBP
   should list each one as a service area?
 
@@ -1115,14 +1127,25 @@ Still needed:
   linking to the residential kits and the household stories. No new
   template is needed.
 
-### 17.3 E-E-A-T: a named expert
-**Jonathan Mupenda, CEO and lead engineer**, appears in the Gracia video.
-Search engines and AI answers weigh who stands behind a technical claim. If he
-agrees (Q31):
-- name him on `/about` with a photo and a two-line bio (training, years in
-  the field);
-- add `founder` / `employee` → `Person` in the `Organization` JSON-LD;
-- sign the case studies "Étude réalisée sous la direction de …".
+### 17.3 E-E-A-T: a named expert (agreed 14 Oct)
+**Jonathan Mupenda, CEO and lead engineer.** Search engines and AI answers
+weigh who stands behind a technical claim.
+
+Done:
+- [x] `/about`: a "La direction" block (business portrait, name, both roles)
+  between the manifesto and the figures;
+- [x] `Organization` JSON-LD: `employee` → `Person` (name, job title, photo);
+  not `founder`, since nobody has said he founded it;
+- [x] his two site photos renamed for what they now prove
+  (`jonathan-mupenda-chantier-*.webp`);
+- [x] `/about` figures derived from data (19 · 60+ · 12 · 26), which also
+  replaces the "100 % démarche client" slogan tile with households.
+
+Next:
+- his bio (Q33);
+- sign the case studies "Système conçu sous la direction de Jonathan Mupenda,
+  ingénieur principal" (Phase 4), with the rooftop photo in branded gear as
+  the byline image.
 
 ### 17.4 A Supabase back office, once the SEO is sound
 The plan holds. Four rules so it doesn't undo the SEO work:
