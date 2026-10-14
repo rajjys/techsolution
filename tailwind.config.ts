@@ -151,6 +151,12 @@ const config: Config = {
         glow: "0 0 64px -12px rgba(255, 184, 0, 0.45)",
       },
       keyframes: {
+        /* Révélation au montage, en CSS : visible dès la feuille de style,
+           sans attendre le JavaScript (cf. Reveal, components/motion.tsx). */
+        "reveal-up": {
+          from: { opacity: "0", transform: "translateY(var(--reveal-y, 26px))" },
+          to: { opacity: "1", transform: "none" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -177,6 +183,7 @@ const config: Config = {
         },
       },
       animation: {
+        "reveal-up": "reveal-up 0.65s cubic-bezier(0.21, 0.47, 0.32, 0.98) both",
         "accordion-down": "accordion-down 0.25s ease-out",
         "accordion-up": "accordion-up 0.25s ease-out",
         marquee: "marquee 45s linear infinite",

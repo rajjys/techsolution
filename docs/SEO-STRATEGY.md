@@ -894,14 +894,28 @@ Delivered in the working tree on 2 Oct and verified:
 
 ### Phase 10 — Technical QA and performance
 - [ ] **10.1 (S)** §13 checklist on the production build.
-- [ ] **10.2 (M)** Found 14 Oct, same root cause: **visitors with "reduce
-  motion" get a React hydration error on every page.** The server renders
-  `opacity:0`, their browser renders `opacity:1`; it's the "1 Issue" badge in
-  dev. Above-the-fold `Reveal mode="mount"` (home hero and `PageHero`): server-render the text visible and keep the motion as a
-  CSS-only entrance, so the look is unchanged and paint no longer waits for
-  JS. The hero is "closed" for design; this changes no pixel of the final
-  state.
-- [ ] **10.3 (S)** Re-measure LCP on Slow 4G + CPU ×4 (August baseline:
+- [x] **10.2** Fixed 14 Oct (`components/motion.tsx`, Tailwind `reveal-up`
+  keyframe):
+  - `Reveal mode="mount"` (home hero, `PageHero`, case-study header) is now
+    **pure CSS**: same curve, duration and offset, painted with the
+    stylesheet instead of after hydration. Reduced motion is handled by
+    `motion-safe:`.
+  - Scroll reveals keep framer, but their **initial state is the same on
+    server and client**; the preference only zeroes the transition, which is
+    never written into the HTML.
+  - Verified on the production build:
+    - **all JS bundles blocked → H1 fully visible** on `/`, `/produits` and a
+      case study (before: invisible forever);
+    - **reduced motion → 0 hydration errors** on dev and prod (before: one
+      per page).
+- [ ] **10.3 (S)** Local lab, 14 Oct, Slow 4G + CPU ×4, 390 px: home LCP
+  **1 772 ms = FCP** (the title no longer waits for JS). On the 5 kVA kit
+  page LCP is a section heading below the hero, still revealed by JS
+  (4 240 ms). Next step (**10.4**): make scroll reveals visible in the
+  server HTML and hide, at hydration, only what is below the current
+  viewport. That way no content is ever JS-gated. Re-measure on production
+  after deploy (local lab and production aren't comparable). Original step:
+  re-measure LCP on Slow 4G + CPU ×4 (August baseline:
   11 856 ms). Then evaluate GA loading (`gtag.js` is 166 KB; the `devis_*`
   events go through `dataLayer`, so a later load doesn't lose them; verify
   before changing).
