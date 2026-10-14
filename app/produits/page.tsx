@@ -9,9 +9,10 @@ import { PageHero } from "@/components/page-hero";
 import { KitLink } from "@/components/products/kit-link";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { caseStudies } from "@/lib/data/case-studies";
 import { kitSegments, kits, kitsForSegment } from "@/lib/data/kits";
 import { productCategories } from "@/lib/data/products";
-import { contactHref, productCategoryHref } from "@/lib/routes";
+import { caseStudyHref, contactHref, productCategoryHref } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -35,6 +36,8 @@ export const metadata: Metadata = pageMetadata({
  */
 export default function ProduitsPage() {
   const kitsCategory = productCategories[0];
+  /* La preuve du « sur mesure » : un système au-delà du catalogue. */
+  const customExample = caseStudies.find((study) => study.beyondCatalogue);
 
   return (
     <>
@@ -154,7 +157,17 @@ export default function ProduitsPage() {
                     </Link>
                   </Button>
                   <Button variant="outline-strong" asChild>
-                    <Link href="/references">Voir nos réalisations</Link>
+                    <Link
+                      href={
+                        customExample
+                          ? caseStudyHref(customExample.slug)
+                          : "/references"
+                      }
+                    >
+                      {customExample
+                        ? `Exemple : ${customExample.client}`
+                        : "Voir nos réalisations"}
+                    </Link>
                   </Button>
                 </div>
               </Reveal>

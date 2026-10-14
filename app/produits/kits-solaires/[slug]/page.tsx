@@ -17,6 +17,7 @@ import { PageHero } from "@/components/page-hero";
 import { KitCommitments } from "@/components/products/kit-commitments";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { caseStudies } from "@/lib/data/case-studies";
 import { KitQuoteLink } from "@/components/products/kit-quote";
 import {
   findKit,
@@ -27,7 +28,7 @@ import {
   type Kit,
 } from "@/lib/data/kits";
 import { findProductCategory } from "@/lib/data/products";
-import { kitHref, productCategoryHref } from "@/lib/routes";
+import { caseStudyHref, kitHref, productCategoryHref } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { buildProductWhatsAppLink } from "@/lib/whatsapp";
@@ -91,6 +92,11 @@ export default async function KitPage({
   const segment = segmentOf(kit);
   const photo = kitSegmentPhotos[kit.segment];
   const { lower, higher } = kitNeighbours(kit);
+  /* Les réalisations qui renvoient à ce kit — le lien va dans les deux sens. */
+  const comparableStudies = caseStudies.filter(
+    (study) => study.relatedKit?.slug === kit.slug,
+  );
+  const customExample = caseStudies.find((study) => study.beyondCatalogue);
   const powerAt = kit.name.indexOf(kit.power);
   const namePrefix = powerAt > 0 ? kit.name.slice(0, powerAt).trim() : kit.name;
   const nameAccent = powerAt > 0 ? kit.name.slice(powerAt) : "";
@@ -310,15 +316,58 @@ export default async function KitPage({
                 </Reveal>
               ) : (
                 <Reveal key={label} delay={0.1}>
-                  <div className="flex h-full items-center rounded-2xl border border-dashed border-slate-300 p-6 text-sm leading-relaxed text-slate-500 sm:p-7">
-                    {higher
-                      ? "C'est le plus petit kit de la gamme."
-                      : "C'est le plus grand kit de la gamme — au-delà, nous dimensionnons sur mesure."}
+                  <div className="flex h-full flex-col justify-center gap-2 rounded-2xl border border-dashed border-slate-300 p-6 text-sm leading-relaxed text-slate-500 sm:p-7">
+                    {higher ? (
+                      "C'est le plus petit kit de la gamme."
+                    ) : (
+                      <>
+                        <span>
+                          C&apos;est le plus grand kit de la gamme — au-delà,
+                          nous dimensionnons sur mesure.
+                        </span>
+                        {customExample ? (
+                          <Link
+                            href={caseStudyHref(customExample.slug)}
+                            className="font-semibold text-brand-700 underline-offset-4 hover:underline"
+                          >
+                            {`Exemple : ${customExample.h1.charAt(0).toLowerCase()}${customExample.h1.slice(1)}`}
+                          </Link>
+                        ) : null}
+                      </>
+                    )}
                   </div>
                 </Reveal>
               ),
             )}
           </div>
+          {comparableStudies.length > 0 ? (
+            <div className="mt-10">
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                Sur le terrain, à ce palier
+              </h3>
+              <ul className="mt-4 grid gap-4 md:grid-cols-2">
+                {comparableStudies.map((study) => (
+                  <li key={study.slug}>
+                    <Link
+                      href={caseStudyHref(study.slug)}
+                      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:bg-white hover:shadow-soft hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                    >
+                      <span className="text-[15px] font-bold text-slate-900">{study.h1}</span>
+                      <span className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                        {/* « Comparable » : même palier, autre composition —
+                            jamais présenté comme ce kit-là. */}
+                        {`${study.spec ? `${study.spec} — ` : ""}${study.relatedKit?.relation === "installed" ? "ce kit, installé" : "une installation de puissance comparable"}.`}
+                      </span>
+                      <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+                        Voir l&apos;étude de cas
+                        <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <Reveal delay={0.15}>
             <Link
               href={productCategoryHref(category.slug)}

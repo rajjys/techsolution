@@ -701,17 +701,19 @@ Delivered in the working tree on 2 Oct and verified:
   Phase 5), `caseStudyHref`, `contactHref`. Kit components, footer, cards,
   the realisations list, the case-study CTA and `/services` all use it.
   `cityHref` arrives with Phase 6.
-- [ ] **2.2 (M)** Extend `CaseStudy`:
-  - `clientShort`, `year`, `revised`;
-  - `specs[]` (`{label, value, unit, meaning, evidence}`);
-  - `context` and `outcomes[]` with `evidence`;
-  - `beforeAfter?` (client-reported ranges with period);
-  - `media[]` (`{src, alt, kind: photo|video, poster?}`);
-  - `serviceSlug`, `citySlug`, `relatedKit?` (`{slug, relation: installed|comparable}`);
-  - `previousSlugs[]`;
-  - `permissions` (`name`, `photos`, `figures`).
+- [x] **2.2** `CaseStudy` extended (14 Oct). New fields:
+  - identity and titles: `previousSlugs`, `h1`, `metaTitle`, `clientNamed`,
+    `district`, `year`;
+  - dates: `published` (the page's publication date, not the install date),
+    `revised`;
+  - content: `context`, `specs[]` (each with `evidence`:
+    `installateur` | `client`), `loads`, `fuel` (always client-reported),
+    `resultsReported`, `gallery` (`wide` or 4:5);
+  - links: `relatedKit` (`comparable` | `installed`), `imagePosition`,
+    `beyondCatalogue`.
+  - helpers: `findCaseStudy`, `relatedCaseStudies`, `caseStudyRedirects`.
 
-  Keep existing studies valid with optional fields.
+  The file is read by `next.config.ts`, so it may import types only.
 - [ ] **2.3 (S)** `lib/data/locations.ts`: cities with `slug`, `province`,
   `tier`, `servedFrom`, `localFacts[]` (company-supplied), coordinates. Derive
   `presenceCities` and the map from it.
@@ -723,9 +725,9 @@ Delivered in the working tree on 2 Oct and verified:
   One figure is declared rather than counted, `site.householdsEquipped` (60),
   flagged "⚠️ À SOURCER". "Organisations" is now "clients nommés": the
   anonymous Mbudi client has a project row but no client row.
-- [ ] **2.5 (S)** Per-item `revised` dates feed the sitemap. **Done for
-  products** (`ProductCategory.revised`); case studies still share
-  `CASE_STUDIES_REVISED`.
+- [x] **2.5** Per-item `revised` dates feed the sitemap: products through
+  `ProductCategory.revised`, case studies through `CaseStudy.revised`.
+  `CASE_STUDIES_REVISED` is gone.
 
 ### Phase 3 — Products
 - [x] **3.1** Delivered 14 Oct:
@@ -801,22 +803,53 @@ Delivered in the working tree on 2 Oct and verified:
   Verified: every interaction scripted in a real browser; 1440 and 1024
   without overflow.
 
-### Phase 4 — References
-- [ ] **4.1 (L)** Case-study template v2 per §4.1: visual breadcrumb, H1
-  formula, fact strip, sections, spec table with evidence labels,
-  before/after, media, related block.
-- [ ] **4.2 (M)** Process the Kinshasa media (§12) and add the two studies.
-  Only fields answered in D/E are rendered. *Blocked by Q14–Q21 (publish with
-  what is answered; `pending` fields stay hidden).*
-- [ ] **4.3 (S)** Slug migration (§9): new slugs, `previousSlugs` →
-  permanent redirects generated in `next.config.ts`. Internal links follow
-  via `lib/routes.ts`.
-- [ ] **4.4 (M)** Rewrite the 6 existing studies with the new formulas and
-  only verified claims (Q11–Q13).
-- [ ] **4.5 (M)** `/references` index per §4.2: title, H1, description,
-  static rendering, list rows → city pages.
-- [ ] **4.6 (S)** Verify: old slugs return 308 → new; no 404 in the internal
-  link crawl; titles unique; no `pending` value in the HTML.
+### Phase 4 — References (delivered 14 Oct, except 4.4)
+- [x] **4.1** Case-study template v2 (`app/references/[slug]/page.tsx`):
+  - **Header (dark):** breadcrumb, category and place, H1 (`h1` field),
+    summary, fact strip (place and district, sector, year, system).
+  - **Body:** contexte, problème, ce que nous avons installé (spec table,
+    each value with its evidence chip), ce que le système alimente,
+    gallery.
+  - **Sticky aside:** a fuel card (before/after, "Selon le client", "Pas
+    encore chiffré" when unknown), results (marked as client-reported when
+    they are), and the pre-qualified CTA.
+  - **"Pour aller plus loin":** the service, the closest kit (or the
+    references list), 3 related studies, and a sign-off linking to `/about`.
+  - **Markup:** `Article` (headline, image, `datePublished`/`dateModified`,
+    `contentLocation`; `about` only when the client is named) +
+    `BreadcrumbList`. `dynamicParams = false`.
+- [x] **4.2** **Hôtel Gracia** and **a bar in Mbudi** published, with only
+  the confirmed facts.
+  - **Media:** two stills from the rooftop video (the speaking part is not
+    used), the façade with its "SALLE GRACIA" sign, the battery room, and the
+    Mbudi technician photo.
+  - The Mbudi page links to the 12 kVA kit as **comparable**, never
+    "installed".
+- [x] **4.3** Six slugs migrated (§9): each old URL now 308-redirects to
+  its new URL, generated from `previousSlugs` in `next.config.ts` (verified
+  on the production build). Internal links follow via `lib/routes` and the
+  `caseStudy` field of each project row.
+- [ ] **4.4** Rewrite the 6 older studies: **titles, H1s and metaTitles
+  done**; the "results" wait for Q11–Q13.
+- [x] **4.5** `/references`:
+  - title "Réalisations solaires et électriques en RDC";
+  - description with client names and counts from data;
+  - H1 "Nos réalisations en RDC : ce que nous avons livré, et où.";
+  - **static** (○): `?domaine=` is read client-side inside a `Suspense`
+    whose fallback is the full list, so all 19 rows are in the served HTML;
+  - **grouped by client**: LTJ (4) and MONUSCO / FRAPEZ (5) are one block
+    each;
+  - Kinshasa projects at the top, and "Kinshasa — Kinshasa" shortened to
+    "Kinshasa".
+- [x] **4.6** Verified on the production build:
+  - the 6 old slugs return 308 to the new ones; an unknown slug returns 404;
+  - each study has one H1, a self-canonical and parsing JSON-LD;
+  - `?domaine=energie-solaire` → 8 of 19 rows;
+  - no overflow at 390 or 1440.
+- [x] **4.7 (link graph)** The kit ↔ study links go both ways:
+  - 12 kVA → Mbudi ("Sur le terrain, à ce palier");
+  - 30 kVA → Gracia (the "au-delà, sur mesure" proof);
+  - the `/produits` hub's "hors catalogue" block → Gracia.
 
 ### Phase 5 — Services
 - [ ] **5.1 (L)** `app/services/[slug]/page.tsx` per §4.4; `/services`
@@ -935,8 +968,10 @@ site) and few external links. Do it once, in 4.3, never again.
 | `ltj-butembo` | `ltj-backup-butembo` |
 | `lsc-numbi` | `lsc-kit-solaire-numbi` |
 | `afriland-bunia` | `afriland-maintenance-bunia` |
-| — | `hotel-gracia-solaire-kinshasa` |
-| — | `bar-mbudi-solaire-kinshasa` (owner: "un bar ayant 12 chambres") |
+| — | `hotel-gracia-solaire-kinshasa` (live) |
+| — | `bar-mbudi-solaire-kinshasa` (live) |
+
+**Done 14 Oct**: all six migrated, 308 verified.
 
 Redirects: generated from `previousSlugs` (permanent, so 308 in Next; Google
 treats 308 like 301). Old `/contact?produit=` and `/contact?kit=` URLs keep
