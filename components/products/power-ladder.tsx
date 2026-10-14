@@ -8,6 +8,7 @@ import { ArrowRight, BatteryCharging, Star, SunMedium, Zap } from "lucide-react"
 import { WhatsAppIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { kitSegments, kits } from "@/lib/data/kits";
+import { contactHref, kitHref } from "@/lib/routes";
 import { buildProductWhatsAppLink } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -296,11 +297,18 @@ export function PowerLadder({
                 ))}
               </dl>
 
+              {/* La fiche est un renvoi, pas une troisième action */}
+              <Link
+                href={kitHref(active)}
+                className="group/fiche mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                {`Fiche complète du kit ${active.power}`}
+                <ArrowRight className="size-3.5 transition-transform duration-200 group-hover/fiche:translate-x-0.5" />
+              </Link>
+
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Button variant="card" className="group" asChild>
-                  <Link
-                    href={`/contact?kit=${active.slug}`}
-                  >
+                  <Link href={contactHref({ kit: active.slug })}>
                     Demander ce kit
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>

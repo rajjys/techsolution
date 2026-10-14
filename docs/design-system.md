@@ -272,7 +272,7 @@ fond sombre, les fiches passent en verre dépoli : `border-white/10 bg-white/[0.
 
 ## 6. Catalogues
 
-Une gamme ordonnée (les kits vont de 650 Va à 30 kVA) ne se présente pas en
+Une gamme ordonnée (les kits vont de 650 VA à 30 kVA) ne se présente pas en
 grille de cartes : à neuf éléments c'est déjà un mur, à vingt c'est illisible.
 Deux vues complémentaires, jamais redondantes :
 

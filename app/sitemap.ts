@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 
 import { caseStudies } from "@/lib/data/case-studies";
+import { kits } from "@/lib/data/kits";
+import { productCategories } from "@/lib/data/products";
+import { kitHref, productCategoryHref } from "@/lib/routes";
 import { site } from "@/lib/site";
 
 /**
@@ -13,17 +16,19 @@ import { site } from "@/lib/site";
  * c'est le prix d'un signal auquel on peut se fier.
  */
 const REVISED: Record<string, string> = {
-  "": "2026-08-18",
-  "/services": "2026-08-18",
-  "/produits": "2026-08-18",
-  "/references": "2026-08-17",
+  /* Octobre 2026 : chiffres dérivés de la donnée, photos d'autres
+     installateurs retirées, /produits devenu le catalogue. */
+  "": "2026-10-14",
+  "/services": "2026-10-14",
+  "/produits": "2026-10-14",
+  "/references": "2026-10-14",
   "/contact": "2026-08-18",
-  "/about": "2026-08-18",
+  "/about": "2026-10-14",
   "/confidentialite": "2026-08-18",
 };
 
-/** Révision des six études de cas — elles partagent leur source de données. */
-const CASE_STUDIES_REVISED = "2026-08-18";
+/** Révision des études de cas — affirmations non étayées retirées en octobre. */
+const CASE_STUDIES_REVISED = "2026-10-14";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages: MetadataRoute.Sitemap = Object.entries(REVISED).map(
@@ -55,5 +60,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...pages, ...studies];
+  /* Les gammes et leurs fiches — la date est celle de la gamme. */
+  const catalogue: MetadataRoute.Sitemap = productCategories.flatMap(
+    (category) => [
+      {
+        url: `${site.url}${productCategoryHref(category.slug)}`,
+        lastModified: new Date(category.revised),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      },
+      ...kits
+        .filter((kit) => kit.category === category.slug)
+        .map((kit) => ({
+          url: `${site.url}${kitHref(kit)}`,
+          lastModified: new Date(category.revised),
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+        })),
+    ],
+  );
+
+  return [...pages, ...catalogue, ...studies];
 }
