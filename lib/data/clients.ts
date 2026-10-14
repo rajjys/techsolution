@@ -65,7 +65,10 @@ export const sectorGroups: {
 ];
 
 /**
- * Clients & références réels — farde officielle TECH SOLUTION (10 références).
+ * Clients **nommés** — farde officielle TECH SOLUTION (10 références) et
+ * réalisations documentées depuis. Un client qui n'a pas autorisé la
+ * publication de son nom (le bar de Mbudi) n'y figure pas : il a sa
+ * réalisation dans `projects`, pas de ligne ici.
  * Les personnes de contact et leurs numéros figurent dans la farde et sont
  * volontairement non publiés sur le site : « disponibles sur demande ».
  */
@@ -76,8 +79,10 @@ export const clients: Client[] = [
     shortName: "MONUSCO / FRAPEZ",
     sector: "Organisation internationale",
     sectorGroup: "ong",
-    city: "Bunia",
-    services: ["Prestations techniques & énergie"],
+    /* La farde range sous MONUSCO / FRAPEZ les kits solaires de cinq
+       stations de radio d'Ituri : un client, cinq réalisations. */
+    city: "Bunia, Mahagi & Aveba",
+    services: ["Kits solaires pour cinq stations de radio"],
     featured: true,
   },
   {
@@ -175,10 +180,25 @@ export const clients: Client[] = [
     city: "Bunia",
     services: ["Prestations techniques & énergie"],
   },
+  {
+    name: "Hôtel Gracia",
+    monogram: "HG",
+    shortName: "Hôtel Gracia",
+    sector: "Hôtellerie — hôtel, salle de fête et bar",
+    sectorGroup: "prive",
+    city: "Kinshasa",
+    services: ["Système solaire de l'établissement"],
+  },
 ];
 
 export type Project = {
   title: string;
+  /**
+   * Bénéficiaire, quand il diffère du client : les cinq radios d'Ituri ont été
+   * équipées pour le compte de MONUSCO / FRAPEZ. Le client est celui qui a
+   * commandé ; le bénéficiaire, le site alimenté.
+   */
+  beneficiary?: string;
   /** Secteur du client — facette de filtrage de la liste des réalisations. */
   sectorGroup: SectorGroup;
   /**
@@ -197,9 +217,17 @@ export type Project = {
     | "Sécurité"
     | "Maintenance"
     | "Télécoms";
+  /** Année de mise en service, quand l'entreprise la connaît. */
+  year?: number;
 };
 
-/** 17 réalisations documentées dans la farde de l'entreprise. */
+/**
+ * Réalisations documentées : les 17 de la farde (2024–2025, l'entreprise n'a
+ * pas l'année de chacune) et les deux de Kinshasa (2026).
+ *
+ * Un client, plusieurs réalisations : LTJ (4 sites) et MONUSCO / FRAPEZ
+ * (5 radios) sont des clients uniques — la liste les regroupe par `client`.
+ */
 export const projects: Project[] = [
   {
     title: "Système solaire du bureau administratif du territoire (PDL-145T)",
@@ -305,7 +333,8 @@ export const projects: Project[] = [
   },
   {
     title: "Kit solaire — Radio La Colombe",
-    client: "Radio La Colombe",
+    client: "MONUSCO / FRAPEZ",
+    beneficiary: "Radio La Colombe",
     sectorGroup: "telecom",
     city: "Mahagi",
     province: "Ituri",
@@ -313,7 +342,8 @@ export const projects: Project[] = [
   },
   {
     title: "Kit solaire — Radio Canal Révélation",
-    client: "Radio Canal Révélation",
+    client: "MONUSCO / FRAPEZ",
+    beneficiary: "Radio Canal Révélation",
     sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
@@ -321,7 +351,8 @@ export const projects: Project[] = [
   },
   {
     title: "Kit solaire — Radio Amani",
-    client: "Radio Amani",
+    client: "MONUSCO / FRAPEZ",
+    beneficiary: "Radio Amani",
     sectorGroup: "telecom",
     city: "Aveba",
     province: "Ituri",
@@ -329,7 +360,8 @@ export const projects: Project[] = [
   },
   {
     title: "Kit solaire — RTNC",
-    client: "RTNC Bunia",
+    client: "MONUSCO / FRAPEZ",
+    beneficiary: "RTNC Bunia",
     sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
@@ -337,11 +369,32 @@ export const projects: Project[] = [
   },
   {
     title: "Kit solaire — Radio RTFi",
-    client: "RTFi Bunia",
+    client: "MONUSCO / FRAPEZ",
+    beneficiary: "RTFi Bunia",
     sectorGroup: "telecom",
     city: "Bunia",
     province: "Ituri",
     category: "Télécoms",
+  },
+  {
+    title: "Système solaire de l'hôtel, de la salle de fête et du bar",
+    client: "Hôtel Gracia",
+    sectorGroup: "prive",
+    city: "Kinshasa",
+    province: "Kinshasa",
+    category: "Solaire",
+    year: 2026,
+  },
+  {
+    /* Client non nommé, à sa demande : la réalisation se décrit par ce
+       qu'elle alimente, jamais par un nom inventé. */
+    title: "Système solaire d'un bar avec chambres, à Mbudi",
+    client: "Client privé",
+    sectorGroup: "prive",
+    city: "Kinshasa",
+    province: "Kinshasa",
+    category: "Solaire",
+    year: 2026,
   },
 ];
 

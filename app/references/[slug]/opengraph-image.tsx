@@ -1,4 +1,5 @@
 import { caseStudies } from "@/lib/data/case-studies";
+import { clients, projects } from "@/lib/data/clients";
 import { ogImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
 
 export const alt = "Étude de cas — Tech Solution RDC";
@@ -21,7 +22,7 @@ export default async function Image({
   if (!study) {
     return ogImage({
       eyebrow: "Nos réalisations",
-      title: "17 installations en service, pour 11 organisations.",
+      title: `${projects.length} installations documentées, pour ${clients.length} clients nommés.`,
     });
   }
 

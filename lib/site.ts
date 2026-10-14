@@ -14,7 +14,13 @@ export const site = {
   phoneDisplay: "+243 821 250 250",
   whatsappNumber: "243821250250",
   email: "info@techsolution.cd",
-  hours: "Lun. – Sam., 8h00 – 17h00 (heure de l'Est)",
+  /*
+   * « Heure locale », et non « heure de l'Est » : la RDC a deux fuseaux.
+   * Kinshasa est à UTC+1, Bunia à UTC+2, et les deux bureaux ouvrent de
+   * 8h à 17h à leur heure (confirmé par l'entreprise, oct. 2026). Le libellé
+   * précédent annonçait 7h–16h à un visiteur de Kinshasa.
+   */
+  hours: "Lun. – Sam., 8h00 – 17h00 (heure locale)",
   /**
    * Farde technique publique — téléchargeable sans formulaire. C'est une
    * copie de docs/FARDE TECH SOLUTION.pdf : la version publique est destinée
@@ -30,6 +36,14 @@ export const site = {
    * dériver ce nombre de là, pour que la carte les marque aussi.
    */
   provincesDelivered: 9,
+  /**
+   * Foyers équipés — chiffre **déclaré** par l'entreprise, qui ne figure pas
+   * dans la farde (⚠️ À SOURCER). Il se compte à part des réalisations :
+   * une installation documentée et un foyer équipé ne sont pas la même unité,
+   * et les additionner (« 77+ installations ») faisait dire au site trois
+   * nombres différents pour le même mot.
+   */
+  householdsEquipped: 60,
   foundedYear: 2024,
   approach: "100% client",
 } as const;
@@ -92,6 +106,11 @@ export type Office = {
 /**
  * Implantations — Bunia est le siège ; Kinshasa couvre l'Ouest du pays.
  * Source unique consommée par le pied de page et la page contact.
+ *
+ * Ce sont les **deux seuls** bureaux (confirmé, oct. 2026) : pas de bureau à
+ * Goma, bien que le RCCM y soit immatriculé, et pas de boutique à Lubumbashi
+ * — la photo `boutique-tech-solution-lubumbashi` montre un partenaire qui
+ * affiche notre visuel. Les deux bureaux partagent le même numéro.
  */
 export const offices: Office[] = [
   {
@@ -104,7 +123,9 @@ export const offices: Office[] = [
   {
     city: "Kinshasa",
     role: "Antenne",
-    street: "Avenue Mbomu numéro 157 commune de Kinshasa",
+    /* Même écriture que Bunia — numéro, voie, commune — et la même partout :
+       site, balisage, fiche Google, réseaux sociaux. */
+    street: "157 Avenue Mbomu, Commune de Kinshasa",
     region: "Ville-province de Kinshasa",
   },
 ];

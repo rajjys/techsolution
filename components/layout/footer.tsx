@@ -17,6 +17,7 @@ import {
 import { projects } from "@/lib/data/clients";
 import { provinces } from "@/lib/data/drc";
 import { services } from "@/lib/data/services";
+import { serviceHref } from "@/lib/routes";
 
 /**
  * Masque du filigrane — le glyphe seul, en tracé, sans le wordmark.
@@ -213,7 +214,7 @@ export function Footer() {
               {services.map((service) => (
                 <li key={service.slug}>
                   <Link
-                    href={`/services#${service.slug}`}
+                    href={serviceHref(service.slug)}
                     className="group -mx-2 flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-brand-200 transition-colors hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
                   >
                     <service.icon
@@ -243,10 +244,11 @@ export function Footer() {
               {offices.map((office) => (
                 <li key={office.city}>
                   {/*
-                    Ouvrable dans une carte. « près du Rond-Point Zéro » est
-                    exactement ce qu'on cherche à pointer depuis un téléphone,
-                    et l'adresse restait un texte mort sur toutes les pages.
-                    C'est une recherche, pas une épingle inventée.
+                    Ouvrable dans une carte : une adresse est exactement ce
+                    qu'on cherche à pointer depuis un téléphone, et elle
+                    restait un texte mort sur toutes les pages. C'est une
+                    recherche, pas une épingle inventée — à remplacer par le
+                    lien de la fiche Google une fois vérifiée.
                   */}
                   <a
                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -294,7 +296,7 @@ export function Footer() {
               distingue. Les deux chiffres viennent de la donnée.
             */}
             <p className="mt-4 text-xs text-brand-300">
-              {`${projects.length} installations livrées dans ${site.provincesDelivered} provinces — interventions sur les ${provinces.length}.`}
+              {`${projects.length} installations documentées, ${site.householdsEquipped}+ foyers équipés, ${site.provincesDelivered} provinces livrées — interventions sur les ${provinces.length}.`}
             </p>
           </div>
         </div>
