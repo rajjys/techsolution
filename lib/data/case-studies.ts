@@ -18,8 +18,13 @@ export type CaseStudy = {
   city: string;
   province: string;
   category: CaseCategory;
-  /** Repère technique (indicatif — à confirmer avec données réelles) */
-  spec: string;
+  /**
+   * Repère technique affiché en pastille sur la carte — **uniquement une
+   * valeur vérifiée**. Les six valeurs d'origine (« ≈ 8 kVA · Lithium
+   * 10 kWh »…) étaient des espaces réservés inventés, et elles s'affichaient
+   * en production. Absent = pas de pastille.
+   */
+  spec?: string;
   /**
    * Photo du chantier, et son texte alternatif.
    *
@@ -50,11 +55,10 @@ export const caseStudies: CaseStudy[] = [
     city: "Mahagi",
     province: "Ituri",
     category: "Solaire",
-    spec: "≈ 8 kVA · Lithium 10 kWh",
     image: "/photos/mahagi-batiment-administratif.webp",
     imageAlt: "Bâtiment administratif du territoire de Mahagi, équipé par Tech Solution RDC",
     summary:
-      "Alimentation solaire autonome du bureau administratif du territoire, dans le cadre du Programme PDL-145T",
+      "Alimentation solaire du bureau administratif du territoire de Mahagi, dans le cadre du Programme PDL-145T.",
     lon: 30.98,
     lat: 2.3,
     challenge:
@@ -63,8 +67,7 @@ export const caseStudies: CaseStudy[] = [
       "Conception et installation d'un système solaire hybride dimensionnée sur les charges réelles du bâtiment, avec stockage et supervision, dans le cadre du programme national PDL-145T.",
     results: [
       "Continuité de service du bureau administratif",
-      "Autonomie énergétique sans groupe électrogène",
-      "Installation conforme aux exigences du programme d'État",
+      "Réalisé dans le cadre du programme national PDL-145T",
     ],
   },
   {
@@ -75,7 +78,6 @@ export const caseStudies: CaseStudy[] = [
     city: "Mahagi",
     province: "Ituri",
     category: "Électricité",
-    spec: "Rénovation + ≈ 5 kVA solaire",
     image: "/photos/chemin-cables-facade.webp",
     imageAlt: "Chemins de câbles et coffret de protection dans un bâtiment tertiaire",
     summary:
@@ -89,7 +91,7 @@ export const caseStudies: CaseStudy[] = [
     results: [
       "Continuité d'exploitation bancaire assurée",
       "Protection des équipements sensibles",
-      "Installation électrique aux normes",
+      "Infrastructure électrique de l'agence rénovée",
     ],
   },
   {
@@ -100,20 +102,18 @@ export const caseStudies: CaseStudy[] = [
     city: "Goma",
     province: "Nord-Kivu",
     category: "Télécoms",
-    spec: "Backup serveur · ≈ 3 kVA",
     image: "/photos/baie-batterie-salle-technique.webp",
     imageAlt: "Baie technique et batterie de secours alimentant un serveur",
     summary:
-      "Alimentation autonome et stable du serveur télécom de GRECOM-RDC à Goma, pour une disponibilité continue des services.",
+      "Kit solaire dédié à l'alimentation du serveur de GRECOM-RDC, à son bureau de Goma.",
     lon: 29.22,
     lat: -1.68,
     challenge:
       "Garantir une alimentation ininterrompue au serveur télécom de GRECOM, où toute coupure entraîne une perte de service pour les utilisateurs.",
     solution:
-      "Installation d'un kit solaire avec stockage lithium dédié à la salle technique, assurant un relais sans interruption.",
+      "Installation d'un kit solaire avec stockage, dédié à l'alimentation du serveur et de la salle technique.",
     results: [
-      "Disponibilité continue du serveur",
-      "Zéro interruption liée aux coupures réseau",
+      "Serveur alimenté par une source dédiée",
       "Réduction de la dépendance au groupe électrogène",
     ],
   },
@@ -125,7 +125,6 @@ export const caseStudies: CaseStudy[] = [
     city: "Butembo",
     province: "Nord-Kivu",
     category: "Backup",
-    spec: "Backup ≈ 5 kVA · Lithium",
     image: "/photos/victron-onduleur-batteries.webp",
     imageAlt: "Onduleur Victron et parc batteries assurant la continuité électrique",
     summary:
@@ -135,7 +134,7 @@ export const caseStudies: CaseStudy[] = [
     challenge:
       "Maintenir l'activité du site malgré des coupures fréquentes du réseau, sans recourir à un groupe électrogène bruyant et coûteux.",
     solution:
-      "Déploiement d'un système backup avec onduleur hybride et batteries lithium, à relais automatique instantané.",
+      "Déploiement d'un système backup — onduleur hybride et batteries — qui prend le relais pendant les coupures du réseau.",
     results: [
       "Continuité assurée pendant les coupures",
       "Fonctionnement silencieux",
@@ -150,19 +149,17 @@ export const caseStudies: CaseStudy[] = [
     city: "Numbi",
     province: "Sud-Kivu",
     category: "Solaire",
-    spec: "Kit ≈ 3 kVA · Off-grid",
     image: "/photos/toiture-residence-duo.webp",
     imageAlt: "Deux techniciens sur un système solaire en toiture de résidence",
     summary:
-      "Kit solaire alimentant le bureau de LSC à Numbi, en zone reculée du Sud-Kivu, pour une autonomie totale.",
+      "Kit solaire alimentant le bureau de LSC à Numbi, en zone reculée du Sud-Kivu.",
     lon: 28.85,
     lat: -2.08,
     challenge:
       "Alimenter un bureau d'ONG situé en zone reculée, hors de portée d'un réseau électrique fiable.",
     solution:
-      "Installation d'un kit solaire hybride autonome, dimensionné pour les besoins du bureau et de ses équipements.",
+      "Installation d'un kit solaire dimensionné pour les besoins du bureau et de ses équipements.",
     results: [
-      "Autonomie énergétique complète",
       "Continuité des opérations de terrain",
       "Solution adaptée aux sites isolés",
     ],
@@ -175,7 +172,6 @@ export const caseStudies: CaseStudy[] = [
     city: "Bunia",
     province: "Ituri",
     category: "Maintenance",
-    spec: "Contrat de maintenance annuel",
     image: "/photos/tableau-pose-duo.webp",
     imageAlt: "Techniciens posant un tableau de distribution basse tension",
     summary:
@@ -187,7 +183,6 @@ export const caseStudies: CaseStudy[] = [
     solution:
       "Mise en place d'un contrat de maintenance préventive et corrective, avec interventions planifiées et suivi technique.",
     results: [
-      "Disponibilité maximale des installations",
       "Interventions rapides et planifiées",
       "Durée de vie des équipements prolongée",
     ],

@@ -23,7 +23,7 @@ export const metadata: Metadata = pageMetadata({
    * « ,... » — une liste tronquée n'inspire pas la précision.
    */
   title: "Réalisations — MONUSCO, CARE, ALIMA, Afriland",
-  description: `${projects.length} installations en service pour ${clients.length} organisations, de Bunia à Kinshasa : ONG internationales, banques, programmes d’État et médias.`,
+  description: `${projects.length} installations documentées pour ${clients.length} clients nommés, de Bunia à Kinshasa : ONG internationales, banques, programmes d’État, médias et hôtellerie.`,
 });
 
 export default async function ReferencesPage({
@@ -47,11 +47,17 @@ export default async function ReferencesPage({
             <span className="text-brand-600">et où.</span>
           </>
         }
-        lead={`${projects.length} installations en service pour ${clients.length} organisations — ONG internationales, banques, programmes d'État, médias et entreprises.`}
+        lead={`${projects.length} installations documentées pour ${clients.length} clients nommés — ONG internationales, banques, programmes d'État, médias, hôtellerie et entreprises.`}
         image={{
-          src: "/photos/kisangani-hotel-bambou.webp",
-          alt: "Système solaire en toiture de l'hôtel Bambou, sur le fleuve à Kisangani",
-          position: "48% 78%",
+          /*
+           * Une installation de l'entreprise, vue du drone. L'image
+           * précédente (hôtel Bambou, Kisangani) venait d'un autre
+           * installateur : sur la page des réalisations, c'était la pire
+           * place pour une photo qui n'en est pas une.
+           */
+          src: "/photos/drone-ensemble-panneaux.webp",
+          alt: "Vue aérienne de panneaux solaires installés par Tech Solution RDC sur une toiture",
+          position: "50% 50%",
           /* La preuve de l'échelle livrée — elle vaut d'être vue. */
           mobile: "band",
         }}
@@ -73,7 +79,7 @@ export default async function ReferencesPage({
             <dl className="grid grid-cols-3 divide-x divide-brand-200">
               {[
                 { value: `${projects.length}`, label: "Installations" },
-                { value: `${clients.length}`, label: "Organisations" },
+                { value: `${clients.length}`, label: "Clients nommés" },
                 {
                   value: `${site.provincesDelivered}`,
                   suffix: `/${provinces.length}`,
@@ -123,7 +129,7 @@ export default async function ReferencesPage({
           <Reveal delay={0.1}>
             <p className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-6 text-sm text-brand-200">
               <span className="font-semibold text-white">
-                Nos {presenceCities.length} villes d&apos;intervention :
+                {`Nos ${presenceCities.length} villes d'intervention :`}
               </span>
               {presenceCities.map((city) => (
                 <span

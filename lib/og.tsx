@@ -24,11 +24,12 @@ export const OG_CONTENT_TYPE = "image/jpeg";
 /**
  * Photo de fond par défaut — une **vraie** installation, pas un décor.
  *
- * L'hôtel Bambou à Kisangani : la scène est large, très lisible réduite à
- * 300 px dans un fil WhatsApp, et reconnaissable comme congolaise. C'est la
- * même image que le hero de /references, où elle est déjà légendée.
+ * Deux techniciens de l'entreprise en tenue siglée, un panneau entre les
+ * mains, un quartier derrière : lisible réduit à 300 px dans un fil
+ * WhatsApp, et c'est l'équipe, pas un décor. L'image précédente (hôtel
+ * Bambou, Kisangani) venait d'un autre installateur.
  */
-const DEFAULT_PHOTO = "photos/kisangani-hotel-bambou.webp";
+const DEFAULT_PHOTO = "photos/pose-panneau-equipe.webp";
 
 async function asset(relative: string) {
   return readFile(join(process.cwd(), "public", relative));

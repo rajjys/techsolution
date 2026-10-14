@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { caseStudies } from "@/lib/data/case-studies";
 import { serviceForCategory } from "@/lib/data/services";
 import { pageMetadata } from "@/lib/seo";
+import { contactHref } from "@/lib/routes";
 
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
@@ -148,7 +149,7 @@ export default async function CaseStudyPage({
                   <Link
                     href={
                       relatedService
-                        ? `/contact?service=${relatedService.slug}`
+                        ? contactHref({ service: relatedService.slug })
                         : "/contact"
                     }
                   >

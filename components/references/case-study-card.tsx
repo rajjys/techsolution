@@ -4,6 +4,7 @@ import { ArrowRight, Gauge, MapPin } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { CaseStudy } from "@/lib/data/case-studies";
+import { caseStudyHref } from "@/lib/routes";
 
 /**
  * Carte d'étude de cas — partagée par le carrousel de l'accueil et la grille
@@ -28,7 +29,7 @@ export function CaseStudyCard({
 
   return (
     <Link
-      href={`/references/${study.slug}`}
+      href={caseStudyHref(study.slug)}
       className={cn(
         `group relative block overflow-hidden rounded-3xl transition-all duration-300
         ring-offset-2 hover:ring-4 hover:ring-white/45 hover:ring-offset-brand-900
@@ -58,10 +59,13 @@ export function CaseStudyCard({
         <span className="inline-flex items-center rounded-full border border-white/20 bg-brand-950/60 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-solar-400 backdrop-blur">
           {study.category}
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-brand-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
-          <Gauge className="size-3.5 text-solar-400" aria-hidden="true" />
-          {study.spec}
-        </span>
+        {/* Pas de repère vérifié, pas de pastille — jamais d'approximation. */}
+        {study.spec ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-brand-950/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+            <Gauge className="size-3.5 text-solar-400" aria-hidden="true" />
+            {study.spec}
+          </span>
+        ) : null}
       </div>
 
       {/* Contenu bas */}

@@ -20,6 +20,7 @@ import {
 } from "@/lib/data/clients";
 import { services } from "@/lib/data/services";
 import { cn } from "@/lib/utils";
+import { caseStudyHref } from "@/lib/routes";
 
 /**
  * Catégories — cantonnées aux quatre familles du système de couleurs.
@@ -301,7 +302,7 @@ export function RealisationsList({ initialDomain }: { initialDomain?: string }) 
             >
               {project.caseStudy ? (
                 <Link
-                  href={`/references/${project.caseStudy}`}
+                  href={caseStudyHref(project.caseStudy)}
                   className={rowClass}
                 >
                   {content}
