@@ -935,13 +935,26 @@ Delivered in the working tree on 2 Oct and verified:
   before changing).
 
 ### Phase 11 — Deploy and validate
-- [ ] **11.1** Deploy; confirm `MAINTENANCE_MODE` is false on Vercel.
+- [x] **11.1** **Deployed 15 Oct 2026** (merge `8a25441`). The merge kept
+  Vercel Web Analytics, which had been added to `main` via PR #1.
+  Production verified:
+  - all new pages return 200, with their own canonical and JSON-LD;
+  - the 6 old slugs return 308;
+  - the sitemap has 25 URLs;
+  - the public farde has only the company number in its text layer;
+  - the hero H1 is CSS-revealed;
+  - `MAINTENANCE_MODE` is off.
 - [ ] **11.2** GSC: resubmit the sitemap; URL Inspection → request indexing
   for each new page type; check redirects are reported as such.
 - [ ] **11.3** Add **Bing Webmaster Tools** (Bing's index feeds Copilot and
   is used by ChatGPT search, which matters for the AI-answers goal) and import from GSC. Pull
   the first query data to validate §3.3 and §5.2.
-- [ ] **11.4** Baseline in §14 recorded on deploy day.
+- [ ] **11.4** Baseline in §14 recorded on deploy day (**15 Oct**): note
+  GSC impressions, clicks and indexed pages that day, so every later
+  measurement has a "before".
+- [ ] **11.5** If the old farde (with client numbers) is still cached in
+  Google (`site:techsolution.cd filetype:pdf`), request its refresh with
+  the "Remove outdated content" tool.
 
 ### Phase 12 — Google Business Profiles (last, external)
 - [ ] **12.1** Claim the **existing** Bunia profile (don't create a duplicate),
