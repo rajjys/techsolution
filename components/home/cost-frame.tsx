@@ -4,6 +4,7 @@ import { ArrowRight, ClipboardCheck, Clock3, ReceiptText } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
 import { Button } from "@/components/ui/button";
+import { productCategoryHref } from "@/lib/routes";
 
 /**
  * Le cadre de prix — sans prix.
@@ -113,7 +114,7 @@ export function CostFrame() {
               <Link href="/contact">Demander mon audit gratuit</Link>
             </Button>
             <Button variant="link" className="group" asChild>
-              <Link href="/produits">
+              <Link href={productCategoryHref("kits-solaires")}>
                 Voir les kits et leur composition
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </Link>

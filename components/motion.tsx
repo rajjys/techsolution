@@ -15,8 +15,20 @@ const EASE = [0.21, 0.47, 0.32, 0.98] as const;
 
 /**
  * Révélation au scroll (ou au montage pour les sections au-dessus du pli).
- * Avec `prefers-reduced-motion`, le même arbre est rendu mais l'animation est
- * neutralisée (état final immédiat) — jamais de contenu invisible.
+ *
+ * **Au montage, c'est du CSS, pas du JavaScript.** La version framer servait
+ * le titre de chaque page en `opacity:0` et ne l'affichait qu'après
+ * l'hydratation : sur un réseau congolais, le texte principal attendait le
+ * bundle (LCP de 11,9 s mesuré en août). L'animation CSS part avec la
+ * feuille de style ; même courbe, même durée, même décalage — rien ne change
+ * à l'œil.
+ *
+ * **L'état initial est le même au serveur et au client.** Il dépendait de
+ * `useReducedMotion()`, `null` au serveur et `true` chez un visiteur qui
+ * réduit les animations : React voyait deux arbres différents et levait une
+ * erreur d'hydratation sur chaque page. La préférence ne règle plus que la
+ * transition (durée nulle), qui n'est jamais écrite dans le HTML ; au
+ * montage, `motion-safe:` la prend en charge en CSS.
  */
 export function Reveal({
   children,
@@ -35,27 +47,30 @@ export function Reveal({
 }) {
   const reduce = useReducedMotion();
 
-  const initial = reduce ? { opacity: 1, y: 0 } : { opacity: 0, y };
+  if (mode === "mount") {
+    return (
+      <div
+        data-reveal=""
+        className={cn("motion-safe:animate-reveal-up", className)}
+        style={
+          {
+            "--reveal-y": `${y}px`,
+            animationDelay: delay ? `${delay}s` : undefined,
+          } as React.CSSProperties
+        }
+      >
+        {children}
+      </div>
+    );
+  }
+
+  const initial = { opacity: 0, y };
   const visible = { opacity: 1, y: 0 };
   const transition = {
     duration: reduce ? 0 : 0.65,
     delay: reduce ? 0 : delay,
     ease: EASE,
   };
-
-  if (mode === "mount") {
-    return (
-      <motion.div
-        data-reveal=""
-        className={className}
-        initial={initial}
-        animate={visible}
-        transition={transition}
-      >
-        {children}
-      </motion.div>
-    );
-  }
 
   return (
     <motion.div
@@ -114,7 +129,7 @@ export function Stagger({
       data-reveal=""
       className={className}
       variants={container}
-      initial={reduce ? "visible" : "hidden"}
+      initial="hidden"
       {...(mode === "mount"
         ? { animate: "visible" }
         : {
@@ -139,7 +154,8 @@ export function StaggerItem({
   const reduce = useReducedMotion();
 
   const item: Variants = {
-    hidden: reduce ? { opacity: 1, y: 0 } : { opacity: 0, y },
+    /* Constant au serveur et au client — cf. Reveal. */
+    hidden: { opacity: 0, y },
     visible: {
       opacity: 1,
       y: 0,

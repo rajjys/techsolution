@@ -19,7 +19,7 @@ import { Reveal } from "@/components/motion";
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { KIT_NEED, needs, resolveNeed } from "@/lib/data/contact";
-import { kits } from "@/lib/data/kits";
+import { findKit } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { pageMetadata } from "@/lib/seo";
 import { offices, site } from "@/lib/site";
@@ -66,7 +66,7 @@ export default async function ContactPage({
     need: needSlug,
   } = await searchParams;
 
-  const kit = kits.find((item) => item.slug === kitSlug);
+  const kit = findKit(kitSlug);
   const service = services.find((item) => item.slug === serviceSlug);
 
   /*

@@ -1,20 +1,29 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
+/*
+ * Mode maintenance — Proxy (ex-Middleware, renommé en Next 16).
+ *
+ * Il répond 503 + `Retry-After` à toutes les URL, robots.txt et sitemap
+ * compris : c'est le bon signal pour une coupure **courte**. Au-delà de
+ * quelques jours, Google commence à désindexer — ne pas s'en servir pour une
+ * suspension longue. Le `.env` local le met à `true` : lancer le serveur de
+ * test avec `MAINTENANCE_MODE=false`.
+ */
 const MAINTENANCE_MODE = process.env.MAINTENANCE_MODE === "true";
 
-export function middleware(_request: NextRequest) {
+export function proxy() {
   if (!MAINTENANCE_MODE) {
     return NextResponse.next();
   }
 
   return new NextResponse(
     `<!DOCTYPE html>
-    <html lang="en">
+    <html lang="fr">
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Service temporarily unavailable</title>
+        <title>Service temporairement indisponible</title>
         <style>
           body {
             font-family: system-ui, sans-serif;
@@ -36,7 +45,7 @@ export function middleware(_request: NextRequest) {
       </head>
       <body>
         <main>
-          <h1>Service temporarily unavailable</h1>
+          <h1>Service temporairement indisponible</h1>
           <p>
             Ce site web est temporairement indisponible.
             Veuillez contacter le prestataire de services pour plus d'informations.

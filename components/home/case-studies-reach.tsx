@@ -32,14 +32,19 @@ export function CaseStudiesReach() {
             Des foyers aux grandes organisations, nous installons votre autonomie énergétique.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-brand-200 sm:text-base md:text-lg">
+            {/*
+              Deux nombres, deux unités : une installation documentée et un
+              foyer équipé ne se comptent pas ensemble. L'addition (« 77+ »)
+              contredisait les 17 du pied de page et de /references.
+            */}
             <span className="font-semibold text-solar-400">
-              {projects.length + 60 }+ installations 
-            </span>{" "}
-            en service dans{" "}
+              {`${projects.length} installations documentées`}
+            </span>
+            {" et "}
             <span className="font-semibold text-solar-400">
-              {site.provincesDelivered} provinces
-            </span>{" "}
-            — Découvrez nos installations, du solaire résidentiel aux projets de grande envergure.
+              {`${site.householdsEquipped}+ foyers équipés`}
+            </span>
+            {`, dans ${site.provincesDelivered} provinces — du solaire résidentiel aux projets de grande envergure.`}
           </p>
         </Reveal>
 

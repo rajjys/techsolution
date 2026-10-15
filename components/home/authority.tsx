@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { projects } from "@/lib/data/clients";
+import { site } from "@/lib/site";
 
 type ClientLogo = {
   src: string;
@@ -90,8 +92,10 @@ export function Authority() {
             */}
             <dl className="flex flex-wrap justify-center gap-x-10 gap-y-4 lg:justify-start">
               {[
-                { value: "20+", label: "installations d'envergure" },
-                { value: "60+", label: "ménages installés" },
+                /* Dérivés de la donnée : « 20+ » écrit à la main contredisait
+                   déjà les 17 du pied de page. */
+                { value: `${projects.length}`, label: "installations documentées" },
+                { value: `${site.householdsEquipped}+`, label: "foyers équipés" },
               ].map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse">
                   <dt className="mt-1 text-sm font-medium text-slate-500">

@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { WhatsAppFab } from "@/components/whatsapp-fab";
 import { presenceCities } from "@/lib/data/case-studies";
-import { legal, offices, site, socialLinks } from "@/lib/site";
+import { leader, legal, offices, site, socialLinks } from "@/lib/site";
 
 import "./globals.css";
 
@@ -82,6 +82,25 @@ const organizationJsonLd = {
    * confusion de marque avec les autres « Tech Solution » du pays.
    */
   sameAs: socialLinks.map((account) => account.href),
+  /*
+   * Un nom derrière l'entreprise — son fondateur, confirmé par elle
+   * (oct. 2026). L'école n'étant pas connue, pas d'`alumniOf`.
+   */
+  founder: {
+    "@type": "Person",
+    name: leader.name,
+    jobTitle: leader.role,
+    description: `${leader.training}. ${leader.career
+      .map((step) => `${step.period} : ${step.text}`)
+      .join(" ; ")}.`,
+    image: `${site.url}${leader.photo}`,
+    url: `${site.url}/about`,
+    knowsAbout: [
+      "Énergie solaire photovoltaïque",
+      "Stockage d'énergie par batteries",
+      "Maintenance de systèmes solaires",
+    ],
+  },
   /*
    * Identifiants légaux congolais. `taxID` porte le NIF ; le RCCM et l'IDNAT
    * n'ont pas de propriété dédiée dans schema.org, d'où `identifier` typé par

@@ -14,7 +14,7 @@ import {
   validateField,
   type ContactField,
 } from "@/lib/data/contact";
-import { kits } from "@/lib/data/kits";
+import { findKit } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
 import { site } from "@/lib/site";
 
@@ -87,7 +87,8 @@ const baseSchema = z.object({
    * impossible de savoir quel chemin du site produit des rappels, donc quoi
    * renforcer. Purement informatif — jamais de quoi refuser une demande.
    */
-  source: z.enum(["kit", "service", "nu"]).optional(),
+  /* `modal` : la fenêtre « Demander ce kit » des fiches et du catalogue. */
+  source: z.enum(["kit", "service", "nu", "modal"]).optional(),
   referrer: z.string().max(500).optional().default(""),
   landing: z.string().max(500).optional().default(""),
 });
@@ -115,7 +116,12 @@ const payloadSchema = baseSchema.superRefine((data, ctx) => {
       message: "Réponse manquante.",
     });
   }
-  if (!data.timing) {
+  /*
+   * La fenêtre « Demander ce kit » ne pose pas la question de l'échéance :
+   * cinq champs, pas un questionnaire. Le kit dit déjà le besoin et le
+   * palier, le commercial demande le reste au rappel.
+   */
+  if (!data.timing && data.source !== "modal") {
     ctx.addIssue({
       code: "custom",
       path: ["timing"],
@@ -208,7 +214,7 @@ function toWhatsAppNumber(raw: string): string | null {
  * c'est ici qu'ils redeviennent des phrases lisibles par un commercial.
  */
 function summarize(data: Payload) {
-  const kit = kits.find((item) => item.slug === data.kit);
+  const kit = findKit(data.kit);
   const service = services.find((item) => item.slug === data.need);
 
   /* Une demande libre n'a pas d'objet commercial : le sujet le dit. */
@@ -246,7 +252,9 @@ function summarize(data: Payload) {
         ? "Lien préqualifié depuis un domaine"
         : data.source === "nu"
           ? "Formulaire ouvert sans préqualification"
-          : undefined;
+          : data.source === "modal"
+            ? "Fenêtre « Demander ce kit » (fiche ou catalogue)"
+            : undefined;
   if (origin) rows.push(["Origine", origin]);
   if (data.landing && data.landing !== "/contact") {
     rows.push(["Page d'arrivée", data.landing]);

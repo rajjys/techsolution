@@ -3,8 +3,10 @@ import { ArrowRight, BatteryCharging, SunMedium, Zap } from "lucide-react";
 
 import { Reveal } from "@/components/motion";
 import { Eyebrow } from "@/components/section";
+import { KitQuoteLink } from "@/components/products/kit-quote";
 import { Button } from "@/components/ui/button";
 import { showcaseKits, type Kit } from "@/lib/data/kits";
+import { contactHref, kitHref, productCategoryHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 /**
@@ -107,9 +109,9 @@ function KitCard({ kit }: { kit: Kit }) {
           ))}
         </ul>
 
-        <div className="mt-auto pt-6">
-          <Link
-            href={`/contact?kit=${kit.slug}`}
+        <div className="mt-auto flex flex-col items-center gap-3 pt-6">
+          <KitQuoteLink
+            kitSlug={kit.slug}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-[15px] font-semibold whitespace-nowrap transition-all duration-200 hover:ring-4 ring-offset-1 hover:ring-brand-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2",
               highlight
@@ -120,6 +122,13 @@ function KitCard({ kit }: { kit: Kit }) {
             Demander ce kit
             <span className="sr-only"> — {kit.name}</span>
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+          </KitQuoteLink>
+          <Link
+            href={kitHref(kit)}
+            className="rounded text-sm font-semibold text-slate-600 underline-offset-4 transition-colors hover:text-brand-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+          >
+            En savoir plus
+            <span className="sr-only">{` sur le ${kit.name}`}</span>
           </Link>
         </div>
       </div>
@@ -210,11 +219,11 @@ export function KitsSelector() {
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4 lg:shrink-0">
               <Button variant="primary" asChild>
-                <Link href="/contact?need=kit">Devis gratuit</Link>
+                <Link href={contactHref({ need: "kit" })}>Devis gratuit</Link>
               </Button>
               <Button variant="outline-strong" className="group" asChild>
-                <Link href="/produits">
-                  Tout le catalogue
+                <Link href={productCategoryHref("kits-solaires")}>
+                  Tous les kits
                   <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </Button>

@@ -1,4 +1,5 @@
-import { caseStudies } from "@/lib/data/case-studies";
+import { caseStudies, findCaseStudy } from "@/lib/data/case-studies";
+import { clients, projects } from "@/lib/data/clients";
 import { ogImage, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
 
 export const alt = "Étude de cas — Tech Solution RDC";
@@ -16,18 +17,21 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const study = caseStudies.find((item) => item.slug === slug);
+  const study = findCaseStudy(slug);
 
   if (!study) {
     return ogImage({
       eyebrow: "Nos réalisations",
-      title: "17 installations en service, pour 11 organisations.",
+      title: `${projects.length} installations documentées, pour ${clients.length} clients nommés.`,
     });
   }
 
   return ogImage({
-    /* La ville en surtitre : c'est le repère qui manque au partage local. */
-    eyebrow: `${study.city} · ${study.province}`,
+    /* Le client et la ville en surtitre : les deux repères qu'un lien
+       partagé doit porter. Un client non nommé n'y figure pas. */
+    eyebrow: study.clientNamed
+      ? `${study.client} · ${study.city}`
+      : `${study.city} · ${study.province}`,
     title: study.title,
     /* La photo du chantier lui-même — `image` est un chemin depuis /public. */
     photo: study.image.replace(/^\//, ""),

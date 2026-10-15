@@ -1,6 +1,10 @@
 import {
   AirVent,
   Building2,
+  PackageCheck,
+  ShieldCheck,
+  Truck,
+  Wrench,
   Factory,
   Home,
   Hotel,
@@ -16,6 +20,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import type { ProductCategorySlug } from "@/lib/data/products";
+
 export type KitSegment = "residentiel" | "professionnel" | "industriel";
 
 /** Ce qu'un kit fait tourner — un appareil, ou un lieu pour les fortes puissances. */
@@ -29,11 +35,19 @@ export type KitLoad = {
 
 export type Kit = {
   /**
-   * Identifiant d'URL — lisible et indexable. Il voyage dans
-   * `/contact?kit=<slug>` : c'est lui, et non le nom du produit, qui doit
-   * apparaître dans la barre d'adresse.
+   * Identifiant d'URL — lisible et indexable. C'est le dernier segment de la
+   * fiche produit (`/produits/kits-solaires/<slug>`) et il voyage dans
+   * `/contact?kit=<slug>`.
    */
   slug: string;
+  /**
+   * Anciens identifiants, encore présents dans des liens partagés et des URL
+   * `/contact?kit=` indexées. `findKit` les résout ; ils ne servent à rien
+   * d'autre.
+   */
+  previousSlugs?: string[];
+  /** Gamme de rattachement — tous les kits sont des « kits solaires ». */
+  category: ProductCategorySlug;
   name: string;
   power: string;
   phase: "Monophasé" | "Triphasé";
@@ -93,6 +107,32 @@ export const kitSegments: {
 ];
 
 /**
+ * Photo d'une fiche kit, par segment. Aucun kit n'a sa propre photo : ce sont
+ * des chantiers de l'entreprise qui montrent le **type** d'installation, et
+ * leur texte alternatif ne prétend pas montrer le kit lui-même.
+ */
+export const kitSegmentPhotos: Record<
+  KitSegment,
+  { src: string; alt: string; position: string }
+> = {
+  residentiel: {
+    src: "/photos/backup-onduleur-technicien.webp",
+    alt: "Technicien Tech Solution RDC fixant un onduleur hybride au mur",
+    position: "50% 40%",
+  },
+  professionnel: {
+    src: "/photos/onduleurs-muraux-batiment.webp",
+    alt: "Onduleurs, chemins de câbles et coffret de distribution installés par Tech Solution RDC",
+    position: "50% 50%",
+  },
+  industriel: {
+    src: "/photos/drone-quartier-couverture.webp",
+    alt: "Vue aérienne de toitures équipées de panneaux solaires",
+    position: "50% 55%",
+  },
+};
+
+/**
  * Kits solaires clés en main — composition officielle Tech Solution
  * (source : catalogue « Nos kits solaires »). Prix communiqués sur devis.
  * L'ordre du tableau est celui de l'échelle de puissance : ne pas le casser.
@@ -100,16 +140,17 @@ export const kitSegments: {
 export const kits: Kit[] = [
   {
     slug: "kit-solaire-hybride-650-va",
-    name: "Kit Solaire Hybride 650 Va",
-    power: "650 Va",
+    category: "kits-solaires",
+    name: "Kit Solaire Hybride 650 VA",
+    power: "650 VA",
     phase: "Monophasé",
     segment: "residentiel",
     tier: "Essentiel",
     outcome: "L'éclairage et l'essentiel, sans coupure.",
-    inverter: "1 onduleur hybride 850 Va / 12 V",
+    inverter: "1 onduleur hybride 850 VA / 12 V",
     battery: "1 batterie gel 150 Ah / 12 V",
     panels: "1 panneau 450 W",
-    specs: { inverter: "850 Va", battery: "150 Ah", panels: "1 × 450 W" },
+    specs: { inverter: "850 VA", battery: "150 Ah", panels: "1 × 450 W" },
     runs: [
       { icon: Tv, label: 'TV 32"', detail: "Une TV 32 pouces" },
       { icon: Laptop, label: "Laptop", detail: "Un ordinateur portable" },
@@ -120,6 +161,7 @@ export const kits: Kit[] = [
   },
   {
     slug: "kit-solaire-hybride-1-5-kva",
+    category: "kits-solaires",
     name: "Kit Solaire Hybride 1,5 kVA",
     power: "1,5 kVA",
     phase: "Monophasé",
@@ -141,6 +183,7 @@ export const kits: Kit[] = [
   },
   {
     slug: "kit-solaire-hybride-3-kva",
+    category: "kits-solaires",
     name: "Kit Solaire Hybride 3 kVA",
     power: "3 kVA",
     phase: "Monophasé",
@@ -161,6 +204,7 @@ export const kits: Kit[] = [
   },
   {
     slug: "kit-solaire-hybride-5-kva",
+    category: "kits-solaires",
     name: "Kit Solaire Hybride 5 kVA",
     power: "5 kVA",
     phase: "Monophasé",
@@ -182,8 +226,10 @@ export const kits: Kit[] = [
     showcase: true,
   },
   {
-    slug: "kit-solaire-8-kva",
-    name: "Kit Solaire 8 kVA",
+    slug: "kit-solaire-hybride-8-kva",
+    previousSlugs: ["kit-solaire-8-kva"],
+    category: "kits-solaires",
+    name: "Kit Solaire Hybride 8 kVA",
     power: "8 kVA",
     phase: "Monophasé",
     segment: "professionnel",
@@ -203,6 +249,7 @@ export const kits: Kit[] = [
   },
   {
     slug: "kit-solaire-hybride-10-kva",
+    category: "kits-solaires",
     name: "Kit Solaire Hybride 10 kVA",
     power: "10 kVA",
     phase: "Monophasé",
@@ -224,8 +271,10 @@ export const kits: Kit[] = [
     showcase: true,
   },
   {
-    slug: "kit-solaire-12-kva",
-    name: "Kit Solaire 12 kVA",
+    slug: "kit-solaire-hybride-12-kva",
+    previousSlugs: ["kit-solaire-12-kva"],
+    category: "kits-solaires",
+    name: "Kit Solaire Hybride 12 kVA",
     power: "12 kVA",
     phase: "Monophasé",
     segment: "professionnel",
@@ -244,8 +293,10 @@ export const kits: Kit[] = [
     usage: "Appartement, école, ferme, auberge, université.",
   },
   {
-    slug: "kit-solaire-20-kva",
-    name: "Kit Solaire 20 kVA",
+    slug: "kit-solaire-hybride-20-kva",
+    previousSlugs: ["kit-solaire-20-kva"],
+    category: "kits-solaires",
+    name: "Kit Solaire Hybride 20 kVA",
     power: "20 kVA",
     phase: "Monophasé",
     segment: "industriel",
@@ -264,8 +315,13 @@ export const kits: Kit[] = [
     usage: "Centre de santé, appartement, école, hôtel, université.",
   },
   {
-    slug: "kit-solaire-semi-industriel-30-kva",
-    name: "Kit Solaire Semi-Industriel 30 kVA",
+    slug: "kit-solaire-hybride-30-kva-triphase",
+    previousSlugs: ["kit-solaire-semi-industriel-30-kva"],
+    category: "kits-solaires",
+    /* Le seul triphasé de la gamme : c'est le premier critère d'un acheteur
+       à ce palier, il appartient donc au nom. Le catalogue d'origine le
+       disait « semi-industriel ». */
+    name: "Kit Solaire Hybride 30 kVA Triphasé",
     power: "30 kVA",
     phase: "Triphasé",
     segment: "industriel",
@@ -289,3 +345,58 @@ export const kits: Kit[] = [
 
 /** Kits mis en avant sur la page d'accueil, dans l'ordre de l'échelle. */
 export const showcaseKits = kits.filter((kit) => kit.showcase);
+
+/**
+ * Un kit par son identifiant, ancien compris. Toute recherche par slug passe
+ * par ici — la page contact, l'API et les fiches — pour qu'un lien partagé
+ * avant le renommage arrive toujours sur le bon kit.
+ */
+export function findKit(slug: string | null | undefined): Kit | undefined {
+  if (!slug) return undefined;
+  return kits.find(
+    (kit) => kit.slug === slug || kit.previousSlugs?.includes(slug),
+  );
+}
+
+/** Kits d'un segment, dans l'ordre de l'échelle. */
+export function kitsForSegment(segment: KitSegment): Kit[] {
+  return kits.filter((kit) => kit.segment === segment);
+}
+
+/** Les paliers voisins d'un kit sur l'échelle — « un cran en dessous / au-dessus ». */
+export function kitNeighbours(kit: Kit): { lower?: Kit; higher?: Kit } {
+  const index = kits.findIndex((item) => item.slug === kit.slug);
+  return { lower: kits[index - 1], higher: kits[index + 1] };
+}
+
+/**
+ * Ce qui accompagne chaque kit — vaut pour les neuf. Ces quatre engagements
+ * étaient écrits dans /produits ; ils servent désormais au catalogue, à la
+ * gamme et à chaque fiche.
+ */
+export const kitCommitments: {
+  icon: LucideIcon;
+  title: string;
+  text: string;
+}[] = [
+  {
+    icon: ShieldCheck,
+    title: "Équipements certifiés",
+    text: "Onduleurs hybrides, batteries lithium LiFePO₄ et panneaux monocristallins de marques éprouvées.",
+  },
+  {
+    icon: PackageCheck,
+    title: "Dimensionnement inclus",
+    text: "La composition annoncée est un point de départ : elle est ajustée après l'audit de charge de votre site.",
+  },
+  {
+    icon: Truck,
+    title: "Livraison & installation",
+    text: "Acheminement et pose par nos propres techniciens, dans les 26 provinces.",
+  },
+  {
+    icon: Wrench,
+    title: "Garantie & maintenance",
+    text: "Un an renouvelable sur les kits, et un contrat d'entretien planifié si vous le souhaitez.",
+  },
+];

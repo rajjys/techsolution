@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ArrowUpRight, MapPin, SlidersHorizontal, X } from "lucide-react";
 
 import { Stagger, StaggerItem } from "@/components/motion";
@@ -16,10 +17,12 @@ import {
 import {
   projects,
   sectorGroups,
+  type Project,
   type SectorGroup,
 } from "@/lib/data/clients";
 import { services } from "@/lib/data/services";
-import { cn } from "@/lib/utils";
+import { cn, placeLabel } from "@/lib/utils";
+import { caseStudyHref } from "@/lib/routes";
 
 /**
  * Catégories — cantonnées aux quatre familles du système de couleurs.
@@ -32,6 +35,74 @@ const CATEGORY_STYLES: Record<string, string> = {
   Sécurité: "border-slate-300 bg-white text-slate-700",
   Maintenance: "border-slate-200 bg-slate-100 text-slate-600",
 };
+
+/**
+ * Une réalisation. Dans un groupe de client, la ligne ne répète pas le
+ * client : il est dans l'en-tête du groupe.
+ */
+function ProjectRow({ project, nested = false }: { project: Project; nested?: boolean }) {
+  /* Les projets documentés mènent à leur étude de cas ; les autres restent
+     de simples lignes, sans fausse affordance. */
+  const rowClass = cn(
+    "group flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6",
+    nested ? "py-3" : "py-5",
+    project.caseStudy &&
+      "-mx-3 rounded-xl px-3 transition-colors hover:bg-brand-50/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500",
+  );
+
+  const content = (
+    <>
+      <span
+        className={cn(
+          "inline-flex shrink-0 items-center self-start rounded-full border px-2.5 py-0.5 text-[11px] font-semibold sm:w-28 sm:justify-center",
+          CATEGORY_STYLES[project.category],
+        )}
+      >
+        {project.category}
+      </span>
+
+      <span className="min-w-0 flex-1">
+        <span
+          className={cn(
+            "block leading-snug text-slate-900",
+            nested ? "text-[15px] font-semibold" : "text-[15px] font-bold",
+          )}
+        >
+          {project.title}
+          {project.caseStudy ? (
+            <ArrowUpRight
+              className="ml-1.5 inline size-4 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100"
+              aria-hidden="true"
+            />
+          ) : null}
+        </span>
+        {nested && !project.caseStudy ? null : (
+          <span className="mt-0.5 block text-sm text-slate-500">
+            {nested ? null : project.client}
+            {project.caseStudy ? (
+              <span className={cn("text-xs font-semibold text-brand-600", !nested && "ml-2")}>
+                Étude de cas
+              </span>
+            ) : null}
+          </span>
+        )}
+      </span>
+
+      <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-slate-600 sm:w-52">
+        <MapPin className="size-3.5 shrink-0 text-solar-600" aria-hidden="true" />
+        {placeLabel(project.city, project.province)}
+      </span>
+    </>
+  );
+
+  return project.caseStudy ? (
+    <Link href={caseStudyHref(project.caseStudy)} className={rowClass}>
+      {content}
+    </Link>
+  ) : (
+    <div className={rowClass}>{content}</div>
+  );
+}
 
 function OptionButton({
   active,
@@ -57,6 +128,30 @@ function OptionButton({
       {children}
     </button>
   );
+}
+
+/** Regroupe par client, dans l'ordre de première apparition. */
+function groupByClient(list: Project[]): { client: string; items: Project[] }[] {
+  const groups: { client: string; items: Project[] }[] = [];
+  for (const project of list) {
+    const group = groups.find((item) => item.client === project.client);
+    if (group) group.items.push(project);
+    else groups.push({ client: project.client, items: [project] });
+  }
+  return groups;
+}
+
+/**
+ * La liste, initialisée depuis `?domaine=` — lu côté client.
+ *
+ * /references lisait ce paramètre côté serveur, ce qui la rendait dynamique
+ * (`ƒ`) pour un seul lien profond venu de /services. Lu ici, sous un
+ * `Suspense` dont le repli est la liste complète, la page redevient statique
+ * et le HTML servi contient toujours toutes les réalisations.
+ */
+export function RealisationsListFromUrl() {
+  const domain = useSearchParams().get("domaine") ?? undefined;
+  return <RealisationsList initialDomain={domain} />;
 }
 
 /**
@@ -244,74 +339,38 @@ export function RealisationsList({ initialDomain }: { initialDomain?: string }) 
         gap={0.03}
         className="divide-y divide-slate-100"
       >
-        {visible.map((project, index) => {
-          /* Les projets documentés mènent à leur étude de cas ; les autres
-             restent de simples lignes, sans fausse affordance. */
-          const rowClass = cn(
-            "group flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:gap-6",
-            project.caseStudy &&
-              "-mx-3 rounded-xl px-3 transition-colors hover:bg-brand-50/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500",
-          );
-
-          const content = (
-            <>
-              <span
-                className={cn(
-                  "inline-flex shrink-0 items-center self-start rounded-full border px-2.5 py-0.5 text-[11px] font-semibold sm:w-28 sm:justify-center",
-                  CATEGORY_STYLES[project.category],
-                )}
-              >
-                {project.category}
-              </span>
-
-              <span className="min-w-0 flex-1">
-                <span className="block text-[15px] font-bold leading-snug text-slate-900">
-                  {project.title}
-                  {project.caseStudy ? (
-                    <ArrowUpRight
-                      className="ml-1.5 inline size-4 text-brand-600 opacity-0 transition-opacity group-hover:opacity-100"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-                </span>
-                <span className="mt-0.5 block text-sm text-slate-500">
-                  {project.client}
-                  {project.caseStudy ? (
-                    <span className="ml-2 text-xs font-semibold text-brand-600">
-                      Étude de cas
-                    </span>
-                  ) : null}
-                </span>
-              </span>
-
-              <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-slate-600 sm:w-52">
-                <MapPin
-                  className="size-3.5 shrink-0 text-solar-600"
-                  aria-hidden="true"
-                />
-                {project.city} — {project.province}
-              </span>
-            </>
-          );
-
-          return (
-            <StaggerItem
-              key={`${project.title}-${project.city}-${index}`}
-              y={10}
-            >
-              {project.caseStudy ? (
-                <Link
-                  href={`/references/${project.caseStudy}`}
-                  className={rowClass}
-                >
-                  {content}
-                </Link>
-              ) : (
-                <div className={rowClass}>{content}</div>
-              )}
+        {/*
+          Un client, plusieurs réalisations : LTJ (quatre sites) et MONUSCO /
+          FRAPEZ (cinq radios) se lisent en un bloc, pas comme neuf clients.
+          L'ordre est celui de la première apparition dans la donnée.
+        */}
+        {groupByClient(visible).map((group) =>
+          group.items.length === 1 ? (
+            <StaggerItem key={`${group.client}-${group.items[0].title}`} y={10}>
+              <ProjectRow project={group.items[0]} />
             </StaggerItem>
-          );
-        })}
+          ) : (
+            <StaggerItem key={group.client} y={10}>
+              <div className="py-5">
+                <p className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <span className="text-[15px] font-bold text-slate-900">
+                    {group.client}
+                  </span>
+                  <span className="text-sm font-medium text-slate-500">
+                    {`${group.items.length} réalisations`}
+                  </span>
+                </p>
+                <ul className="mt-2 divide-y divide-slate-100 border-l-2 border-brand-100 pl-4 sm:ml-1">
+                  {group.items.map((project) => (
+                    <li key={`${project.title}-${project.city}`}>
+                      <ProjectRow project={project} nested />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </StaggerItem>
+          ),
+        )}
       </Stagger>
 
       {visible.length === 0 ? (

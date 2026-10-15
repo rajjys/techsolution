@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 
+import { KitQuoteLink } from "@/components/products/kit-quote";
+
 import { kitSegments, kits } from "@/lib/data/kits";
+import { kitHref } from "@/lib/routes";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -119,13 +122,24 @@ export function KitsTable({
                     {kit.specs.panels}
                   </td>
                   <td className="py-4 align-top text-right">
-                    <Link
-                      href={`/contact?kit=${kit.slug}`}
-                      className="inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-                    >
-                      Devis
-                      <span className="sr-only"> pour le {kit.name}</span>
-                    </Link>
+                    <span className="inline-flex gap-1">
+                      <Link
+                        href={kitHref(kit)}
+                        onClick={(event) => event.stopPropagation()}
+                        className="inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-600 transition-colors hover:bg-brand-100 hover:text-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                      >
+                        Fiche
+                        <span className="sr-only">{` du ${kit.name}`}</span>
+                      </Link>
+                      <KitQuoteLink
+                        kitSlug={kit.slug}
+                        onClick={(event) => event.stopPropagation()}
+                        className="inline-flex whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                      >
+                        Devis
+                        <span className="sr-only">{` pour le ${kit.name}`}</span>
+                      </KitQuoteLink>
+                    </span>
                   </td>
                 </tr>
                 );

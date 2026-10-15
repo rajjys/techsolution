@@ -1,211 +1,180 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Download,
-  PackageCheck,
-  Ruler,
-  ShieldCheck,
-  Truck,
-  Wrench,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Glow } from "@/components/glow";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/page-hero";
+import { KitLink } from "@/components/products/kit-link";
 import { Section, SectionHeading } from "@/components/section";
-import { KitsExplorer } from "@/components/products/kits-explorer";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { kits } from "@/lib/data/kits";
-import { faqs } from "@/lib/data/services";
+import { caseStudies } from "@/lib/data/case-studies";
+import { kitSegments, kits, kitsForSegment } from "@/lib/data/kits";
+import { productCategories } from "@/lib/data/products";
+import { caseStudyHref, contactHref, productCategoryHref } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
-import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   path: "/produits",
-  title: "Kits solaires hybrides — 650 Va à 30 kVA",
-  description:
-    "Neuf kits hybrides clés en main, du foyer à l’usine : onduleur, batteries lithium LiFePO₄ et panneaux, dimensionnés après audit. Pose incluse en RDC.",
+  title: "Produits solaires — kits hybrides et sur mesure",
+  description: `Kits solaires hybrides de ${kits[0].power} à ${kits[kits.length - 1].power} pour la maison, le bureau et l’établissement, et systèmes sur mesure au-delà. Audit gratuit, pose incluse en RDC.`,
 });
 
-/** Ce qui accompagne chaque kit — vaut pour les neuf, d'où la place ici. */
-const commitments = [
-  {
-    icon: ShieldCheck,
-    title: "Équipements certifiés",
-    text: "Onduleurs hybrides, batteries lithium LiFePO₄ et panneaux monocristallins de marques éprouvées.",
-  },
-  {
-    icon: PackageCheck,
-    title: "Dimensionnement inclus",
-    text: "La composition annoncée est un point de départ : elle est ajustée après l'audit de charge de votre site.",
-  },
-  {
-    icon: Truck,
-    title: "Livraison & installation",
-    text: "Acheminement et pose par nos propres techniciens, dans les 26 provinces.",
-  },
-  {
-    icon: Wrench,
-    title: "Garantie & maintenance",
-    text: "Un an renouvelable sur les kits, et un contrat d'entretien planifié si vous le souhaitez.",
-  },
-];
-
 /**
- * Bornes de l'échelle, lues aux extrémités de `kits` — le tableau est ordonné
- * par puissance croissante. Écrites en dur, elles auraient survécu à l'ajout
- * d'un palier sans que personne ne s'en aperçoive.
+ * Le catalogue — l'entrée de toutes les gammes.
+ *
+ * Il n'y en a qu'une aujourd'hui, les kits solaires ; les batteries portables
+ * et autres accessoires viendront s'y ajouter, chacune avec sa page de gamme
+ * (`/produits/<gamme>`) et ses fiches en dessous. D'où un catalogue qui ne
+ * recopie pas la gamme : il ne montre ni l'échelle ni le comparatif, il
+ * oriente — par usage d'abord, parce qu'on sait ce qu'on veut alimenter bien
+ * avant de savoir combien de kVA il faut.
+ *
+ * Le foyer passe en premier. Le site parlait surtout aux institutions, et des
+ * particuliers l'ont fait remarquer : la première colonne est la leur.
  */
-const powerRange = `de ${kits[0].power} à ${kits[kits.length - 1].power} ${kits[kits.length - 1].phase.toLowerCase()}`;
-
 export default function ProduitsPage() {
+  const kitsCategory = productCategories[0];
+  /* La preuve du « sur mesure » : un système au-delà du catalogue. */
+  const customExample = caseStudies.find((study) => study.beyondCatalogue);
+
   return (
     <>
       <PageHero
         compact
         breadcrumb={[{ label: "Produits" }]}
-        eyebrow="Kits solaires"
+        eyebrow="Produits"
         title={
           <>
-            Kits solaires hybrides,{" "}
-            <span className="text-brand-600">du foyer à l&apos;usine.</span>
+            Kits solaires et systèmes sur mesure,{" "}
+            <span className="text-brand-600">
+              du foyer à l&apos;établissement.
+            </span>
           </>
         }
-        lead={`Choisissez ce que vous devez alimenter — quelques lampes, une villa, une clinique, une usine. L'échelle vous place sur le bon kit, ${powerRange}, et en détaille la composition.`}
+        lead="Partez de ce que vous devez alimenter — une maison, un bureau, un établissement entier. Chaque kit a sa fiche ; au-delà du plus grand, nous dimensionnons sur mesure."
         image={{
-          src: "/photos/produits-onduleur-batterie.webp",
-          alt: "Onduleur hybride et batterie lithium avant installation",
-          position: "50% 52%",
-          /*
-           * Vraies personnes, vrai produit : elle mérite d'être vue sur
-           * mobile aussi, en bande sous le texte.
-           */
+          src: "/photos/toiture-residence-duo.webp",
+          alt: "Deux techniciens Tech Solution RDC sur la toiture d'une maison équipée de panneaux solaires",
+          position: "50% 45%",
+          /* Une maison et l'équipe : c'est la preuve que les foyers
+             cherchaient, elle se montre aussi sur mobile. */
           mobile: "band",
         }}
-        actions={
-          <>
-            <Button className="group" asChild>
-              <Link href="/contact?need=kit">
-                Demander un devis
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button variant="neutral" asChild>
-              <a href={site.fardeUrl} download>
-                <Download className="size-4 text-brand-600" />
-                Télécharger le catalogue
-              </a>
-            </Button>
-          </>
-        }
       />
 
-      <KitsExplorer />
-
-      {/* Ce qui accompagne chaque kit — même grammaire que « Ce que nous offrons » */}
-      <Section className="relative isolate bg-surface-cool">
-        <Glow variant="cool" corner="bottom-left" />
+      {/* L'index — la teinte la plus soutenue de la page (§1, règle 8) */}
+      <Section className="relative isolate bg-surface-cool-deep">
+        <Glow variant="cool-deep" corner="bottom-right" />
         <div className="container relative">
           <SectionHeading
-            align="center"
-            eyebrow="Compris dans chaque kit"
-            title="Le prix d'un kit n'est pas celui d'un carton."
+            rule
+            eyebrow={kitsCategory.name}
+            title="Choisissez d'abord ce que vous devez alimenter."
+            lead={`${kits.length} paliers, de ${kits[0].power} à ${kits[kits.length - 1].power}. Chaque fiche détaille la composition, les appareils alimentés et le palier voisin.`}
           />
 
-          <Stagger className="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 lg:mt-16 lg:grid-cols-4 lg:gap-y-0 lg:divide-x lg:divide-slate-300/70">
-            {commitments.map((item) => (
-              <StaggerItem key={item.title} className="lg:px-6">
-                <div className="flex flex-col items-center text-center">
-                  <span className="flex size-14 items-center justify-center rounded-2xl bg-white shadow-card sm:size-16">
-                    <item.icon
-                      className="size-7 text-brand-600 sm:size-8"
-                      strokeWidth={1.5}
-                    />
-                  </span>
-                  <h3 className="mt-5 text-base font-bold text-slate-900 lg:text-lg">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 max-w-[17rem] text-sm leading-relaxed text-slate-600">
-                    {item.text}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
+          <Stagger className="mt-10 grid gap-5 lg:mt-12 lg:grid-cols-3">
+            {kitSegments.map((segment) => {
+              const segmentKits = kitsForSegment(segment.id);
+              return (
+                <StaggerItem key={segment.id}>
+                  <div className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-card sm:p-6">
+                    <div className="flex items-center gap-3 border-b border-dashed border-slate-200 pb-4">
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+                        <segment.icon
+                          className="size-5 text-brand-600"
+                          strokeWidth={1.8}
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <div>
+                        <h2 className="text-lg font-bold leading-tight text-slate-900">
+                          {segment.label}
+                        </h2>
+                        <p className="text-[13px] text-slate-500">
+                          {segment.detail}
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="-mx-2.5 mt-3 flex-1 space-y-0.5">
+                      {segmentKits.map((kit) => (
+                        <li key={kit.slug}>
+                          <KitLink kit={kit} />
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </StaggerItem>
+              );
+            })}
           </Stagger>
 
-          <Reveal delay={0.15}>
-            <div className="mt-14 flex flex-col items-start gap-6 rounded-2xl border border-brand-100 bg-white p-6 shadow-card sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-              <div className="flex items-start gap-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-950">
-                  <Ruler className="size-5 text-solar-400" />
-                </span>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900 sm:text-xl">
-                    Aucun palier ne correspond ?
-                  </h3>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600">
-                    Systèmes solaires hybrides, parcs batteries, triphasé sur mesure :
-                    nous dimensionnons hors catalogue à partir de vos charges
-                    réelles et de vos contraintes d&apos;implantation.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4 lg:shrink-0">
-                <Button asChild>
-                  <Link href="/contact?need=kit">Planifier mon audit</Link>
-                </Button>
-                <Button variant="outline-strong" className="group" asChild>
-                  <Link href="/services#energie-solaire">
-                    Notre expertise solaire
-                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </div>
+          <Reveal delay={0.1}>
+            <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="max-w-xl text-sm leading-relaxed text-slate-600">
+                Hésitant entre deux paliers ? L&apos;échelle et le comparatif
+                les mettent côte à côte, composition comprise.
+              </p>
+              <Button variant="outline-strong" className="group" asChild>
+                <Link href={productCategoryHref(kitsCategory.slug)}>
+                  {`Comparer les ${kits.length} kits`}
+                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </Button>
             </div>
           </Reveal>
         </div>
       </Section>
 
-      {/* Les dernières questions avant de s'engager */}
-      <Section className="bg-white">
-        <div className="container grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <SectionHeading
-              rule
-              eyebrow="Questions fréquentes"
-              title="Encore une hésitation ?"
-              lead="Les questions qu'on nous pose le plus souvent avant de commander. Pour les autres, notre équipe répond sous 24 h ouvrées."
-            />
-            <Reveal delay={0.15}>
-              <Button className="group mt-8" asChild>
-                <Link href="/contact?need=kit">
-                  Poser ma question
-                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.1}>
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={faq.question} value={`faq-${index}`}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </Reveal>
+      {/* Hors catalogue — pleine largeur, l'image touche le bord (§1) */}
+      <section className="relative isolate overflow-hidden bg-white">
+        <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-1/2">
+          <Image
+            src="/photos/equipe-trois-techniciens.webp"
+            alt="Trois techniciens Tech Solution RDC en tenue de chantier"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover object-[50%_30%]"
+          />
         </div>
-      </Section>
+        <div className="container relative">
+          <div className="grid lg:grid-cols-2">
+            <div className="py-12 sm:py-16 lg:py-24 lg:pr-14 xl:pr-20">
+              <SectionHeading
+                rule
+                eyebrow="Hors catalogue"
+                title={`Au-delà de ${kits[kits.length - 1].power}, le système se conçoit pour votre site.`}
+                lead="Hôtels, sites industriels, bâtiments publics : quand les charges dépassent le plus grand kit, nous partons de l'audit de votre site — puissance, stockage et triphasé compris."
+              />
+              <Reveal delay={0.1}>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+                  <Button className="group" asChild>
+                    <Link href={contactHref({ service: "energie-solaire" })}>
+                      Demander une étude
+                      <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                  <Button variant="outline-strong" asChild>
+                    <Link
+                      href={
+                        customExample
+                          ? caseStudyHref(customExample.slug)
+                          : "/references"
+                      }
+                    >
+                      {customExample
+                        ? `Exemple : ${customExample.client}`
+                        : "Voir nos réalisations"}
+                    </Link>
+                  </Button>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

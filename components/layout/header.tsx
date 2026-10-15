@@ -3,8 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Mail, Menu, Phone } from "lucide-react";
+import { Mail, Menu, Phone } from "lucide-react";
 
+import { DesktopNav, MobileNav, type MenuId } from "@/components/layout/site-nav";
 import { Logo } from "@/components/logo";
 import { WhatsAppIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { navLinks, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 
@@ -24,11 +25,25 @@ export function Header() {
   const [scrolled, setScrolled] = React.useState(false);
   const [hidden, setHidden] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState<MenuId | null>(null);
   const lastY = React.useRef(0);
+  /* Lu dans l'écouteur de défilement, qui ne se réabonne pas à chaque rendu. */
+  const openMenuRef = React.useRef<MenuId | null>(null);
+
+  const handleOpenMenuChange = React.useCallback((menu: MenuId | null) => {
+    openMenuRef.current = menu;
+    setOpenMenu(menu);
+  }, []);
 
   React.useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
+      /* Un panneau ouvert se replie dès qu'on défile : il couvrirait le
+         contenu que l'on cherche à atteindre. */
+      if (openMenuRef.current && Math.abs(y - lastY.current) > 4) {
+        openMenuRef.current = null;
+        setOpenMenu(null);
+      }
       setScrolled(y > 8);
       // Masquer en descendant (après un seuil), réafficher en remontant
       if (y > lastY.current && y > 140) setHidden(true);
@@ -71,10 +86,11 @@ export function Header() {
    * Les trois conditions comptent. **`scrolled`** : passé le premier
    * défilement l'en-tête surplombe du contenu clair, il doit y redevenir
    * blanc — et il réapparaît en remontant, donc l'état ne peut pas être figé
-   * sur la seule page. **`mobileOpen`** : le panneau est blanc, une barre
-   * transparente au-dessus laisserait un logo blanc sur blanc.
+   * sur la seule page. **`mobileOpen`** et **`openMenu`** : le panneau est
+   * blanc, une barre transparente au-dessus laisserait un logo blanc sur
+   * blanc et un panneau détaché de sa barre.
    */
-  const onHero = pathname === "/" && !scrolled && !mobileOpen;
+  const onHero = pathname === "/" && !scrolled && !mobileOpen && !openMenu;
 
   return (
     <header
@@ -148,39 +164,13 @@ export function Header() {
             rivalisait. Deux ancrages suffisent : la marque à gauche, l'action
             à droite.
           */}
-          <div className="flex items-center gap-2 lg:gap-3">
-            <nav
-              aria-label="Navigation principale"
-              className="hidden items-center gap-1 lg:flex"
-            >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={isActive(link.href) ? "page" : undefined}
-                  className={cn(
-                    "relative rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
-                    onHero
-                      ? isActive(link.href)
-                        ? "text-white"
-                        : "text-brand-200 hover:bg-white/10 hover:text-white"
-                      : isActive(link.href)
-                        ? "text-slate-900"
-                        : "text-slate-600 hover:bg-brand-50 hover:text-slate-900",
-                  )}
-                >
-                  {link.label}
-                  {isActive(link.href) ? (
-                    <span
-                      className={cn(
-                        "absolute inset-x-4 -bottom-px h-[3px] rounded-full",
-                        onHero ? "bg-solar-500" : "bg-brand-600",
-                      )}
-                    />
-                  ) : null}
-                </Link>
-              ))}
-            </nav>
+          <div className="flex items-center gap-2 self-stretch lg:gap-3">
+            <DesktopNav
+              onHero={onHero}
+              openMenu={openMenu}
+              onOpenMenuChange={handleOpenMenuChange}
+              isActive={isActive}
+            />
 
             <div className="hidden items-center lg:flex">
               {/*
@@ -230,33 +220,12 @@ export function Header() {
                   </SheetDescription>
                 </div>
   
-                <nav
-                  aria-label="Navigation mobile"
-                  className="flex flex-1 flex-col gap-1 overflow-y-auto p-5"
-                >
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      aria-current={isActive(link.href) ? "page" : undefined}
-                      className={cn(
-                        "flex items-center justify-between rounded-xl px-4 py-3.5 text-base font-semibold transition-colors",
-                        isActive(link.href)
-                          ? "bg-brand-600 text-white"
-                          : "text-slate-700 hover:bg-brand-50",
-                      )}
-                    >
-                      {link.label}
-                      <ArrowRight
-                        className={cn(
-                          "size-4",
-                          isActive(link.href) ? "text-white" : "text-slate-300",
-                        )}
-                      />
-                    </Link>
-                  ))}
-                </nav>
+                <div className="flex-1 overflow-y-auto p-5">
+                  <MobileNav
+                    isActive={isActive}
+                    onNavigate={() => setMobileOpen(false)}
+                  />
+                </div>
   
                 <div className="space-y-3 border-t border-slate-100 p-5">
                   <Button variant="nav" block asChild>

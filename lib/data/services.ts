@@ -99,8 +99,11 @@ export const services: Service[] = [
       "Alimentation du serveur GRECOM — Goma",
     ],
     projectCategory: "Backup",
-    image: "/photos/victron-triphase-batteries.webp",
-    imageAlt: `Onduleurs triphasés et parc batteries lithium installés par ${site.name}`,
+    /* Le local technique de l'hôtel Gracia, à Kinshasa : une installation
+       de l'entreprise, nommée avec l'accord du client. L'image précédente
+       (« Victron triphasé ») venait d'un autre installateur. */
+    image: "/photos/hotel-gracia-local-batteries.webp",
+    imageAlt: "Onduleur et armoire de batteries lithium Felicity dans le local technique de l'hôtel Gracia, à Kinshasa",
   },
   {
     slug: "infrastructure-electrique",

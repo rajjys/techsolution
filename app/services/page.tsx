@@ -24,6 +24,7 @@ import {
 } from "@/lib/data/services";
 import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
+import { contactHref } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   path: "/services",
@@ -164,7 +165,7 @@ function ExpertiseSection({
             <Reveal delay={0.16}>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Button asChild>
-                  <Link href={`/contact?service=${service.slug}`}>
+                  <Link href={contactHref({ service: service.slug })}>
                     Étudier mon projet
                   </Link>
                 </Button>
