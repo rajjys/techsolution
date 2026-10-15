@@ -233,11 +233,6 @@ export default async function KitPage({
                   </dd>
                 </div>
               </dl>
-              <p className="mt-4 text-[13px] leading-relaxed text-slate-500">
-                Composition type du catalogue. Elle est ajustée après
-                l&apos;audit de charge de votre site, gratuit et sans
-                engagement.
-              </p>
             </Reveal>
           </div>
 
@@ -270,6 +265,50 @@ export default async function KitPage({
               </p>
             </Reveal>
           </div>
+        </div>
+
+        {/*
+          L'appel au moment où l'on a fini de lire le kit — sinon il faut
+          remonter jusqu'au hero pour le demander. La réserve sur la
+          composition y prend place : c'est elle qui rend la demande sans
+          risque.
+        */}
+        <div className="container mt-12">
+          <Reveal>
+            <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+              <div className="min-w-0">
+                <p className="text-base font-bold text-slate-900">
+                  {`Le ${kit.name}, ajusté à votre site.`}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                  Composition type du catalogue : elle est ajustée après
+                  l&apos;audit de charge de votre site, gratuit et sans
+                  engagement.
+                </p>
+              </div>
+              {/* Une seule rangée sur téléphone, comme au pied de page :
+                  l'appel prend la place, WhatsApp devient une icône. */}
+              <div className="flex shrink-0 gap-3">
+                <Button className="group flex-1 sm:flex-none" asChild>
+                  <KitQuoteLink kitSlug={kit.slug}>
+                    Demander ce kit
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </KitQuoteLink>
+                </Button>
+                <Button variant="neutral" className="px-4 sm:px-7" asChild>
+                  <a
+                    href={buildProductWhatsAppLink(kit.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="En parler sur WhatsApp"
+                  >
+                    <WhatsAppIcon className="size-5 text-[#25D366] sm:size-4" />
+                    <span className="hidden sm:inline">WhatsApp</span>
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </Section>
 

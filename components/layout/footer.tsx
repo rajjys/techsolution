@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, MapPin, ShieldCheck } from "lucide-react";
 
@@ -64,7 +65,9 @@ const linkClass =
  * plan du site, et la ligne légale.
  *
  * Les bureaux montent à la place du bloc de marque : ils mènent désormais à
- * la page de leur ville, et l'itinéraire reste à un clic.
+ * la page de leur ville, et l'itinéraire reste à un clic. Le nom les coiffe
+ * — un NAP sans nom n'en est pas un : sans lui, l'adresse ne se rattache à
+ * rien, ni pour le visiteur ni pour un moteur de recherche.
  */
 export function Footer() {
   const year = new Date().getFullYear();
@@ -100,60 +103,78 @@ export function Footer() {
             </h2>
             <FooterLead />
             <FooterCta />
-            <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
-              <a
-                href={`tel:${site.phone}`}
-                className="font-display text-base font-bold tabular-nums tracking-tight text-white transition-colors hover:text-solar-400"
-              >
-                {site.phoneDisplay}
-              </a>
-              <span className="hidden size-1 shrink-0 rounded-full bg-white/25 sm:inline-block" aria-hidden="true" />
-              <a href={`mailto:${site.email}`} className="text-brand-200 transition-colors hover:text-white">
-                {site.email}
-              </a>
-            </p>
           </div>
 
-          {/* Nos bureaux — le NAP, et la porte de la page de chaque ville */}
+          {/*
+            Le NAP — nom, adresses, téléphone — en un seul bloc `<address>`,
+            sous le nom exact des fiches Google Business Profile. Les trois
+            ensemble, et non dispersés : c'est la forme qu'un moteur de
+            recherche rapproche d'une fiche locale.
+          */}
           <div>
-            <ColumnTitle>Nos bureaux</ColumnTitle>
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {offices.map((office) => (
-                <li
-                  key={office.city}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
+            <address className="not-italic">
+              <p className="flex items-center gap-3">
+                <Image
+                  src="/assets/logo-mark-nav-solar.png"
+                  alt=""
+                  width={97}
+                  height={96}
+                  className="size-8 shrink-0"
+                />
+                <span className="font-display text-xl font-bold tracking-tight text-white">
+                  {site.name}
+                </span>
+              </p>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {offices.map((office) => (
+                  <li
+                    key={office.city}
+                    className="rounded-xl border border-white/10 bg-white/[0.03] p-4"
+                  >
+                    <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <MapPin
+                        className={`size-4 shrink-0 ${office.headquarters ? "text-solar-400" : "text-brand-300"}`}
+                        aria-hidden="true"
+                      />
+                      <Link
+                        href={zoneHref(office.city.toLowerCase())}
+                        className="rounded font-semibold text-white underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+                      >
+                        {office.city}
+                      </Link>
+                      <span className="rounded-full border border-white/15 px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[0.12em] text-brand-200">
+                        {office.role}
+                      </span>
+                    </p>
+                    <p className="mt-1.5 text-sm leading-snug text-brand-200">{office.street}</p>
+                    <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-brand-300">
+                      <span>{`Lun.–sam., 8 h–17 h, heure de ${office.city}`}</span>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formatOfficeAddress(office))}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-0.5 font-semibold text-solar-400 hover:text-solar-300"
+                      >
+                        Itinéraire
+                        <ArrowUpRight className="size-3" aria-hidden="true" />
+                      </a>
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm">
+                <a
+                  href={`tel:${site.phone}`}
+                  className="font-display text-base font-bold tabular-nums tracking-tight text-white transition-colors hover:text-solar-400"
                 >
-                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <MapPin
-                      className={`size-4 shrink-0 ${office.headquarters ? "text-solar-400" : "text-brand-300"}`}
-                      aria-hidden="true"
-                    />
-                    <Link
-                      href={zoneHref(office.city.toLowerCase())}
-                      className="rounded font-semibold text-white underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-                    >
-                      {office.city}
-                    </Link>
-                    <span className="rounded-full border border-white/15 px-1.5 py-px text-[9.5px] font-bold uppercase tracking-[0.12em] text-brand-200">
-                      {office.role}
-                    </span>
-                  </p>
-                  <p className="mt-1.5 text-sm leading-snug text-brand-200">{office.street}</p>
-                  <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-brand-300">
-                    <span>{`Lun.–sam., 8 h–17 h, heure de ${office.city}`}</span>
-                    <a
-                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formatOfficeAddress(office))}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-0.5 font-semibold text-solar-400 hover:text-solar-300"
-                    >
-                      Itinéraire
-                      <ArrowUpRight className="size-3" aria-hidden="true" />
-                    </a>
-                  </p>
-                </li>
-              ))}
-            </ul>
+                  {site.phoneDisplay}
+                </a>
+                <span className="hidden size-1 shrink-0 rounded-full bg-white/25 sm:inline-block" aria-hidden="true" />
+                <a href={`mailto:${site.email}`} className="text-brand-200 transition-colors hover:text-white">
+                  {site.email}
+                </a>
+              </p>
+            </address>
             {/*
               La preuve d'abord, la capacité ensuite — et les villes qui ont
               leur page, liées. Les deux chiffres viennent de la donnée.

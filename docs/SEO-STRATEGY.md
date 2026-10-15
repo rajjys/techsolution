@@ -558,6 +558,12 @@ page.
 **Targets:** ≤ 1 150 px at 390 (≈ 1,35 screens) and ≤ 760 px at 1440. Verify
 by measurement, as in August.
 
+**Correction (15 Oct, owner):** removing the brand block also removed the
+**name** from the NAP. A name, address and phone only count as a NAP together.
+The offices column is now one `<address>`: glyph + "Tech Solution RDC" (the
+exact GBP name), the two office cards, then the shared phone and email
+(moved from the conclusion). Cost: +4 px at 390 (1 126 px), 0 at 1440.
+
 ---
 
 ## 7. Questions
