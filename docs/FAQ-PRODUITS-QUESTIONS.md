@@ -85,7 +85,8 @@ Réponse :
 
 Réponse :
 
-**15. Comment se passe le paiement ? (Vous avez indiqué : au bureau. Acompte ? En plusieurs fois ?)**
+**15. Le paiement échelonné : pour quels kits, quel acompte, sur combien de mois, et à quelles conditions ?**
+(Vous avez indiqué : paiement au bureau, et un modèle échelonné pour les foyers et les entreprises. Tant que ses conditions ne sont pas écrites, le site le mentionne sur /about sans le détailler.)
 
 Réponse :
 

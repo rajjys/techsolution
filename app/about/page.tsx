@@ -16,7 +16,7 @@ import { leader, metrics, offices, site } from "@/lib/site";
 export const metadata: Metadata = pageMetadata({
   path: "/about",
   title: "Qui sommes-nous — ingénierie congolaise",
-  description: `Entreprise congolaise d’ingénierie énergétique dirigée par son ingénieur principal, ${leader.name}. Bunia et Kinshasa, depuis ${site.foundedYear} : mission, valeurs, engagements.`,
+  description: `Fondée en ${site.foundedYear} par ${leader.name}, ingénieur passé par BBOXX, pour la qualité, l’entretien et la garantie que le solaire négligeait. Bunia et Kinshasa.`,
 });
 
 /** Course du jour — le même dégradé que la déclaration solaire de l'accueil. */

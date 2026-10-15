@@ -82,15 +82,23 @@ const organizationJsonLd = {
    */
   sameAs: socialLinks.map((account) => account.href),
   /*
-   * Un nom derrière l'entreprise — confirmé par elle (oct. 2026). `employee`
-   * et non `founder` : la fondation ne nous a pas été précisée.
+   * Un nom derrière l'entreprise — son fondateur, confirmé par elle
+   * (oct. 2026). L'école n'étant pas connue, pas d'`alumniOf`.
    */
-  employee: {
+  founder: {
     "@type": "Person",
     name: leader.name,
     jobTitle: leader.role,
+    description: `${leader.training}. ${leader.career
+      .map((step) => `${step.period} : ${step.text}`)
+      .join(" ; ")}.`,
     image: `${site.url}${leader.photo}`,
     url: `${site.url}/about`,
+    knowsAbout: [
+      "Énergie solaire photovoltaïque",
+      "Stockage d'énergie par batteries",
+      "Maintenance de systèmes solaires",
+    ],
   },
   /*
    * Identifiants légaux congolais. `taxID` porte le NIF ; le RCCM et l'IDNAT

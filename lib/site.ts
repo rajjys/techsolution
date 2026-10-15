@@ -97,18 +97,30 @@ export const socialLinks = [
 ] as const;
 
 /**
- * La direction — nom et fonctions confirmés par l'entreprise (oct. 2026).
+ * La direction — confirmé par l'entreprise (oct. 2026).
  *
- * La biographie (formation, années de terrain, une phrase en ses mots) reste
- * à fournir : rien n'est écrit à sa place. Deux photos le montrent dans ses
+ * Le parcours est celui qui a été communiqué, mot pour mot : l'école n'est
+ * pas connue, elle n'est donc pas citée. Deux photos le montrent dans ses
  * deux rôles — en costume pour la direction, en tenue siglée sur un toit pour
  * l'ingénierie.
  */
 export const leader = {
   name: "Jonathan Mupenda",
-  role: "Directeur général et ingénieur principal",
+  role: "Fondateur, directeur général et ingénieur principal",
+  training: "Ingénieur en électricité et électronique",
   photo: "/photos/jonathan-mupenda-ceo.webp",
   photoOnSite: "/photos/jonathan-mupenda-chantier-bras-croises.webp",
+  /** Parcours — dans l'ordre, tel que confirmé. */
+  career: [
+    { period: "2019 – 2022", text: "Ingénieur systèmes solaires chez BBOXX" },
+    {
+      period: "2022 – 2024",
+      text: "Responsable du centre de réparation de Bunia et de Goma",
+    },
+    { period: "2024", text: "Fonde Tech Solution RDC" },
+  ],
+  /** Ce que le secteur négligeait — la raison d'être de l'entreprise. */
+  overlooked: ["la qualité du matériel", "l'entretien dans la durée", "la garantie"],
 } as const;
 
 export type Office = {

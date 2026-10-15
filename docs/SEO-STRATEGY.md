@@ -597,6 +597,7 @@ by measurement, as in August.
 | Q25 local operations | **Permanent technicians in Bunia, Kinshasa and Goma.** Elsewhere, technicians are hired locally on contract, per job; local maintenance works the same way. | Goma's page can say it has a permanent team. Tier 3 pages must say the team is assembled locally. |
 | Q26 photos | Office photos coming. **Complaint: the site talks to companies more than to households.** | §17.2 |
 | Q31 the CEO | Yes: Jonathan Mupenda, CEO and lead engineer, on the site with his photo | Done on `/about` (§17.3); FAQ questionnaire sent to the owner |
+| Q33 his bio (15 Oct) | Electrical and electronics engineer (school unknown). Solar systems engineer at BBOXX 2019–2022, then head of the repair centre in Bunia and Goma 2022–2024. **Founded** the company in 2024 for what the sector overlooked: product quality, ongoing maintenance, warranty. Quality and durability over price; a lifetime partnership rather than a one-off installation; introduced **payment by instalments** for households and businesses. Goal: solve DRC's electricity problem with solar. | `/about` rewritten (§17.3); `founder` in the JSON-LD |
 
 ### 7.2 Still open
 
@@ -609,9 +610,10 @@ by measurement, as in August.
 - **Q24** The 16 product FAQ answers (`docs/FAQ-PRODUITS-QUESTIONS.md`).
 - **Q26** Office photos, plus **real household photos**, with the families'
   agreement (§17.2).
-- **Q33 (new)** Jonathan Mupenda's bio, in his own words: training, years in
-  the field, one sentence on why he does this work. The `/about` block has
-  only his name and roles until then.
+- **Q34 (new)** Payment by instalments: for which kits, what deposit, over
+  how many months, on what conditions? Until answered, `/about` mentions it
+  without detail. Once answered, it belongs on the kit pages and in the
+  mega menu ("paiement échelonné" is a real search for households).
 - **Q32 (new)** Lubumbashi, Kisangani, Matadi, Beni: which office's GBP
   should list each one as a service area?
 
@@ -668,8 +670,20 @@ Delivered in the working tree on 2 Oct and verified:
   lost. Once the registration lapses, anyone can buy a domain that carries
   your name and number in old caches and print. At minimum, ask that it not
   be released.
-- [ ] **1.5 (owner, Vercel)** Domains → `www.techsolution.cd` → redirect to
-  `techsolution.cd` with status **308** (today 307).
+- [ ] **1.5 (owner, Vercel)** `www` → 308. **Found 15 Oct:**
+  `www.techsolution.cd` is answered by Vercel (`server: Vercel`, DNS on
+  `vercel-dns.com`), with a 307 to the apex. But the domain isn't in the
+  `techsolution` project, so it's attached to **another project** in the
+  account, or set at team level.
+
+  To fix:
+  1. Team → Domains → `techsolution.cd` shows which project holds `www`.
+  2. Either change its redirect to "308 Permanent Redirect" there, or remove
+     it there and add it to this project with "Redirect to Another
+     Domain → techsolution.cd · 308".
+
+  Also, `http://www` takes two hops (308 to `https://www`, then 307); the
+  fix makes it one.
 - [x] **1.6** Hours label is now "(heure locale)". Kinshasa reads "157 Avenue
   Mbomu, Commune de Kinshasa", Bunia's pattern. `lib/site.ts` records "two
   offices, one number, no Goma office, no Lubumbashi shop". Stale footer
@@ -1199,7 +1213,19 @@ Still needed:
   linking to the residential kits and the household stories. No new
   template is needed.
 
-### 17.3 E-E-A-T: a named expert (agreed 14 Oct)
+### 17.3 E-E-A-T: a named expert (agreed 14 Oct, bio 15 Oct)
+
+**15 Oct:** the "La direction" block now tells his story, using only the
+facts he gave:
+- **why he founded the company:** for what the sector overlooked — product
+  quality, maintenance, warranty;
+- **his career:** BBOXX 2019–2022, then the Bunia and Goma repair centre
+  2022–2024, then founding the company in 2024;
+- **his three principles:** quality before price, a partnership rather than
+  a one-off installation, payment by instalments;
+- **his goal.**
+
+The JSON-LD now uses `founder` (Person, job title, career, `knowsAbout`).
 **Jonathan Mupenda, CEO and lead engineer.** Search engines and AI answers
 weigh who stands behind a technical claim.
 
