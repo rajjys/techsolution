@@ -130,6 +130,19 @@ export type Office = {
   street: string;
   region: string;
   headquarters?: boolean;
+  /**
+   * La fiche Google Business Profile, une fois validée — relevée dans le
+   * code « Locator Plus » de la fiche (15 oct. 2026). Sans elle, pas de
+   * coordonnées : le centre-ville n'est pas l'adresse du bureau, et un `geo`
+   * approximatif contredirait la fiche au lieu de la confirmer.
+   */
+  google?: {
+    placeId: string;
+    /** Identifiant décimal de la fiche (CID) — `maps.google.com/?cid=`. */
+    cid: string;
+    lat: number;
+    lon: number;
+  };
 };
 
 /**
@@ -148,6 +161,12 @@ export const offices: Office[] = [
     street: "32 Avenue Bakuwasa, Quartier Hoho, Commune de Mbunya",
     region: "Province de l'Ituri",
     headquarters: true,
+    google: {
+      placeId: "ChIJbxNQLnwrZBcRMNJNxcfTxlo",
+      cid: "6541148363764388400",
+      lat: 1.5403231,
+      lon: 30.2400022,
+    },
   },
   {
     city: "Kinshasa",
@@ -156,6 +175,8 @@ export const offices: Office[] = [
        site, balisage, fiche Google, réseaux sociaux. */
     street: "157 Avenue Mbomu, Commune de Kinshasa",
     region: "Ville-province de Kinshasa",
+    /* Fiche Google pas encore validée (15 oct. 2026) : `google` à ajouter
+       dès qu'elle l'est. */
   },
 ];
 
@@ -167,6 +188,38 @@ export function getHeadquarters(): Office {
 /** Adresse postale complète sur une ligne (cohérence NAP footer / contact / JSON-LD). */
 export function formatOfficeAddress(office: Office): string {
   return `${office.street}, ${office.city}, ${office.region}`;
+}
+
+/**
+ * Le lien Google Maps d'un bureau. Avec une fiche validée, il ouvre **la
+ * fiche** (avis, photos, horaires, itinéraire) par son Place ID — les visites
+ * comptent pour elle. Sans fiche, une recherche sur l'adresse.
+ *
+ * @see https://developers.google.com/maps/documentation/urls/get-started
+ */
+export function officeMapsUrl(office: Office): string {
+  const query = encodeURIComponent(
+    office.google ? site.name : formatOfficeAddress(office),
+  );
+  const placeId = office.google
+    ? `&query_place_id=${office.google.placeId}`
+    : "";
+  return `https://www.google.com/maps/search/?api=1&query=${query}${placeId}`;
+}
+
+/**
+ * L'itinéraire jusqu'au bureau — le lien « Itinéraire » du pied de page.
+ * Vers une fiche validée, la demande compte dans ses statistiques
+ * (« demandes d'itinéraire »).
+ */
+export function officeDirectionsUrl(office: Office): string {
+  const destination = encodeURIComponent(
+    office.google ? site.name : formatOfficeAddress(office),
+  );
+  const placeId = office.google
+    ? `&destination_place_id=${office.google.placeId}`
+    : "";
+  return `https://www.google.com/maps/dir/?api=1&destination=${destination}${placeId}`;
 }
 
 export type NavLink = {

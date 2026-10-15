@@ -40,10 +40,17 @@ import { cn } from "@/lib/utils";
  *   n'a pas de boîte : ses photos, en `loading="lazy"`, ne partent qu'à la
  *   première ouverture. Une barre de navigation présente sur toutes les pages
  *   ne doit pas alourdir toutes les pages.
+ * - **L'intitulé mène au hub, le chevron ouvre le panneau.** Cliquer
+ *   « Services » ouvre /services, comme partout ailleurs sur le web ; le
+ *   panneau vient au survol. Mais le survol n'existe ni au doigt ni au
+ *   clavier : le chevron est donc un vrai bouton, seul moyen d'ouvrir le
+ *   panneau sur une tablette en paysage (≥ lg) — le motif « navigation de
+ *   divulgation avec liens de premier niveau » du guide ARIA du W3C.
  * - **Un motif de divulgation, pas un `menu` ARIA.** Le rôle `menu` promet
  *   les flèches d'une barre d'application ; ici ce sont des liens. Bouton
  *   `aria-expanded` + panneau `aria-controls`, et la touche Tab fait le reste,
- *   parce que chaque panneau suit son déclencheur dans le DOM.
+ *   parce que chaque panneau suit son déclencheur dans le DOM. ↓ sur
+ *   l'intitulé ou le chevron ouvre le panneau et y entre.
  * - **L'intention au survol.** Ouverture après 90 ms (on ne déclenche pas un
  *   panneau en traversant la barre), fermeture après 160 ms (on a le temps de
  *   descendre jusqu'au panneau). Le `<li>` occupe toute la hauteur de la
@@ -62,20 +69,9 @@ const OPEN_DELAY = 90;
 const CLOSE_DELAY = 160;
 
 /** Intitulé de colonne — la grammaire de l'`Eyebrow`, à l'échelle d'un panneau. */
-function PanelTitle({
-  children,
-  onDark = false,
-}: {
-  children: React.ReactNode;
-  onDark?: boolean;
-}) {
+function PanelTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      className={cn(
-        "flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.18em]",
-        onDark ? "text-white" : "text-slate-900",
-      )}
-    >
+    <p className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-900">
       <BoltRule className="h-2 w-[26px] shrink-0 text-solar-500" />
       {children}
     </p>
@@ -109,10 +105,53 @@ function PanelLink({
   );
 }
 
+/**
+ * L'encart de droite des deux panneaux — une photo nette, un titre, une
+ * phrase, un renvoi. Masqué sous xl : à cette largeur, la liste a besoin de
+ * toute la place.
+ */
+function PanelAside({
+  image,
+  title,
+  text,
+  link,
+  onNavigate,
+}: {
+  image: { src: string; alt: string };
+  title: string;
+  text: string;
+  link: { href: string; label: string };
+  onNavigate: () => void;
+}) {
+  return (
+    <aside className="hidden flex-col bg-brand-50 p-6 xl:flex xl:p-8">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-brand-100">
+        <Image
+          src={image.src}
+          alt={image.alt}
+          fill
+          sizes="216px"
+          loading="lazy"
+          className="object-cover"
+        />
+      </div>
+      <p className="mt-5 text-[15px] font-bold text-slate-900">{title}</p>
+      <p className="mt-1 text-[13px] leading-relaxed text-slate-600">{text}</p>
+      <PanelLink
+        href={link.href}
+        onNavigate={onNavigate}
+        className="mt-4 self-start"
+      >
+        {link.label}
+      </PanelLink>
+    </aside>
+  );
+}
+
 function ServicesPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
-      <div className="grid lg:grid-cols-[1fr_19rem]">
+      <div className="grid xl:grid-cols-[1fr_17.5rem]">
         <div className="p-6 xl:p-8">
           <PanelTitle>Nos expertises</PanelTitle>
           <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-1">
@@ -144,39 +183,17 @@ function ServicesPanel({ onNavigate }: { onNavigate: () => void }) {
           </ul>
         </div>
 
-        {/* La preuve — le sombre lui est réservé (§1, règle 4) */}
-        <aside className="relative isolate flex flex-col justify-end overflow-hidden bg-brand-950 p-6 xl:p-8">
-          <Image
-            src="/photos/hero-technicien-toiture.webp"
-            alt=""
-            fill
-            sizes="304px"
-            loading="lazy"
-            className="-z-20 object-cover opacity-40"
-          />
-          <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,#0B0A33_0%,rgba(11,10,51,0.92)_35%,rgba(11,10,51,0.55)_70%,rgba(11,10,51,0.35)_100%)]"
-            aria-hidden="true"
-          />
-          <PanelTitle onDark>Preuves sur le terrain</PanelTitle>
-          <p className="mt-5 font-display text-5xl font-bold leading-none text-white">
-            {projects.length}
-          </p>
-          <p className="mt-2 text-sm font-medium text-brand-100">
-            installations documentées
-          </p>
-          <p className="mt-3 text-[13px] leading-relaxed text-brand-200">
-            {`Et ${site.householdsEquipped}+ foyers équipés — pour MONUSCO, CARE, Afriland, CADECO et des dizaines de familles.`}
-          </p>
-          <Link
-            href="/references"
-            onClick={onNavigate}
-            className="group/ref mt-6 inline-flex items-center gap-2 self-start rounded text-sm font-semibold text-white transition-colors hover:text-solar-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
-          >
-            Voir nos réalisations
-            <ArrowRight className="size-4 transition-transform duration-200 group-hover/ref:translate-x-1" />
-          </Link>
-        </aside>
+        {/* Même encart que le panneau Produits : la photo, puis le texte. */}
+        <PanelAside
+          image={{
+            src: "/photos/pose-onduleur-duo.webp",
+            alt: "Deux techniciens Tech Solution RDC au travail sur un onduleur mural",
+          }}
+          title={`${projects.length} installations documentées`}
+          text={`ONG, banques, hôtellerie, radios — et ${site.householdsEquipped}+ foyers équipés.`}
+          link={{ href: "/references", label: "Voir nos réalisations" }}
+          onNavigate={onNavigate}
+        />
       </div>
 
       <div className="flex items-center justify-between gap-6 border-t border-dashed border-slate-200 bg-slate-50/70 px-6 py-3.5 xl:px-8">
@@ -247,32 +264,19 @@ function ProductsPanel({ onNavigate }: { onNavigate: () => void }) {
           </div>
         </div>
 
-        <aside className="hidden flex-col bg-brand-50 p-6 xl:flex xl:p-8">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-brand-100">
-            <Image
-              src="/photos/produits-onduleur-batterie.webp"
-              alt="Onduleur hybride et batterie lithium avant installation"
-              fill
-              sizes="216px"
-              loading="lazy"
-              className="object-cover"
-            />
-          </div>
-          <p className="mt-5 text-[15px] font-bold text-slate-900">
-            {`Au-delà de ${largest.power}`}
-          </p>
-          <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
-            Hôtels, sites industriels, bâtiments publics : le système se
-            dimensionne sur votre site, après audit.
-          </p>
-          <PanelLink
-            href={contactHref({ service: "energie-solaire" })}
-            onNavigate={onNavigate}
-            className="mt-4 self-start"
-          >
-            Demander une étude
-          </PanelLink>
-        </aside>
+        <PanelAside
+          image={{
+            src: "/photos/produits-onduleur-batterie.webp",
+            alt: "Onduleur hybride et batterie lithium avant installation",
+          }}
+          title={`Au-delà de ${largest.power}`}
+          text="Hôtels, sites industriels, bâtiments publics : le système se dimensionne sur votre site, après audit."
+          link={{
+            href: contactHref({ service: "energie-solaire" }),
+            label: "Demander une étude",
+          }}
+          onNavigate={onNavigate}
+        />
       </div>
 
       <div className="flex items-center justify-between gap-6 border-t border-dashed border-slate-200 bg-slate-50/70 px-6 py-3.5 xl:px-8">
@@ -384,6 +388,30 @@ export function DesktopNav({
         ? "text-slate-900"
         : "text-slate-600 hover:bg-brand-50 hover:text-slate-900";
 
+  /* Texte des deux cibles d'un méga-menu — le fond est porté par la pastille. */
+  const itemTone = (strong: boolean) =>
+    onHero
+      ? strong
+        ? "text-white"
+        : "text-brand-200 group-hover/item:text-white"
+      : strong
+        ? "text-slate-900"
+        : "text-slate-600 group-hover/item:text-slate-900";
+
+  /* ↓ depuis l'intitulé ou le chevron : ouvre et entre dans le panneau. */
+  const openAndFocus = (event: React.KeyboardEvent, menu: MenuId) => {
+    event.preventDefault();
+    clearTimers();
+    open(menu);
+    /* Le panneau s'affiche au rendu suivant. */
+    window.requestAnimationFrame(() =>
+      document
+        .getElementById(`${menu}-panel`)
+        ?.querySelector<HTMLElement>("a")
+        ?.focus(),
+    );
+  };
+
   const underline = (
     <span
       className={cn(
@@ -458,47 +486,74 @@ export function DesktopNav({
                   }
                 }}
               >
-                <button
-                  type="button"
-                  id={`${menu}-trigger`}
-                  aria-expanded={expanded}
-                  aria-controls={`${menu}-panel`}
-                  onClick={() => {
-                    clearTimers();
-                    if (!expanded) open(menu);
-                    else if (Date.now() - openedAt.current > 400) close();
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key !== "ArrowDown") return;
-                    event.preventDefault();
-                    open(menu);
-                    /* Le panneau s'affiche au rendu suivant. */
-                    window.requestAnimationFrame(() =>
-                      document
-                        .getElementById(`${menu}-panel`)
-                        ?.querySelector<HTMLElement>("a")
-                        ?.focus(),
-                    );
-                  }}
+                {/*
+                  Deux cibles, une seule pastille : l'intitulé est un lien vers
+                  la page du hub, le chevron est le bouton du panneau. Au
+                  survol, le panneau s'ouvre de lui-même ; au doigt (tablette)
+                  et au clavier, c'est le chevron qui l'ouvre.
+                */}
+                <div
                   className={cn(
-                    "relative inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
+                    "group/item relative flex items-center rounded-lg transition-colors",
                     expanded
                       ? onHero
-                        ? "bg-white/10 text-white"
-                        : "bg-brand-50 text-slate-900"
-                      : linkTone(active),
+                        ? "bg-white/10"
+                        : "bg-brand-50"
+                      : onHero
+                        ? "hover:bg-white/10"
+                        : "hover:bg-brand-50",
                   )}
                 >
-                  {link.label}
-                  <ChevronDown
+                  <Link
+                    href={link.href}
+                    onClick={close}
+                    onKeyDown={(event) => {
+                      if (event.key === "ArrowDown") openAndFocus(event, menu);
+                    }}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "size-4 transition-transform duration-200",
-                      expanded && "rotate-180",
+                      "rounded-lg py-2 pl-4 pr-1 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
+                      itemTone(active || expanded),
                     )}
-                    aria-hidden="true"
-                  />
-                  {active ? underline : null}
-                </button>
+                  >
+                    {link.label}
+                  </Link>
+                  <button
+                    type="button"
+                    id={`${menu}-trigger`}
+                    aria-expanded={expanded}
+                    aria-controls={`${menu}-panel`}
+                    aria-label={`${link.label} : sous-menu`}
+                    onClick={() => {
+                      clearTimers();
+                      if (!expanded) open(menu);
+                      else if (Date.now() - openedAt.current > 400) close();
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "ArrowDown") openAndFocus(event, menu);
+                    }}
+                    className={cn(
+                      "grid h-10 place-items-center rounded-lg pl-1 pr-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
+                      itemTone(active || expanded),
+                    )}
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "size-4 transition-transform duration-200",
+                        expanded && "rotate-180",
+                      )}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  {active ? (
+                    <span
+                      className={cn(
+                        "absolute -bottom-px left-4 right-3 h-[3px] rounded-full",
+                        onHero ? "bg-solar-500" : "bg-brand-600",
+                      )}
+                    />
+                  ) : null}
+                </div>
 
                 {/*
                   Positionné par rapport à l'en-tête (le `<li>` reste statique) :
@@ -567,17 +622,28 @@ export function MobileNav({
             const active = isActive(link.href);
             return (
               <AccordionPrimitive.Item key={link.href} value={menu}>
-                <AccordionPrimitive.Header>
-                  <AccordionPrimitive.Trigger
+                {/* Comme sur desktop : l'intitulé mène au hub, le chevron
+                    déplie la liste — séparés par un filet, pour qu'on voie
+                    deux cibles et non une. */}
+                <AccordionPrimitive.Header className="group/acc flex items-stretch rounded-xl transition-colors data-[state=open]:bg-brand-50">
+                  <Link
+                    href={link.href}
+                    onClick={onNavigate}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
                       row,
-                      "group/acc focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 data-[state=open]:bg-brand-50",
+                      "flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500",
                       active ? "text-brand-700" : "text-slate-700 hover:bg-brand-50",
                     )}
                   >
                     {link.label}
+                  </Link>
+                  <AccordionPrimitive.Trigger
+                    aria-label={`${link.label} : sous-menu`}
+                    className="relative grid w-14 shrink-0 place-items-center rounded-xl text-slate-500 transition-colors before:absolute before:inset-y-3 before:left-0 before:w-px before:bg-slate-200 hover:bg-brand-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500"
+                  >
                     <ChevronDown
-                      className="size-4 text-slate-400 transition-transform duration-200 group-data-[state=open]/acc:rotate-180"
+                      className="size-5 transition-transform duration-200 group-data-[state=open]/acc:rotate-180"
                       aria-hidden="true"
                     />
                   </AccordionPrimitive.Trigger>

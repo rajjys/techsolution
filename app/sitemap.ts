@@ -30,7 +30,7 @@ const REVISED: Record<string, string> = {
   "/services": "2026-10-15",
   "/produits": "2026-10-14",
   "/references": "2026-10-15",
-  "/contact": "2026-08-18",
+  "/contact": "2026-10-15",
   "/about": "2026-10-15",
   "/confidentialite": "2026-08-18",
   "/zones": "2026-10-15",

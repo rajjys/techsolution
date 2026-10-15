@@ -101,30 +101,45 @@ export default async function KitPage({
   const namePrefix = powerAt > 0 ? kit.name.slice(0, powerAt).trim() : kit.name;
   const nameAccent = powerAt > 0 ? kit.name.slice(powerAt) : "";
 
-  const productJsonLd = {
+  /*
+   * `Service`, et non `Product` — décision du 15 oct. 2026, sur une erreur
+   * de la Search Console : « Either "offers", "review" or "aggregateRating"
+   * should be specified ».
+   *
+   * Pour Google, un `Product` doit porter une offre, un avis ou une note. Or
+   * une `Offer` exige un `price` (developers.google.com, « Product
+   * snippet », màj du 8 sept. 2026) ; les prix ne sont pas publics, un
+   * `price: 0` dirait que le kit est gratuit, et le site n'a aucun avis
+   * client à baliser. Aucune des trois issues n'est honnête.
+   *
+   * `Service` est aussi le type exact : le kit se vend posé — dimensionnement,
+   * pose et garantie compris, prix sur devis après audit (la section « Le
+   * prix d'un kit n'est pas celui d'un carton »). `Service` n'a pas de
+   * résultat enrichi chez Google, donc pas de champ exigé : le balisage reste
+   * lisible par les moteurs et les assistants, sans erreur.
+   *
+   * Règle pour tout futur produit (batteries nomades…) : `Product` seulement
+   * avec un prix public ou de vrais avis affichés sur la page — sinon rien.
+   */
+  const kitJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "Service",
+    "@id": `${site.url}${kitHref(kit)}#kit`,
     name: kit.name,
-    description: `${kit.outcome} ${kit.inverter}, ${kit.battery}, ${kit.panels}.`,
-    sku: kit.slug,
+    serviceType: "Fourniture et installation d'un kit solaire hybride",
+    category: category.name,
+    description: `${kit.outcome} Composition type : ${kit.inverter}, ${kit.battery}, ${kit.panels}, raccordement ${kit.phase.toLowerCase()}. Dimensionnement, pose par nos techniciens et garantie d'un an renouvelable compris ; prix sur devis après l'audit de charge gratuit.`,
     url: `${site.url}${kitHref(kit)}`,
     image: `${site.url}${photo.src}`,
-    category: category.name,
-    brand: { "@type": "Brand", name: site.name },
-    additionalProperty: [
-      { "@type": "PropertyValue", name: "Puissance", value: kit.power },
-      { "@type": "PropertyValue", name: "Onduleur", value: kit.inverter },
-      { "@type": "PropertyValue", name: "Batterie", value: kit.battery },
-      { "@type": "PropertyValue", name: "Panneaux", value: kit.panels },
-      { "@type": "PropertyValue", name: "Raccordement", value: kit.phase },
-    ],
+    provider: { "@type": "Organization", name: site.legalName, url: site.url },
+    areaServed: { "@type": "Country", name: "République Démocratique du Congo" },
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(kitJsonLd) }}
       />
 
       <PageHero
@@ -233,11 +248,6 @@ export default async function KitPage({
                   </dd>
                 </div>
               </dl>
-              <p className="mt-4 text-[13px] leading-relaxed text-slate-500">
-                Composition type du catalogue. Elle est ajustée après
-                l&apos;audit de charge de votre site, gratuit et sans
-                engagement.
-              </p>
             </Reveal>
           </div>
 
@@ -270,6 +280,50 @@ export default async function KitPage({
               </p>
             </Reveal>
           </div>
+        </div>
+
+        {/*
+          L'appel au moment où l'on a fini de lire le kit — sinon il faut
+          remonter jusqu'au hero pour le demander. La réserve sur la
+          composition y prend place : c'est elle qui rend la demande sans
+          risque.
+        */}
+        <div className="container mt-12">
+          <Reveal>
+            <div className="flex flex-col gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-7 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+              <div className="min-w-0">
+                <p className="text-base font-bold text-slate-900">
+                  {`Le ${kit.name}, ajusté à votre site.`}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                  Composition type du catalogue : elle est ajustée après
+                  l&apos;audit de charge de votre site, gratuit et sans
+                  engagement.
+                </p>
+              </div>
+              {/* Une seule rangée sur téléphone, comme au pied de page :
+                  l'appel prend la place, WhatsApp devient une icône. */}
+              <div className="flex shrink-0 gap-3">
+                <Button className="group flex-1 sm:flex-none" asChild>
+                  <KitQuoteLink kitSlug={kit.slug}>
+                    Demander ce kit
+                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </KitQuoteLink>
+                </Button>
+                <Button variant="neutral" className="px-4 sm:px-7" asChild>
+                  <a
+                    href={buildProductWhatsAppLink(kit.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="En parler sur WhatsApp"
+                  >
+                    <WhatsAppIcon className="size-5 text-[#25D366] sm:size-4" />
+                    <span className="hidden sm:inline">WhatsApp</span>
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </Section>
 
