@@ -14,6 +14,8 @@ import {
 import { Section, SectionHeading } from "@/components/section";
 import { Button } from "@/components/ui/button";
 import { caseStudies, presenceCities } from "@/lib/data/case-studies";
+import { zoneForCity } from "@/lib/data/locations";
+import { zoneHref } from "@/lib/routes";
 import { clients, projects } from "@/lib/data/clients";
 import { provinces } from "@/lib/data/drc";
 import { pageMetadata } from "@/lib/seo";
@@ -45,7 +47,7 @@ export default function ReferencesPage() {
           <>
             {/* Le sujet d'abord, la voix de la marque ensuite : le H1 dit de
                 quoi parle la page, la chute garde « et où ». */}
-            Nos réalisations en RDC :{" "}
+            Nos réalisations en RDC&nbsp;:{" "}
             <span className="text-brand-600">ce que nous avons livré, et où.</span>
           </>
         }
@@ -133,18 +135,30 @@ export default function ReferencesPage() {
               <span className="font-semibold text-white">
                 {`Nos ${presenceCities.length} villes d'intervention :`}
               </span>
-              {presenceCities.map((city) => (
-                <span
-                  key={city.name}
-                  className="inline-flex items-center gap-1.5 font-medium text-white"
-                >
-                  <MapPin
-                    className="size-3.5 shrink-0 text-solar-400"
-                    aria-hidden="true"
-                  />
-                  {city.name}
-                </span>
-              ))}
+              {presenceCities.map((city) => {
+                /* Les villes qui ont leur page y mènent ; les autres sont
+                   nommées, sans lien vers une page qui n'existe pas. */
+                const zone = zoneForCity(city.name);
+                const label = (
+                  <>
+                    <MapPin className="size-3.5 shrink-0 text-solar-400" aria-hidden="true" />
+                    {city.name}
+                  </>
+                );
+                return zone ? (
+                  <Link
+                    key={city.name}
+                    href={zoneHref(zone.slug)}
+                    className="inline-flex items-center gap-1.5 font-medium text-white underline-offset-4 hover:text-solar-300 hover:underline"
+                  >
+                    {label}
+                  </Link>
+                ) : (
+                  <span key={city.name} className="inline-flex items-center gap-1.5 font-medium text-white">
+                    {label}
+                  </span>
+                );
+              })}
               <span className="w-full sm:w-auto">
                 — et une équipe projet mobilisable dans les{" "}
                 {provinces.length - site.provincesDelivered} autres provinces.

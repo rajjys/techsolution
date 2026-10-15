@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { KIT_NEED, needs, resolveNeed } from "@/lib/data/contact";
 import { findKit } from "@/lib/data/kits";
 import { services } from "@/lib/data/services";
+import { officeJsonLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { offices, site } from "@/lib/site";
 import { buildProductWhatsAppLink, buildWhatsAppLink } from "@/lib/whatsapp";
@@ -88,36 +89,8 @@ export default async function ContactPage({
    * implantations comme des lieux — pour une entreprise à deux bases
    * physiques, c'est précisément ce qu'une recherche locale cherche.
    */
-  const officesJsonLd = offices.map((office) => ({
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${site.url}/contact#${office.city.toLowerCase()}`,
-    name: `${site.legalName} — ${office.city}`,
-    parentOrganization: { "@type": "Organization", name: site.legalName },
-    url: `${site.url}/contact`,
-    telephone: site.phone,
-    email: site.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: office.street,
-      addressLocality: office.city,
-      addressRegion: office.region,
-      addressCountry: "CD",
-    },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
-      opens: "08:00",
-      closes: "17:00",
-    },
-  }));
+  /* Les deux bureaux — même balisage et même `@id` que leur page de ville. */
+  const officesJsonLd = offices.map(officeJsonLd);
 
   const whatsappLink = kit
     ? buildProductWhatsAppLink(kit.name)
@@ -182,7 +155,7 @@ export default async function ContactPage({
                 </>
               ) : service ? (
                 <>
-                  {service.shortTitle} :{" "}
+                  {service.shortTitle}&nbsp;:{" "}
                   <span className="text-brand-600">parlons de votre site.</span>
                 </>
               ) : wantsKit ? (
@@ -194,7 +167,7 @@ export default async function ContactPage({
                 </>
               ) : need ? (
                 <>
-                  {need.label} :{" "}
+                  {need.label}&nbsp;:{" "}
                   <span className="text-brand-600">parlons-en.</span>
                 </>
               ) : (

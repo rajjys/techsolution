@@ -1,5 +1,6 @@
 import type { Kit } from "@/lib/data/kits";
 import type { ProductCategorySlug } from "@/lib/data/products";
+import { services } from "@/lib/data/services";
 
 /**
  * Le seul endroit où l'on fabrique une URL interne vers une entité.
@@ -21,11 +22,18 @@ export function kitHref(kit: Pick<Kit, "category" | "slug">): string {
 }
 
 /**
- * Un domaine d'expertise. Ancre de /services tant que chaque domaine n'a pas
- * sa page (phase 5 du plan) — c'est la ligne à changer ce jour-là.
+ * La page d'un domaine d'expertise (phase 5, oct. 2026 — c'étaient des ancres
+ * de /services). Reçoit le slug du service ; le segment d'URL peut différer
+ * (`maintenance-froid` → /services/maintenance-climatisation).
  */
 export function serviceHref(slug: string): string {
-  return `/services#${slug}`;
+  const service = services.find((item) => item.slug === slug);
+  return `/services/${service?.urlSlug ?? slug}`;
+}
+
+/** La page d'une ville — `/zones/<ville>` (phase 6, oct. 2026). */
+export function zoneHref(slug: string): string {
+  return `/zones/${slug}`;
 }
 
 export function caseStudyHref(slug: string): string {

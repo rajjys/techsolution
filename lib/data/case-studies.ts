@@ -153,7 +153,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 15.31,
     lat: -4.33,
     published: "2026-10-14",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     context:
       "L'hôtel Gracia, dans le quartier Victoire près du pont Kalamu, réunit plus de dix chambres et quatre grandes salles, dont une salle de fête, ainsi qu'un bar.",
     challenge:
@@ -244,7 +244,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 15.22,
     lat: -4.41,
     published: "2026-10-14",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     context:
       "Un bar de Mbudi, sur la commune de Mont-Ngafula, qui loue aussi douze chambres.",
     challenge:
@@ -303,11 +303,11 @@ export const caseStudies: CaseStudy[] = [
     lon: 30.98,
     lat: 2.3,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Assurer une alimentation électrique fiable au bureau administratif du territoire de Mahagi, dans une zone où le réseau public est absent ou instable, pour garantir la continuité du service public.",
     solution:
-      "Conception et installation d'un système solaire hybride dimensionnée sur les charges réelles du bâtiment, avec stockage et supervision, dans le cadre du programme national PDL-145T.",
+      "Conception et installation d'un système solaire hybride dimensionné sur les charges réelles du bâtiment, avec stockage et supervision, dans le cadre du programme national PDL-145T.",
     results: [
       "Continuité de service du bureau administratif",
       "Réalisé dans le cadre du programme national PDL-145T",
@@ -336,7 +336,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 30.98,
     lat: 2.34,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Moderniser une agence bancaire en activité, dont l'installation électrique vieillissante ne garantissait plus la continuité d'exploitation ni la sécurité des équipements.",
     solution:
@@ -366,7 +366,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 29.22,
     lat: -1.68,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Garantir une alimentation ininterrompue au serveur télécom de GRECOM, où toute coupure entraîne une perte de service pour les utilisateurs.",
     solution:
@@ -395,7 +395,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 29.28,
     lat: 0.14,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Maintenir l'activité du site malgré des coupures fréquentes du réseau, sans recourir à un groupe électrogène bruyant et coûteux.",
     solution:
@@ -425,7 +425,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 28.85,
     lat: -2.08,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Alimenter un bureau d'ONG situé en zone reculée, hors de portée d'un réseau électrique fiable.",
     solution:
@@ -454,7 +454,7 @@ export const caseStudies: CaseStudy[] = [
     lon: 30.25,
     lat: 1.56,
     published: "2026-07-30",
-    revised: "2026-10-14",
+    revised: "2026-10-15",
     challenge:
       "Garantir le bon fonctionnement continu des installations techniques et de la climatisation d'une agence bancaire aux exigences élevées.",
     solution:
