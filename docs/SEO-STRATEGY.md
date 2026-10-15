@@ -670,7 +670,9 @@ Delivered in the working tree on 2 Oct and verified:
   lost. Once the registration lapses, anyone can buy a domain that carries
   your name and number in old caches and print. At minimum, ask that it not
   be released.
-- [ ] **1.5 (owner, Vercel)** `www` → 308. **Found 15 Oct:**
+- [x] **1.5** `www` → 308, **fixed by the owner on 15 Oct** (`www` added to
+  the project with a 308 redirect; verified: one hop, query string kept).
+  Original diagnosis: **found 15 Oct:**
   `www.techsolution.cd` is answered by Vercel (`server: Vercel`, DNS on
   `vercel-dns.com`), with a 307 to the apex. But the domain isn't in the
   `techsolution` project, so it's attached to **another project** in the
@@ -865,33 +867,89 @@ Delivered in the working tree on 2 Oct and verified:
   - 30 kVA → Gracia (the "au-delà, sur mesure" proof);
   - the `/produits` hub's "hors catalogue" block → Gracia.
 
-### Phase 5 — Services
-- [ ] **5.1 (L)** `app/services/[slug]/page.tsx` per §4.4; `/services`
-  becomes the hub. Remove the duplicated FAQ between `/services` and
-  `/produits`: each page keeps the questions for its own intent.
-- [ ] **5.2 (S)** Footer, home `Solutions` and `/produits` links → service
-  pages. Sitemap.
+### Phase 5 — Services (delivered 15 Oct)
+- [x] **5.1** `app/services/[slug]/page.tsx` × 6, static,
+  `dynamicParams = false`. Each page has, in order:
+  - its own H1, metaTitle and description;
+  - "Ce que nous faisons";
+  - the proof: the domain's case studies + project rows + "Livré notamment
+    à" with links to city pages;
+  - the kits (solar and backup only);
+  - the five other services;
+  - `Service` JSON-LD and a share image.
 
-### Phase 6 — Locations
-- [ ] **6.1 (M)** `/zones` hub per §5.2 (status per city; the map moves or is
-  reused here).
-- [ ] **6.2 (L)** `/zones/bunia` and `/zones/kinshasa` (Tier 1), with
-  `LocalBusiness` moved here from `/contact`. `/contact` keeps a reference by
-  `@id`. *Blocked by Q6, Q7, Q25, Q26.*
-- [ ] **6.3 (M)** `/zones/goma` and `/zones/mahagi` (Tier 2). *Blocked by
-  Q25.*
-- [ ] **6.4 (S each)** Kisangani / Lubumbashi / Butembo as their triggers
-  fire. *Blocked by Q3, Q8, Q25.*
-- [ ] **6.5** Verify: each page passes the "remove the city name" test; no
-  `LocalBusiness` on a city without an office.
+  `maintenance-froid` stays the funnel's ID; its page lives at
+  `/services/maintenance-climatisation` (`urlSlug`).
 
-### Phase 7 — Footer and the link graph
-- [ ] **7.1 (M)** Footer per §6.3. Measure before and after at 5 widths;
-  targets ≤ 1 150 px at 390 and ≤ 760 px at 1440. No WhatsApp FAB overlap.
-- [ ] **7.2 (M)** Internal-link pass per §11 (case study ↔ service ↔ city ↔
-  product). Map dots link to city pages.
-- [ ] **7.3 (S)** Crawl the production build: every indexable page has
-  ≥ 3 contextual inbound links, no orphan, no internal 3xx/4xx.
+  `/services` becomes the hub (index → pages, method, FAQ). Its title no
+  longer competes with the solar page: "Services solaires et électriques en
+  RDC".
+- [x] **5.2** Every `/services#…` link now points to a service page (footer,
+  mega menu, cards, home, case studies) via `serviceHref`. Sitemap from data.
+  Copy errors left by the "centrale" → "système" rename fixed ("Systemes",
+  "un système … dimensionnée", "elle produit").
+
+### Phase 6 — Locations (delivered 15 Oct)
+- [x] **6.1** `/zones` hub:
+  - **H1:** "Où nous intervenons en RDC : deux bureaux, des chantiers
+    documentés dans 4 provinces." (counted from the data, not declared);
+  - **city cards:** one per city with a page;
+  - **"Ailleurs en RDC":** Butembo, Beni, Kisangani, Lubumbashi, Matadi.
+    They are named without a page, with the confirmed operating model, and
+    Butembo links to the LTJ study.
+- [x] **6.2** `/zones/bunia` and `/zones/kinshasa`:
+  - address, hours **in local time**, permanent team, contact card,
+    Maps link;
+  - the city's projects, the services delivered there, the other cities;
+  - `LocalBusiness` from `lib/jsonld.ts`, shared with `/contact` under
+    **one `@id`** (`/zones/<city>#bureau`). Name "Tech Solution RDC", the
+    same as the GBP.
+- [x] **6.3** `/zones/goma` (permanent team, no office) and `/zones/mahagi`
+  (3 projects, technicians hired locally). **No `LocalBusiness`**, because a
+  city page never invents an office.
+
+  Only facts the owner gave: permanent teams in Bunia, Kinshasa and Goma;
+  local hiring elsewhere; the founder's repair centre in Bunia and Goma.
+  Unverifiable sentences were removed before publication ("connaît les
+  pannes", "premiers chantiers"…). Headline counts are derived ("trois
+  chantiers livrés").
+- [ ] **6.4** Kisangani / Lubumbashi / Butembo / Beni / Matadi: a page when
+  their trigger fires (a documented project + local facts).
+- [x] **6.5** Verified:
+  - `/zones/lubumbashi` returns 404 (no page without proof);
+  - Kinshasa → `LocalBusiness` `#bureau`; Goma → none.
+
+### Phase 7 — Footer and the link graph (delivered 15 Oct)
+- [x] **7.1** Footer rebuilt (§6.3):
+  - **removed:** the brand block (logo, repeated tagline);
+  - **moved up:** the offices, as compact cards (address, local hours,
+    "Itinéraire", link to the city page);
+  - **added:** a "Zones" column, plus one line linking the proven cities;
+  - **phone layout:** the site map sits behind a "Plan du site" toggle (its
+    links stay in the HTML); WhatsApp is an icon next to the CTA, so the
+    two sit on one row;
+  - **legal bar:** the social icons and the "Certifié & agréé" badge (kept,
+    owner decision).
+
+  | | Before | After |
+  |---|---|---|
+  | 390 px | 1 882 px (2,23 screens) | **1 122 px (1,33)** |
+  | 360 px | 1 965 | 1 122 |
+  | 1440 px | 898 | **740** |
+  | Share of a case-study page (390) | 53 % | 22 % |
+- [x] **7.2** Link pass:
+  - case study → its city (3rd "Pour aller plus loin" card);
+  - service → its cities;
+  - city → its studies, services and the other cities;
+  - `/references` → city pages in the cities line;
+  - footer → services, cities, hub.
+- [x] **7.3** Production-build crawl, links counted in `<main>` only
+  (header and footer excluded):
+  - **35 of 36** sitemap pages have ≥ 3 contextual inbound links; the 36th
+    is `/confidentialite`, a legal page linked from the footer;
+  - **0** internal links to a redirect or a 404.
+- [x] **7.4** Typography: a title never breaks before its colon (non-breaking
+  space). Verified at 5 widths on 5 pages.
 
 ### Phase 8 — Structured data consolidation
 - [ ] **8.1 (M)** One `@graph` per page with stable `@id`s per §10.
@@ -949,14 +1007,29 @@ Delivered in the working tree on 2 Oct and verified:
 - [ ] **11.3** Add **Bing Webmaster Tools** (Bing's index feeds Copilot and
   is used by ChatGPT search, which matters for the AI-answers goal) and import from GSC. Pull
   the first query data to validate §3.3 and §5.2.
-- [ ] **11.4** Baseline in §14 recorded on deploy day (**15 Oct**): note
-  GSC impressions, clicks and indexed pages that day, so every later
-  measurement has a "before".
-- [ ] **11.5** If the old farde (with client numbers) is still cached in
-  Google (`site:techsolution.cd filetype:pdf`), request its refresh with
-  the "Remove outdated content" tool.
+- [x] **11.2** Sitemap resubmitted by the owner on 15 Oct: 25 URLs
+  discovered (36 after the next deploy).
+- [x] **11.4** **Baseline, GSC 28 days to 13 Oct 2026** (before the first
+  deploy):
+
+  | Clicks | Impressions | CTR | Avg. position |
+  |---|---|---|---|
+  | 5 | 204 | 2,5 % | 9,4 |
+
+  13 queries in all. The top one is **"greentech energy bunia"** (1 click,
+  15 impressions), followed by "tech", "électricien", "solution solaire
+  entreprise rdc", "panneaux solaires" and others at 1–3 impressions each.
+
+  **About Greentech Energy:** it is Bunia's electricity distributor (ACP,
+  Feb. 2025: upgrades to two of its substations in Bunia). Google already
+  associates the site with "électricité à Bunia". But those searchers want
+  the grid operator, so **no page targets that brand**.
+- [x] **11.5** `site:techsolution.cd filetype:pdf` returns nothing (owner, 15
+  Oct): the old farde was never indexed.
 
 ### Phase 12 — Google Business Profiles (last, external)
+- **Status 15 Oct:** the **Bunia** profile is live; **Kinshasa** is still
+  unverified.
 - [ ] **12.1** Claim the **existing** Bunia profile (don't create a duplicate),
   then correct the address, hours, category and website per §16.
 - [ ] **12.2** Create and verify the Kinshasa profile (Lubumbashi if Q8 = a
