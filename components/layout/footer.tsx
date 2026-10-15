@@ -9,8 +9,8 @@ import { BoltRule, SocialIcon } from "@/components/icons";
 import { Eyebrow } from "@/components/section";
 import {
   footerLinks,
-  formatOfficeAddress,
   legal,
+  officeDirectionsUrl,
   offices,
   site,
   socialLinks,
@@ -150,7 +150,7 @@ export function Footer() {
                     <p className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-brand-300">
                       <span>{`Lun.–sam., 8 h–17 h, heure de ${office.city}`}</span>
                       <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formatOfficeAddress(office))}`}
+                        href={officeDirectionsUrl(office)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-0.5 font-semibold text-solar-400 hover:text-solar-300"

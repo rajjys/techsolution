@@ -101,30 +101,45 @@ export default async function KitPage({
   const namePrefix = powerAt > 0 ? kit.name.slice(0, powerAt).trim() : kit.name;
   const nameAccent = powerAt > 0 ? kit.name.slice(powerAt) : "";
 
-  const productJsonLd = {
+  /*
+   * `Service`, et non `Product` — décision du 15 oct. 2026, sur une erreur
+   * de la Search Console : « Either "offers", "review" or "aggregateRating"
+   * should be specified ».
+   *
+   * Pour Google, un `Product` doit porter une offre, un avis ou une note. Or
+   * une `Offer` exige un `price` (developers.google.com, « Product
+   * snippet », màj du 8 sept. 2026) ; les prix ne sont pas publics, un
+   * `price: 0` dirait que le kit est gratuit, et le site n'a aucun avis
+   * client à baliser. Aucune des trois issues n'est honnête.
+   *
+   * `Service` est aussi le type exact : le kit se vend posé — dimensionnement,
+   * pose et garantie compris, prix sur devis après audit (la section « Le
+   * prix d'un kit n'est pas celui d'un carton »). `Service` n'a pas de
+   * résultat enrichi chez Google, donc pas de champ exigé : le balisage reste
+   * lisible par les moteurs et les assistants, sans erreur.
+   *
+   * Règle pour tout futur produit (batteries nomades…) : `Product` seulement
+   * avec un prix public ou de vrais avis affichés sur la page — sinon rien.
+   */
+  const kitJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
+    "@type": "Service",
+    "@id": `${site.url}${kitHref(kit)}#kit`,
     name: kit.name,
-    description: `${kit.outcome} ${kit.inverter}, ${kit.battery}, ${kit.panels}.`,
-    sku: kit.slug,
+    serviceType: "Fourniture et installation d'un kit solaire hybride",
+    category: category.name,
+    description: `${kit.outcome} Composition type : ${kit.inverter}, ${kit.battery}, ${kit.panels}, raccordement ${kit.phase.toLowerCase()}. Dimensionnement, pose par nos techniciens et garantie d'un an renouvelable compris ; prix sur devis après l'audit de charge gratuit.`,
     url: `${site.url}${kitHref(kit)}`,
     image: `${site.url}${photo.src}`,
-    category: category.name,
-    brand: { "@type": "Brand", name: site.name },
-    additionalProperty: [
-      { "@type": "PropertyValue", name: "Puissance", value: kit.power },
-      { "@type": "PropertyValue", name: "Onduleur", value: kit.inverter },
-      { "@type": "PropertyValue", name: "Batterie", value: kit.battery },
-      { "@type": "PropertyValue", name: "Panneaux", value: kit.panels },
-      { "@type": "PropertyValue", name: "Raccordement", value: kit.phase },
-    ],
+    provider: { "@type": "Organization", name: site.legalName, url: site.url },
+    areaServed: { "@type": "Country", name: "République Démocratique du Congo" },
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(kitJsonLd) }}
       />
 
       <PageHero

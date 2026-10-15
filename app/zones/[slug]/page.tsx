@@ -17,7 +17,7 @@ import { serviceForCategory } from "@/lib/data/services";
 import { officeJsonLd } from "@/lib/jsonld";
 import { contactHref, serviceHref, zoneHref } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
-import { formatOfficeAddress, offices, site } from "@/lib/site";
+import { officeMapsUrl, offices, site } from "@/lib/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 /** Quatre villes préparées au build ; une autre répond 404 (palier 3 : pas de page). */
@@ -78,9 +78,7 @@ export default async function ZonePage({
     .map((category) => serviceForCategory(category))
     .filter((service) => service !== undefined);
   const otherZones = zones.filter((item) => item.slug !== zone.slug);
-  const mapsUrl = office
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formatOfficeAddress(office))}`
-    : undefined;
+  const mapsUrl = office ? officeMapsUrl(office) : undefined;
 
   return (
     <>

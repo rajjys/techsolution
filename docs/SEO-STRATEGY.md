@@ -364,12 +364,19 @@ already canonicalise to `/contact` and the site has 13 URLs, so crawl budget
 is not an issue here. The SEO gain is **having indexable product URLs at
 all**. The UX gain is converting without a page change.
 
-**Product structured data, with honest expectations:** `Product` with `name`,
-`description`, `image`, `sku` (slug), `brand` (→ Organization `@id`),
-`category`, `additionalProperty` (power, phase, battery, panels).
-**No `offers`**, because a valid `Offer` requires a price and no prices are
-published. Without `offers` or reviews, Google shows **no product rich
-result**. The markup still helps entity understanding and AI extraction.
+**Structured data: `Service`, not `Product` (changed 15 Oct).** The first
+version used `Product` without `offers`, expecting only "no rich result".
+Search Console reports it as an **error** instead: *"Either 'offers', 'review'
+or 'aggregateRating' should be specified"*. None of the three is honest here:
+an `Offer` requires `price` (Google, Product snippet doc, updated 8 Sept
+2026); `price: 0` would say the kit is free; there are no customer reviews.
+The kits are sold installed (sizing, installation, 1-year warranty, priced on
+quote after the audit), so `Service` is also the accurate type: `name`,
+`serviceType`, `category`, `description` (with the composition), `image`,
+`provider`, `areaServed`. No Google rich result exists for `Service`, so
+nothing is required and nothing errors. **Rule for future products** (power
+banks…): `Product` only with a public price or genuine on-page reviews.
+After deploy: Search Console → Product snippets → **Validate fix**.
 
 ### 4.4 Service pages — `/services/[slug]`
 
@@ -1104,10 +1111,10 @@ answering 200 with canonical `/contact`. Nothing to do.
 | Where | Types | Notes |
 |---|---|---|
 | Layout | `Organization` (`@id #organization`), `WebSite` (`@id #website`) | Keep legal identifiers and `sameAs`. Add the GBP URLs after phase 12. `address` = HQ only; offices referenced via `subOrganization` → their `LocalBusiness` `@id`. |
-| `/zones/{office}` | `LocalBusiness` (option: `Electrician` subtype) | own `@id`, `parentOrganization` → `#organization`, `geo`, per-office `telephone`, `openingHoursSpecification`, `areaServed` (Tier 2–3 cities), `image`, `paymentAccepted` (Q10), later `hasMap` |
+| `/zones/{office}` | `LocalBusiness` (option: `Electrician` subtype) | own `@id`, `parentOrganization` → `#organization`, `geo`, per-office `telephone`, `openingHoursSpecification`, `areaServed` (Tier 2–3 cities), `image`, `paymentAccepted` (Q10), `hasMap`. **`geo` and `hasMap` come only from a verified GBP** (`Office.google`: Place ID, CID, pin). Bunia done 15 Oct (pin 1.5403231, 30.2400022; it was the city centre before, ~2.5 km off); Kinshasa has no `geo` until its GBP is verified |
 | Case study | `Article` + `BreadcrumbList` | `headline`, `image`, `datePublished`/`dateModified` (Q13), `author`/`publisher` → `#organization`, `about` (client org by name), `contentLocation` (`Place`, city) |
 | Gracia page | + `VideoObject` | `name`, `description`, `thumbnailUrl`, `uploadDate`, `contentUrl`, `duration: PT43S`. The video must be prominent on the page. |
-| Product | `Product` | no `offers` (no prices): no rich result, entity value only (§4.3) |
+| Kit | `Service` (was `Product`) | `Product` without `offers` is a Search Console error, and an `Offer` needs a price (§4.3) |
 | Service | `Service` | `provider` → `#organization`, `areaServed`, `serviceType` |
 | All interior pages | `BreadcrumbList` | exists |
 | FAQ blocks | `FAQPage` optional | no Google rich result since 2023 (except government/health sites); AI extraction only |

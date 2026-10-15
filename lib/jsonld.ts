@@ -36,8 +36,17 @@ export function officeJsonLd(office: Office) {
       addressRegion: office.region,
       addressCountry: "CD",
     },
-    ...(zone
-      ? { geo: { "@type": "GeoCoordinates", latitude: zone.lat, longitude: zone.lon } }
+    /* Le point de la fiche Google, et la fiche elle-même — jamais le centre
+       de la ville (voir `Office.google`). */
+    ...(office.google
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: office.google.lat,
+            longitude: office.google.lon,
+          },
+          hasMap: `https://maps.google.com/?cid=${office.google.cid}`,
+        }
       : {}),
     /* Heure locale de chaque bureau — schema.org n'a pas de fuseau ici. */
     openingHoursSpecification: {

@@ -31,7 +31,9 @@ export const productCategories: ProductCategory[] = [
     shortName: "Kits solaires",
     description:
       "Onduleur, batterie lithium et panneaux en un seul ensemble, du foyer à l'établissement.",
-    revised: "2026-10-14",
+    /* La catégorie et ses fiches : balisage `Service` et appel en fin de
+       composition, 15 oct. */
+    revised: "2026-10-15",
   },
 ];
 
