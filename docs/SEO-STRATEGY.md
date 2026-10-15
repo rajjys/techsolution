@@ -378,6 +378,18 @@ nothing is required and nothing errors. **Rule for future products** (power
 banks…): `Product` only with a public price or genuine on-page reviews.
 After deploy: Search Console → Product snippets → **Validate fix**.
 
+**GBP Products are a separate system (owner's question, 15 Oct).** The kits
+go into each Business Profile as **Products**, as the owner intends: name,
+category "Kits solaires hybrides", photo, short description, button → the kit
+page URL. GBP product entries are free-form; they don't read the linked
+page's schema type, and Google doesn't cross-check the two. What both must
+share is what people see: the same kit names, the same composition, the same
+URLs. **Leave the GBP price field empty**: a price there is a public price.
+If prices or genuine reviews are ever published, the kit pages go back to
+`Product` with `offers`, and the site's markup and the GBP agree in type too.
+**Rule:** never change an entity's type (product ↔ service) without stating
+what it means for the GBP and the visible labels first.
+
 ### 4.4 Service pages — `/services/[slug]`
 
 `/services` becomes a hub (short intro per service, the process, the FAQ).
