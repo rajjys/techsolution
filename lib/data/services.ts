@@ -13,7 +13,24 @@ import { site } from "@/lib/site";
 import type { Project } from "@/lib/data/clients";
 
 export type Service = {
+  /**
+   * Identifiant stable — c'est aussi l'identifiant de besoin de l'entonnoir
+   * /contact (`?service=`, validation de l'API, libellés). Ne pas le renommer.
+   */
   slug: string;
+  /**
+   * Segment d'URL de la page du domaine, quand il diffère du slug :
+   * « maintenance-froid » est un identifiant interne, la page s'appelle
+   * /services/maintenance-climatisation.
+   */
+  urlSlug?: string;
+  /** H1 de la page du domaine — le métier, le lieu, pour qui. */
+  h1: string;
+  /** `<title>` avant « | Tech Solution RDC », 45 caractères visés. */
+  metaTitle: string;
+  metaDescription: string;
+  /** Dernière révision réelle de la page — `lastmod`. */
+  revised: string;
   /** Intitulé complet — page /services. */
   title: string;
   /** Intitulé court — carte d'accueil et navigation rapide. */
@@ -46,20 +63,24 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "energie-solaire",
+    h1: "Installation solaire en RDC, du foyer à l'établissement",
+    metaTitle: "Installation solaire en RDC — étude, pose, suivi",
+    metaDescription: "Systèmes solaires avec batteries lithium pour foyers, entreprises et institutions : audit de charge gratuit, pose par nos techniciens, suivi. Bunia, Kinshasa, Goma.",
+    revised: "2026-10-15",
     title: "Énergie solaire photovoltaïque",
     shortTitle: "Énergie solaire",
     outcome:
       "Gardez votre maison ou votre entreprise alimentée, même pendant les coupures.",
     delivery:
-      "Des systemes dimensionnés sur vos besoins, avec stockage lithium pour les coupures prolongées",
+      "Des systèmes dimensionnés sur vos besoins, avec stockage lithium pour les coupures prolongées",
     excerpt:
-      "Systemes solaires pour foyers, entreprises et sites institutionnels — de l'étude au raccordement.",
+      "Systèmes solaires pour foyers, entreprises et sites institutionnels — de l'étude au raccordement.",
     description:
-      "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Un système solaire dimensionnée sur vos charges réelles inverse la logique : elle produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
+      "Entre les délestages et le prix du carburant, l'électricité devient le premier poste de dépense — et la première cause d'arrêt. Un système solaire dimensionné sur vos charges réelles inverse la logique : il produit ce que votre site consomme, stocke le surplus pour la nuit et fonctionne sans ravitaillement. Nous équipons ainsi des bâtiments administratifs, des agences bancaires, des bureaux d'ONG, des salles communautaires et des stations de radio, avec des équipements conformes aux exigences des bailleurs et des institutions.",
     icon: Sun,
     capabilities: [
       "Audit énergétique et dimensionnement sur mesure",
-      "Systemes solaires pour bâtiments publics et privés",
+      "Systèmes solaires pour bâtiments publics et privés",
       "Kits solaires industriels pour bureaux et ONG",
       "Éclairage public et solutions communautaires",
       "Mise en service, formation et transfert de compétences",
@@ -76,6 +97,10 @@ export const services: Service[] = [
   },
   {
     slug: "backup-stockage",
+    h1: "Backup électrique : onduleurs hybrides et batteries lithium",
+    metaTitle: "Onduleur hybride et batteries lithium en RDC",
+    metaDescription: "Onduleurs hybrides et parcs batteries lithium pour garder serveurs, froid et bureaux allumés pendant les coupures. Dimensionnés sur vos coupures réelles.",
+    revised: "2026-10-15",
     title: "Systèmes backup & stockage d'énergie",
     shortTitle: "Backup & stockage",
     outcome:
@@ -107,6 +132,10 @@ export const services: Service[] = [
   },
   {
     slug: "infrastructure-electrique",
+    h1: "Infrastructure électrique : tableaux, câblage, parafoudres",
+    metaTitle: "Installation électrique et protection en RDC",
+    metaDescription: "Tableaux, câblage, parafoudres et mise en conformité de bâtiments en activité — dont la rénovation électrique de l'agence CADECO de Mahagi.",
+    revised: "2026-10-15",
     title: "Infrastructure électrique industrielle",
     shortTitle: "Infrastructure électrique",
     outcome:
@@ -135,6 +164,10 @@ export const services: Service[] = [
   },
   {
     slug: "telecom-medias",
+    h1: "Énergie autonome pour radios, serveurs et sites télécoms",
+    metaTitle: "Énergie solaire pour radios et sites télécoms",
+    metaDescription: "Cinq stations de radio d'Ituri équipées pour la MONUSCO et un serveur télécom à Goma : l'énergie solaire pour ce qui n'a pas droit à la coupure.",
+    revised: "2026-10-15",
     title: "Télécommunications & médias",
     shortTitle: "Télécoms & médias",
     outcome:
@@ -163,6 +196,10 @@ export const services: Service[] = [
   },
   {
     slug: "securite-electronique",
+    h1: "Sécurité électronique : alarme, contrôle d'accès, vidéosurveillance",
+    metaTitle: "Alarme et vidéosurveillance en RDC",
+    metaDescription: "Alarmes, contrôle d'accès et vidéosurveillance adossés à une alimentation secourue, pour qu'ils restent actifs pendant les coupures.",
+    revised: "2026-10-15",
     title: "Sécurité électronique",
     shortTitle: "Sécurité électronique",
     outcome:
@@ -187,6 +224,11 @@ export const services: Service[] = [
   },
   {
     slug: "maintenance-froid",
+    urlSlug: "maintenance-climatisation",
+    h1: "Maintenance solaire, électrique et climatisation",
+    metaTitle: "Maintenance solaire et climatisation en RDC",
+    metaDescription: "Contrats de maintenance préventive et corrective : systèmes solaires, installations électriques et climatisation — y compris ceux que nous n'avons pas posés.",
+    revised: "2026-10-15",
     title: "Maintenance & climatisation",
     shortTitle: "Maintenance & climatisation",
     outcome:
@@ -291,6 +333,11 @@ export const faqs = [
  * table de correspondance parallèle, qui divergerait au premier ajout.
  * Sert à préqualifier /contact depuis une fiche d'étude de cas.
  */
+/** Un domaine par son segment d'URL (ou, à défaut, par son slug). */
+export function findServiceByPath(segment: string): Service | undefined {
+  return services.find((service) => (service.urlSlug ?? service.slug) === segment);
+}
+
 export function serviceForCategory(
   category: Project["category"],
 ): Service | undefined {

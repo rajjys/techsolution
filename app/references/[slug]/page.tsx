@@ -23,12 +23,14 @@ import {
   type Evidence,
 } from "@/lib/data/case-studies";
 import { findKit } from "@/lib/data/kits";
+import { zoneForCity } from "@/lib/data/locations";
 import { serviceForCategory } from "@/lib/data/services";
 import {
   caseStudyHref,
   contactHref,
   kitHref,
   serviceHref,
+  zoneHref,
 } from "@/lib/routes";
 import { pageMetadata } from "@/lib/seo";
 import { leader, site } from "@/lib/site";
@@ -110,6 +112,8 @@ export default async function CaseStudyPage({
   const relatedService = serviceForCategory(study.category);
   const relatedKit = study.relatedKit ? findKit(study.relatedKit.slug) : undefined;
   const related = relatedCaseStudies(study);
+  /* La page de la ville, quand elle en a une (bureaux et villes prouvées). */
+  const zone = zoneForCity(study.city);
   const url = `${site.url}${caseStudyHref(study.slug)}`;
 
   const articleJsonLd = {
@@ -419,7 +423,7 @@ export default async function CaseStudyPage({
             title="Le domaine, le matériel, les chantiers voisins."
           />
 
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {relatedService ? (
               <Link
                 href={serviceHref(relatedService.slug)}
@@ -483,6 +487,27 @@ export default async function CaseStudyPage({
                 </span>
               </Link>
             )}
+            {zone ? (
+              <Link
+                href={zoneHref(zone.slug)}
+                className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft hover:ring-4 hover:ring-brand-200 hover:ring-offset-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-50">
+                  <MapPin className="size-5 text-brand-600" strokeWidth={1.8} aria-hidden="true" />
+                </span>
+                <span className="min-w-0">
+                  <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                    La ville
+                  </span>
+                  <span className="mt-1 block text-lg font-bold text-slate-900">
+                    {`Installation solaire à ${zone.name}`}
+                  </span>
+                  <span className="mt-1 block text-sm leading-relaxed text-slate-600">
+                    {`Nos autres réalisations à ${zone.name}, et comment nous y intervenons.`}
+                  </span>
+                </span>
+              </Link>
+            ) : null}
           </div>
 
           <h2 className="mt-14 text-lg font-bold text-slate-900">D&apos;autres réalisations</h2>

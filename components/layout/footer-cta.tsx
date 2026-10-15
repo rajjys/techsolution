@@ -26,9 +26,14 @@ export function FooterCta() {
   const onContactPage = pathname === "/contact";
 
   return (
-    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+    /*
+      Sur téléphone, une seule rangée : l'appel principal prend la place,
+      WhatsApp devient un bouton-icône à côté — empilés, ils coûtaient
+      118 px au pied de page de chaque écran.
+    */
+    <div className="mt-8 flex gap-3 sm:gap-4">
       {onContactPage ? null : (
-        <Button variant="primary-dark" className="group w-full sm:w-auto" asChild>
+        <Button variant="primary-dark" className="group flex-1 sm:flex-none" asChild>
           <Link href="/contact">
             Demander une étude gratuite
             <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -39,12 +44,19 @@ export function FooterCta() {
         href={buildWhatsAppLink()}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border-2 border-white/25 px-6 py-[0.8rem] text-base font-semibold text-white transition-all duration-200
+        aria-label={onContactPage ? undefined : "Écrire sur WhatsApp"}
+        className={`inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/25 py-[0.8rem] text-base font-semibold text-white transition-all duration-200
         hover:border-white hover:bg-white hover:text-brand-950 hover:ring-4 hover:ring-white/25 hover:ring-offset-1 hover:ring-offset-brand-950
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-950 sm:w-auto"
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-solar-500 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-950 ${
+          onContactPage ? "w-full px-6 sm:w-auto" : "w-[3.25rem] shrink-0 px-0 sm:w-auto sm:px-6"
+        }`}
       >
         <WhatsAppIcon className="size-5" />
-        {onContactPage ? `Écrire sur WhatsApp` : "WhatsApp"}
+        {onContactPage ? (
+          "Écrire sur WhatsApp"
+        ) : (
+          <span className="hidden sm:inline">WhatsApp</span>
+        )}
       </a>
     </div>
   );

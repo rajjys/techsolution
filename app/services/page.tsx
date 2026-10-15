@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Glow } from "@/components/glow";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
@@ -16,176 +15,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-  faqs,
-  processSteps,
-  services,
-  type Service,
-} from "@/lib/data/services";
+import { faqs, processSteps, services } from "@/lib/data/services";
 import { pageMetadata } from "@/lib/seo";
-import { cn } from "@/lib/utils";
-import { contactHref } from "@/lib/routes";
+import { serviceHref } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   path: "/services",
   /*
-   * « Services & Expertise » ne correspond à aucune requête : personne ne
-   * cherche « services ». Le titre porte désormais les trois termes réellement
-   * tapés, et la description ce qui décide — l'audit gratuit.
+   * Le hub ne dispute plus « installation solaire » à la page du domaine
+   * solaire (/services/energie-solaire) : une intention, une URL. Il porte
+   * l'ensemble — les six métiers et la méthode.
    */
-  title: "Installation solaire & électricité industrielle",
+  title: "Services solaires et électriques en RDC",
   description:
-    "Solaire, backup lithium, électricité industrielle, télécoms, sécurité, maintenance. Audit de charge et devis gratuits, partout en RDC.",
+    "Six expertises, une seule équipe : solaire, backup lithium, électricité, télécoms, sécurité, maintenance. Audit de charge et devis gratuits, partout en RDC.",
 });
-
-/**
- * Une expertise = une section pleine largeur, avec sa propre surface.
- *
- * Trois choses la distinguent de la suivante : le fond (blanc / teinté en
- * alternance), le côté de l'image, et surtout son titre — la panne que le
- * client cherche à résoudre, pas l'intitulé technique du métier. L'image
- * occupe la moitié de la section et touche le bord de l'écran dès `lg` :
- * c'est ce qui donne à chaque bloc une scène plutôt qu'une ligne de tableau.
- */
-function ExpertiseSection({
-  service,
-  index,
-}: {
-  service: Service;
-  index: number;
-}) {
-  /* Impair : image à droite sur fond teinté. Pair : image à gauche sur blanc. */
-  const flipped = index % 2 === 1;
-  const number = String(index + 1).padStart(2, "0");
-
-  return (
-    <section
-      id={service.slug}
-      aria-labelledby={`${service.slug}-title`}
-      className={cn(
-        "relative isolate overflow-hidden lg:min-h-[36rem]",
-        flipped ? "bg-surface-cool" : "bg-white",
-      )}
-    >
-      {flipped ? (
-        <Glow variant="cool" corner="bottom-left" />
-      ) : (
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-slate-200"
-          aria-hidden="true"
-        />
-      )}
-
-      {/*
-        Image : en flux au-dessus du texte sous lg, puis épinglée sur une
-        moitié de la section, du bord de l'écran jusqu'à la gouttière.
-      */}
-      <div
-        className={cn(
-          "relative aspect-[4/3] w-full sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:aspect-auto lg:w-1/2",
-          flipped ? "lg:right-0" : "lg:left-0",
-        )}
-      >
-        <Image
-          src={service.image}
-          alt={service.imageAlt}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-brand-950/30 via-transparent to-transparent"
-          aria-hidden="true"
-        />
-        <span className="absolute bottom-5 left-5 inline-flex items-center gap-2.5 rounded-full bg-white/95 py-2 pl-2.5 pr-4 shadow-md backdrop-blur lg:bottom-8 lg:left-8">
-          <span className="flex size-8 items-center justify-center rounded-full bg-brand-950">
-            <service.icon
-              className="size-4 text-solar-400"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-          </span>
-          <span className="text-xs font-bold uppercase tracking-[0.14em] text-slate-700">
-            {service.shortTitle}
-          </span>
-        </span>
-      </div>
-
-      <div className="container relative">
-        <div className="grid lg:grid-cols-2">
-          <div
-            className={cn(
-              "py-12 sm:py-16 lg:py-24",
-              flipped
-                ? "lg:col-start-1 lg:pr-14 xl:pr-20"
-                : "lg:col-start-2 lg:pl-14 xl:pl-20",
-            )}
-          >
-            <Reveal>
-              <div className="flex items-center gap-3">
-                <span className="font-display text-sm font-bold tabular-nums text-brand-600">
-                  {number}
-                </span>
-                <span className="h-px w-8 bg-brand-300" aria-hidden="true" />
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                  {service.title}
-                </span>
-              </div>
-
-              {/* Le titre porte la panne du client, pas l'intitulé du métier */}
-              <h2
-                id={`${service.slug}-title`}
-                className="mt-5 text-balance text-[26px] font-bold leading-[1.15] text-slate-900 sm:text-[30px] lg:text-[34px] lg:leading-[1.12]"
-              >
-                {service.outcome}
-              </h2>
-
-              <p className="mt-5 text-[15px] leading-relaxed text-slate-600 sm:text-base lg:text-[17px] lg:leading-[1.75]">
-                {service.description}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <ul className="mt-8 grid gap-2.5 border-t border-dashed border-slate-300 pt-8">
-                {service.capabilities.map((capability) => (
-                  <li key={capability} className="flex items-start gap-3">
-                    <Check
-                      className="mt-[3px] size-4 shrink-0 text-solar-600"
-                      strokeWidth={2.5}
-                      aria-hidden="true"
-                    />
-                    <span className="text-[15px] leading-relaxed text-slate-700">
-                      {capability}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-
-            <Reveal delay={0.16}>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
-                <Button asChild>
-                  <Link href={contactHref({ service: service.slug })}>
-                    Étudier mon projet
-                  </Link>
-                </Button>
-                <Button variant="outline-strong" className="group" asChild>
-                  <Link
-                    href={`/references?domaine=${service.slug}#realisations`}
-                  >
-                    Voir les réalisations
-                    <span className="sr-only"> en {service.shortTitle}</span>
-                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export default function ServicesPage() {
   return (
@@ -195,7 +39,7 @@ export default function ServicesPage() {
         eyebrow="Services & Expertise"
         title={
           <>
-            Énergie solaire et électricité :{" "}
+            Énergie solaire et électricité&nbsp;:{" "}
             {/*
               Littéral gabarit et non du texte JSX : une expression suivie de
               texte sur plusieurs lignes perd son espace de tête, JSX rognant
@@ -234,7 +78,7 @@ export default function ServicesPage() {
             align="center"
             eyebrow="Par où commencer"
             title="Identifiez la panne, nous avons le domaine."
-            lead={`${services.length} expertises, une seule équipe responsable de bout en bout. Choisissez la vôtre — le détail suit juste en dessous.`}
+            lead={`${services.length} expertises, une seule équipe responsable de bout en bout. Chaque domaine a sa page : ce que nous faisons, et ce que nous avons déjà livré.`}
           />
 
           <Stagger className="mt-12 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
@@ -242,7 +86,7 @@ export default function ServicesPage() {
               <StaggerItem key={service.slug} y={18} className="h-full">
                 <ServiceCard
                   service={service}
-                  href={`#${service.slug}`}
+                  href={serviceHref(service.slug)}
                   index={index}
                 />
               </StaggerItem>
@@ -250,14 +94,6 @@ export default function ServicesPage() {
           </Stagger>
         </div>
       </Section>
-
-      {services.map((service, index) => (
-        <ExpertiseSection
-          key={service.slug}
-          service={service}
-          index={index}
-        />
-      ))}
 
       {/* Méthode — le sombre est réservé à la preuve */}
       <Section className="relative isolate overflow-hidden bg-brand-950">

@@ -3,7 +3,15 @@ import type { MetadataRoute } from "next";
 import { caseStudies } from "@/lib/data/case-studies";
 import { kits } from "@/lib/data/kits";
 import { productCategories } from "@/lib/data/products";
-import { caseStudyHref, kitHref, productCategoryHref } from "@/lib/routes";
+import { zones } from "@/lib/data/locations";
+import { services } from "@/lib/data/services";
+import {
+  caseStudyHref,
+  kitHref,
+  productCategoryHref,
+  serviceHref,
+  zoneHref,
+} from "@/lib/routes";
 import { site } from "@/lib/site";
 
 /**
@@ -19,12 +27,13 @@ const REVISED: Record<string, string> = {
   /* Octobre 2026 : chiffres dérivés de la donnée, photos d'autres
      installateurs retirées, /produits devenu le catalogue. */
   "": "2026-10-14",
-  "/services": "2026-10-14",
+  "/services": "2026-10-15",
   "/produits": "2026-10-14",
-  "/references": "2026-10-14",
+  "/references": "2026-10-15",
   "/contact": "2026-08-18",
   "/about": "2026-10-15",
   "/confidentialite": "2026-08-18",
+  "/zones": "2026-10-15",
 };
 
 
@@ -79,5 +88,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ],
   );
 
-  return [...pages, ...catalogue, ...studies];
+  /* Les six domaines — chacun sa page depuis octobre 2026. */
+  const servicePages: MetadataRoute.Sitemap = services.map((service) => ({
+    url: `${site.url}${serviceHref(service.slug)}`,
+    lastModified: new Date(service.revised),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  /* Les villes — bureaux et villes prouvées ; les autres n'ont pas de page. */
+  const zonePages: MetadataRoute.Sitemap = zones.map((zone) => ({
+    url: `${site.url}${zoneHref(zone.slug)}`,
+    lastModified: new Date(zone.revised),
+    changeFrequency: "monthly",
+    priority: zone.tier === 1 ? 0.8 : 0.7,
+  }));
+
+  return [...pages, ...servicePages, ...zonePages, ...catalogue, ...studies];
 }

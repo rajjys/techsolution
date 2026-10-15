@@ -3,6 +3,7 @@ import { ArrowRight, Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Service } from "@/lib/data/services";
+import { serviceHref } from "@/lib/routes";
 
 /**
  * Carte d'expertise — partagée par la section « Nos solutions » de l'accueil
@@ -20,7 +21,7 @@ export function ServiceCard({
   className,
 }: {
   service: Service;
-  /** Par défaut l'ancre de la page services ; la page elle-même passe `#slug`. */
+  /** Par défaut la page du domaine. */
   href?: string;
   /** Numéro de chapitre — affiché en filigrane, il relie la carte à sa section. */
   index?: number;
@@ -28,7 +29,7 @@ export function ServiceCard({
 }) {
   return (
     <Link
-      href={href ?? `/services#${service.slug}`}
+      href={href ?? serviceHref(service.slug)}
       // `relative` : sans bloc conteneur positionné, le <span class="sr-only">
       // se positionnerait par rapport à la section et échapperait au rognage.
       className={cn(

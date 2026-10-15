@@ -5,6 +5,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { Reveal } from "@/components/motion";
 import { Button } from "@/components/ui/button";
 import { offices, site } from "@/lib/site";
+import { contactHref, serviceHref } from "@/lib/routes";
 
 /**
  * L'après-vente — la section qui manquait.
@@ -159,12 +160,12 @@ export function Maintenance() {
             <Reveal delay={0.16}>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Button asChild>
-                  <Link href="/contact?service=maintenance-froid">
+                  <Link href={contactHref({ service: "maintenance-froid" })}>
                     Nous confier votre installation
                   </Link>
                 </Button>
                 <Button variant="outline-strong" className="group" asChild>
-                  <Link href="/services#maintenance-froid">
+                  <Link href={serviceHref("maintenance-froid")}>
                     Le détail du contrat
                     <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
